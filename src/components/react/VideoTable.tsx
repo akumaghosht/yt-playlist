@@ -11,6 +11,8 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ListFilter,
+  X,
 } from 'lucide-react';
 import type { VideoItem } from '../../types/playlist';
 import { formatCompactDuration, formatViewCount, formatPublishDate } from '../../utils/youtube';
@@ -184,97 +186,146 @@ export const VideoTable: React.FC<VideoTableProps> = ({
   return (
     <div ref={tableRef} className="bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-xl overflow-hidden shadow-sm transition-colors">
       {/* Table Toolbar */}
-      <div className="p-3.5 sm:p-5 border-b border-slate-200 dark:border-[#272727] space-y-3 sm:space-y-4 bg-slate-50/70 dark:bg-[#141414]">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 sm:gap-4">
-          {/* Search input */}
-          <div className="relative flex-1 w-full lg:max-w-md">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#717171]" />
+      <div className="p-3.5 sm:p-5 border-b border-slate-200 dark:border-[#242424] space-y-3.5 bg-slate-50/70 dark:bg-[#121212]">
+        {/* Row 1: Search & Action Buttons */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+          {/* Search Input with Clear Button */}
+          <div className="relative flex-1 w-full max-w-lg">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#666666] pointer-events-none" />
             <input
               type="text"
-              placeholder="Filter by title, channel, or video #..."
+              placeholder="Search by title, channel, or video #..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-12 py-2 bg-white dark:bg-[#0F0F0F] border border-slate-300 dark:border-[#272727] rounded-lg text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#717171] focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 min-h-[40px]"
+              className="w-full pl-9 pr-9 py-2 bg-white dark:bg-[#0c0c0c] border border-slate-200 dark:border-[#242424] rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#666666] focus:outline-none focus:border-red-500/80 focus:ring-2 focus:ring-red-500/15 focus:bg-white dark:focus:bg-[#101010] transition-all min-h-[38px] shadow-2xs"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white touch-manipulation p-1"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-200/80 dark:bg-[#202020] hover:bg-slate-300 dark:hover:bg-[#2c2c2c] flex items-center justify-center text-slate-500 dark:text-[#888888] hover:text-slate-900 dark:hover:text-white transition-colors"
+                title="Clear search"
+                aria-label="Clear search"
               >
-                Clear
+                <X className="w-3 h-3" />
               </button>
             )}
           </div>
 
-          {/* Copy buttons - 2 columns on mobile, auto on desktop */}
-          <div className="grid grid-cols-2 lg:flex items-center gap-2 w-full lg:w-auto">
+          {/* Action buttons: Summary & Full List */}
+          <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto shrink-0">
             <button
               type="button"
               onClick={copySummary}
-              className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] text-xs text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] flex items-center justify-center gap-1.5 transition-colors font-medium touch-manipulation min-h-[38px]"
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#0c0c0c] border border-slate-200 dark:border-[#242424] text-xs font-medium text-slate-700 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-[#1a1a1a] hover:border-slate-300 dark:hover:border-[#333333] flex items-center justify-center gap-1.5 transition-all shadow-2xs touch-manipulation min-h-[38px]"
               title="Copy clean summary to clipboard"
             >
-              <FileText className="w-3.5 h-3.5 text-slate-700 dark:text-white shrink-0" />
+              <FileText className="w-3.5 h-3.5 text-slate-500 dark:text-[#888888] shrink-0" />
               <span>Summary</span>
             </button>
             <button
               type="button"
               onClick={copyFullList}
-              className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] text-xs text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] flex items-center justify-center gap-1.5 transition-colors font-medium touch-manipulation min-h-[38px]"
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#0c0c0c] border border-slate-200 dark:border-[#242424] text-xs font-medium text-slate-700 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-[#1a1a1a] hover:border-slate-300 dark:hover:border-[#333333] flex items-center justify-center gap-1.5 transition-all shadow-2xs touch-manipulation min-h-[38px]"
               title="Copy all video links and titles"
             >
-              <Copy className="w-3.5 h-3.5 text-slate-700 dark:text-white shrink-0" />
+              <Copy className="w-3.5 h-3.5 text-slate-500 dark:text-[#888888] shrink-0" />
               <span>Full List</span>
             </button>
           </div>
         </div>
 
-        {/* Filter Pills & Pagination Indicator */}
-        <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
-          <div className="flex items-center gap-1.5 shrink-0">
-            <span className="text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-[#717171] uppercase mr-0.5 shrink-0">Filter:</span>
-            {(
-              [
-                { id: 'all', label: `All (${videos.length})` },
-                { id: 'unwatched', label: `Unwatched (${videos.filter((v) => !v.isUnavailable && !watchedIds.has(v.id)).length})` },
-                { id: 'watched', label: `Watched (${videos.filter((v) => watchedIds.has(v.id)).length})` },
-                { id: 'unavailable', label: `Unavailable (${videos.filter((v) => v.isUnavailable).length})` },
-              ] as const
-            ).map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setFilterStatus(tab.id)}
-                className={`px-3 py-1.5 rounded-full font-mono transition-colors shrink-0 touch-manipulation min-h-[32px] flex items-center ${
-                  filterStatus === tab.id
-                    ? 'bg-red-600 text-white font-semibold shadow-sm'
-                    : 'bg-white dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#272727]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+        {/* Row 2: Filter Tabs & Quick Page Navigator */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5 pt-1">
+          {/* Segmented Filter Pills with Badge Counts */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 no-scrollbar">
+            <div className="hidden sm:flex items-center gap-1 text-[11px] text-slate-400 dark:text-[#777777] font-medium shrink-0 mr-0.5">
+              <ListFilter className="w-3.5 h-3.5" />
+              <span>Filter:</span>
+            </div>
+
+            <div className="inline-flex items-center gap-1 p-1 bg-slate-200/60 dark:bg-[#0c0c0c] border border-slate-200/80 dark:border-[#242424] rounded-xl shrink-0">
+              {(
+                [
+                  { id: 'all', label: 'All', count: videos.length },
+                  { id: 'unwatched', label: 'Unwatched', count: videos.filter((v) => !v.isUnavailable && !watchedIds.has(v.id)).length },
+                  { id: 'watched', label: 'Watched', count: videos.filter((v) => watchedIds.has(v.id)).length },
+                  { id: 'unavailable', label: 'Unavailable', count: videos.filter((v) => v.isUnavailable).length },
+                ] as const
+              ).map((tab) => {
+                const isActive = filterStatus === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setFilterStatus(tab.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 touch-manipulation min-h-[30px] ${
+                      isActive
+                        ? 'bg-white dark:bg-[#202020] text-slate-900 dark:text-white shadow-xs border border-slate-200/70 dark:border-[#333333]'
+                        : 'text-slate-600 dark:text-[#999999] hover:text-slate-900 dark:hover:text-white hover:bg-white/40 dark:hover:bg-[#161616]'
+                    }`}
+                  >
+                    <span>{tab.label}</span>
+                    <span
+                      className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono transition-colors ${
+                        isActive
+                          ? 'bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold'
+                          : 'bg-slate-300/60 dark:bg-[#1a1a1a] text-slate-500 dark:text-[#777777]'
+                      }`}
+                    >
+                      {tab.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Quick badge showing page info and 10 videos/page */}
+          {/* Quick Page Navigator Pill */}
           {totalItems > 0 && (
-            <div className="hidden md:flex items-center gap-2 text-[11px] font-mono text-slate-500 dark:text-[#AAAAAA] shrink-0 pl-2">
-              <span className="px-2 py-0.5 rounded bg-slate-200/60 dark:bg-[#212121] text-slate-700 dark:text-[#AAAAAA]">
-                10 videos / page
-              </span>
-              <span>
-                Page <strong className="text-slate-900 dark:text-white">{activePage}</strong> of{' '}
-                <strong className="text-slate-900 dark:text-white">{totalPages}</strong>
-              </span>
+            <div className="flex items-center gap-2 self-start md:self-auto shrink-0 bg-slate-200/60 dark:bg-[#0c0c0c] border border-slate-200/80 dark:border-[#242424] rounded-xl px-2.5 py-1 text-xs">
+              <div className="flex items-center gap-1.5 font-mono text-[11px] text-slate-500 dark:text-[#888888]">
+                <span className="text-slate-700 dark:text-[#cccccc] font-semibold">10</span>
+                <span>/ page</span>
+                <span className="text-slate-300 dark:text-[#2d2d2d]">&bull;</span>
+                <span>
+                  Page <strong className="text-slate-900 dark:text-white font-semibold">{activePage}</strong> of{' '}
+                  <strong className="text-slate-900 dark:text-white font-semibold">{totalPages}</strong>
+                </span>
+              </div>
+
+              {totalPages > 1 && (
+                <div className="flex items-center gap-0.5 pl-2 border-l border-slate-300/60 dark:border-[#242424]">
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(activePage - 1)}
+                    disabled={activePage === 1}
+                    className="p-1 rounded-md hover:bg-white dark:hover:bg-[#202020] text-slate-600 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+                    title="Previous page"
+                    aria-label="Previous page"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(activePage + 1)}
+                    disabled={activePage === totalPages}
+                    className="p-1 rounded-md hover:bg-white dark:hover:bg-[#202020] text-slate-600 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+                    title="Next page"
+                    aria-label="Next page"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
 
         {/* Mobile Sort Pills Bar (Only shown on small screens) */}
-        <div className="flex sm:hidden items-center justify-between gap-1.5 pt-2 border-t border-slate-200/70 dark:border-[#272727]/70">
+        <div className="flex sm:hidden items-center justify-between gap-1.5 pt-2 border-t border-slate-200/70 dark:border-[#242424]">
           <span className="text-[10px] font-mono text-slate-500 dark:text-[#717171] uppercase shrink-0">Sort:</span>
-          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+          <div className="inline-flex items-center gap-1 p-1 bg-slate-200/60 dark:bg-[#0c0c0c] border border-slate-200/80 dark:border-[#242424] rounded-xl overflow-x-auto no-scrollbar">
             {[
               { field: 'position', label: '#' },
               { field: 'duration', label: 'Duration' },
@@ -285,10 +336,10 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                 key={s.field}
                 type="button"
                 onClick={() => handleSort(s.field as SortField)}
-                className={`px-2 py-1 text-[11px] rounded-md border font-mono transition-colors shrink-0 touch-manipulation flex items-center gap-1 ${
+                className={`px-2 py-1 text-[11px] rounded-lg font-mono transition-all shrink-0 touch-manipulation flex items-center gap-1 ${
                   sortField === s.field
-                    ? 'bg-slate-200 dark:bg-[#272727] text-slate-900 dark:text-white border-red-500 font-semibold'
-                    : 'bg-white dark:bg-[#181818] text-slate-600 dark:text-[#AAAAAA] border-slate-200 dark:border-[#272727]'
+                    ? 'bg-white dark:bg-[#202020] text-slate-900 dark:text-white shadow-xs border border-slate-200/70 dark:border-[#333333] font-semibold'
+                    : 'text-slate-600 dark:text-[#999999] hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <span>{s.label}</span>
@@ -526,9 +577,9 @@ export const VideoTable: React.FC<VideoTableProps> = ({
 
       {/* Pagination Bar */}
       {totalItems > 0 && (
-        <div className="p-3.5 sm:px-5 sm:py-3.5 border-t border-slate-200 dark:border-[#272727] bg-slate-50/70 dark:bg-[#141414] flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-3.5 sm:px-5 sm:py-3.5 border-t border-slate-200 dark:border-[#242424] bg-slate-50/70 dark:bg-[#121212] flex flex-col sm:flex-row items-center justify-between gap-3">
           {/* Left: Summary text */}
-          <div className="text-xs font-mono text-slate-500 dark:text-[#AAAAAA] text-center sm:text-left flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+          <div className="text-xs font-mono text-slate-500 dark:text-[#aaaaaa] text-center sm:text-left flex items-center gap-2 flex-wrap justify-center sm:justify-start">
             <span>
               Showing <strong className="text-slate-900 dark:text-white">{startIndex + 1}–{endIndex}</strong> of{' '}
               <strong className="text-slate-900 dark:text-white">{totalItems}</strong> videos
@@ -538,7 +589,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
               Page <strong className="text-slate-900 dark:text-white">{activePage}</strong> of{' '}
               <strong className="text-slate-900 dark:text-white">{totalPages}</strong>
             </span>
-            <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-200/60 dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA]">
+            <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-200/60 dark:bg-[#1a1a1a] text-slate-600 dark:text-[#aaaaaa] border border-slate-300/40 dark:border-[#242424]">
               10 / page
             </span>
           </div>
@@ -547,7 +598,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center">
             {/* Go to page jump for playlists with > 5 pages */}
             {totalPages > 5 && (
-              <form onSubmit={handleJumpSubmit} className="hidden lg:flex items-center gap-1 mr-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+              <form onSubmit={handleJumpSubmit} className="hidden lg:flex items-center gap-1 mr-2 text-xs font-mono text-slate-500 dark:text-[#aaaaaa]">
                 <span>Go:</span>
                 <input
                   type="number"
@@ -556,12 +607,12 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                   value={jumpInput}
                   onChange={(e) => setJumpInput(e.target.value)}
                   placeholder={String(activePage)}
-                  className="w-11 px-1.5 py-1 text-center bg-white dark:bg-[#0F0F0F] border border-slate-300 dark:border-[#272727] rounded text-slate-900 dark:text-white text-xs focus:outline-none focus:border-red-500 font-mono"
+                  className="w-11 px-1.5 py-1 text-center bg-white dark:bg-[#0c0c0c] border border-slate-300 dark:border-[#242424] rounded-lg text-slate-900 dark:text-white text-xs focus:outline-none focus:border-red-500 font-mono shadow-2xs"
                   aria-label="Jump to page"
                 />
                 <button
                   type="submit"
-                  className="px-2 py-1 rounded bg-slate-200/80 dark:bg-[#212121] border border-slate-300 dark:border-[#272727] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white text-xs font-medium transition-colors"
+                  className="px-2 py-1 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#242424] text-slate-700 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white text-xs font-medium transition-colors shadow-2xs"
                 >
                   Jump
                 </button>
@@ -576,7 +627,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                   type="button"
                   onClick={() => handlePageChange(1)}
                   disabled={activePage === 1}
-                  className="p-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-[#AAAAAA] transition-colors touch-manipulation min-h-[34px] min-w-[34px] flex items-center justify-center"
+                  className="p-1.5 rounded-lg border border-slate-200 dark:border-[#242424] bg-white dark:bg-[#1a1a1a] text-slate-600 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#333333] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-[#aaaaaa] transition-colors touch-manipulation min-h-[34px] min-w-[34px] flex items-center justify-center shadow-2xs"
                   title="First page"
                   aria-label="First page"
                 >
@@ -588,7 +639,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                   type="button"
                   onClick={() => handlePageChange(activePage - 1)}
                   disabled={activePage === 1}
-                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-xs font-medium text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-700 dark:disabled:hover:text-[#AAAAAA] transition-colors flex items-center gap-1 touch-manipulation min-h-[34px]"
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-[#242424] bg-white dark:bg-[#1a1a1a] text-xs font-medium text-slate-700 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#333333] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-700 dark:disabled:hover:text-[#aaaaaa] transition-colors flex items-center gap-1 touch-manipulation min-h-[34px] shadow-2xs"
                   title="Previous page"
                   aria-label="Previous page"
                 >
@@ -615,10 +666,10 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                         key={`page-${p}`}
                         type="button"
                         onClick={() => handlePageChange(p as number)}
-                        className={`min-w-[32px] h-[34px] px-2 rounded-lg text-xs font-mono font-semibold transition-colors flex items-center justify-center touch-manipulation ${
+                        className={`min-w-[32px] h-[34px] px-2 rounded-lg text-xs font-mono font-semibold transition-colors flex items-center justify-center touch-manipulation shadow-2xs ${
                           isCurrent
-                            ? 'bg-red-600 text-white shadow-sm border border-red-600'
-                            : 'bg-white dark:bg-[#212121] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838]'
+                            ? 'bg-red-600 text-white border border-red-600 shadow-xs'
+                            : 'bg-white dark:bg-[#1a1a1a] text-slate-700 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#242424] hover:border-slate-300 dark:hover:border-[#333333]'
                         }`}
                         aria-current={isCurrent ? 'page' : undefined}
                         aria-label={`Page ${p}`}
@@ -630,7 +681,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                 </div>
 
                 {/* Mobile compact page indicator */}
-                <div className="flex sm:hidden items-center px-2 py-1 text-xs font-mono font-semibold text-slate-700 dark:text-[#CCCCCC]">
+                <div className="flex sm:hidden items-center px-2 py-1 text-xs font-mono font-semibold text-slate-700 dark:text-[#cccccc]">
                   {activePage} / {totalPages}
                 </div>
 
@@ -639,7 +690,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                   type="button"
                   onClick={() => handlePageChange(activePage + 1)}
                   disabled={activePage === totalPages}
-                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-xs font-medium text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-700 dark:disabled:hover:text-[#AAAAAA] transition-colors flex items-center gap-1 touch-manipulation min-h-[34px]"
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-[#242424] bg-white dark:bg-[#1a1a1a] text-xs font-medium text-slate-700 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#333333] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-700 dark:disabled:hover:text-[#aaaaaa] transition-colors flex items-center gap-1 touch-manipulation min-h-[34px] shadow-2xs"
                   title="Next page"
                   aria-label="Next page"
                 >
@@ -652,7 +703,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
                   type="button"
                   onClick={() => handlePageChange(totalPages)}
                   disabled={activePage === totalPages}
-                  className="p-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-[#AAAAAA] transition-colors touch-manipulation min-h-[34px] min-w-[34px] flex items-center justify-center"
+                  className="p-1.5 rounded-lg border border-slate-200 dark:border-[#242424] bg-white dark:bg-[#1a1a1a] text-slate-600 dark:text-[#aaaaaa] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#333333] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-[#aaaaaa] transition-colors touch-manipulation min-h-[34px] min-w-[34px] flex items-center justify-center shadow-2xs"
                   title="Last page"
                   aria-label="Last page"
                 >
