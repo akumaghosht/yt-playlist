@@ -13,6 +13,8 @@ import {
   PlaySquare,
   X,
   RotateCw,
+  Zap,
+  Loader2,
 } from 'lucide-react';
 import type { PlaylistAnalysis } from '../../types/playlist';
 import {
@@ -336,7 +338,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                 >
                   {isLoading ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                       <span>Analyzing...</span>
                     </>
                   ) : (
@@ -516,8 +518,9 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               {analysis.shortestVideo && (
                 <div className="p-4 rounded-xl bg-[#181818] border border-[#272727] flex items-center justify-between gap-3 text-xs">
                   <div className="min-w-0">
-                    <span className="text-[11px] font-mono uppercase text-emerald-400 tracking-wider font-semibold">
-                      ⚡ Shortest Video
+                    <span className="text-[11px] font-mono uppercase text-emerald-400 tracking-wider font-semibold flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5" />
+                      Shortest Video
                     </span>
                     <a
                       href={analysis.shortestVideo.videoUrl}
@@ -537,8 +540,9 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               {analysis.longestVideo && (
                 <div className="p-4 rounded-xl bg-[#181818] border border-[#272727] flex items-center justify-between gap-3 text-xs">
                   <div className="min-w-0">
-                    <span className="text-[11px] font-mono uppercase text-amber-400 tracking-wider font-semibold">
-                      ⏳ Longest Video
+                    <span className="text-[11px] font-mono uppercase text-amber-400 tracking-wider font-semibold flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5" />
+                      Longest Video
                     </span>
                     <a
                       href={analysis.longestVideo.videoUrl}

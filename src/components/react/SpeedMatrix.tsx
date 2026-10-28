@@ -1,5 +1,5 @@
 import React from 'react';
-import { Gauge, Sparkles, Clock, Zap } from 'lucide-react';
+import { Gauge, Zap } from 'lucide-react';
 import { formatCompactDuration, formatDetailedDuration } from '../../utils/youtube';
 
 interface SpeedMatrixProps {
@@ -49,8 +49,7 @@ export const SpeedMatrix: React.FC<SpeedMatrixProps> = ({
             <p className="text-xs text-[#AAAAAA]">Compare watch times and efficiency savings across playback rates</p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 self-start sm:self-auto px-2.5 py-1 rounded-full bg-[#212121] border border-[#272727] text-xs font-mono text-[#AAAAAA]">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+        <div className="flex items-center self-start sm:self-auto px-2.5 py-1 rounded-full bg-[#212121] border border-[#272727] text-xs font-mono text-[#AAAAAA]">
           <span>Active Speed: <strong className="text-white">{currentSpeed.toFixed(2)}x</strong></span>
         </div>
       </div>

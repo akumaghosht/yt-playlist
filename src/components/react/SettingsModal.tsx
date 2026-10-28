@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Key, X, Check, ExternalLink, ShieldCheck, Trash2, AlertCircle } from 'lucide-react';
+import { Key, X, Check, ExternalLink, ShieldCheck, Trash2, AlertCircle, Loader2 } from 'lucide-react';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -157,7 +157,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
               ) : testStatus === 'error' ? (
                 <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
               ) : (
-                <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin shrink-0 mt-0.5" />
+                <Loader2 className="w-4 h-4 border-t-transparent animate-spin shrink-0 mt-0.5 text-red-500" />
               )}
               <span>{testMessage}</span>
             </div>

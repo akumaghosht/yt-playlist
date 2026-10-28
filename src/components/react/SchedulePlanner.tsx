@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, Sparkles, BookOpen, ChevronRight, Check } from 'lucide-react';
+import { Calendar, Clock, BookOpen, ChevronRight, Check } from 'lucide-react';
 import { formatCompactDuration } from '../../utils/youtube';
 
 interface SchedulePlannerProps {
@@ -326,8 +326,7 @@ export const SchedulePlanner: React.FC<SchedulePlannerProps> = ({
         <div className="lg:col-span-5 flex flex-col justify-between p-5 rounded-lg bg-[#212121] border border-[#272727] shadow-lg relative overflow-hidden">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-red-400 flex items-center gap-1.5 font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-red-500" />
+              <span className="text-[11px] font-mono uppercase tracking-wider text-red-400 font-medium">
                 Schedule Projection
               </span>
               <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#181818] border border-[#272727] text-red-400 font-mono">

@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import FaqSection from '../components/FaqSection.astro';
 import { PlaylistAnalyzer } from '../components/react/PlaylistAnalyzer';
+import { Zap, FastForward, Target, Calendar } from 'lucide-react';
 
 // Direct resolution of API key from environment
 const defaultApiKey =
@@ -40,7 +41,7 @@ const defaultApiKey =
         {/* Feature 1 */}
         <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
           <div class="w-8 h-8 rounded-lg bg-red-950/60 border border-red-900/40 text-red-500 flex items-center justify-center font-bold text-sm">
-            ⚡
+            <Zap className="w-4 h-4" />
           </div>
           <h3 class="text-sm font-bold text-white tracking-tight">
             Paginated API Batching
@@ -53,7 +54,7 @@ const defaultApiKey =
         {/* Feature 2 */}
         <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
           <div class="w-8 h-8 rounded-lg bg-amber-950/60 border border-amber-900/40 text-amber-500 flex items-center justify-center font-bold text-sm">
-            ⏩
+            <FastForward className="w-4 h-4" />
           </div>
           <h3 class="text-sm font-bold text-white tracking-tight">
             Playback Speed Matrix
@@ -66,7 +67,7 @@ const defaultApiKey =
         {/* Feature 3 */}
         <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
           <div class="w-8 h-8 rounded-lg bg-emerald-950/60 border border-emerald-900/40 text-emerald-500 flex items-center justify-center font-bold text-sm">
-            🎯
+            <Target className="w-4 h-4" />
           </div>
           <h3 class="text-sm font-bold text-white tracking-tight">
             Range & Watched Sync
@@ -79,7 +80,7 @@ const defaultApiKey =
         {/* Feature 4 */}
         <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
           <div class="w-8 h-8 rounded-lg bg-indigo-950/60 border border-indigo-900/40 text-indigo-500 flex items-center justify-center font-bold text-sm">
-            📅
+            <Calendar className="w-4 h-4" />
           </div>
           <h3 class="text-sm font-bold text-white tracking-tight">
             Smart Schedule Planner

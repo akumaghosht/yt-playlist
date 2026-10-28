@@ -1,4 +1,6 @@
 ---
+import { ChevronDown } from 'lucide-react';
+
 const faqs = [
   {
     question: "How do I calculate the total length of a YouTube playlist?",
@@ -66,9 +68,7 @@ const faqJsonLd = {
             <span>{faq.question}</span>
           </span>
           <span class="ml-4 transition-transform duration-200 group-open:rotate-180 text-[#717171]">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
+            <ChevronDown className="w-4 h-4" />
           </span>
         </summary>
         <div class="px-5 pb-5 text-xs sm:text-sm text-[#AAAAAA] leading-relaxed border-t border-[#272727]/60 pt-3">
