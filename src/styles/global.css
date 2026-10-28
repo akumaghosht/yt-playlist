@@ -1,6 +1,29 @@
 @import "tailwindcss";
 
-@theme {
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-yt-black: #F8FAFC;
+  --color-yt-charcoal: #FFFFFF;
+  --color-yt-elevated: #F1F5F9;
+  --color-yt-card: #FFFFFF;
+  --color-yt-card-hover: #F8FAFC;
+  --color-yt-border: #E2E8F0;
+  --color-yt-border-light: #CBD5E1;
+  
+  --color-yt-red: #FF0000;
+  --color-yt-red-deep: #DC2626;
+  --color-yt-red-hover: #E50914;
+  --color-yt-red-soft: rgba(239, 68, 68, 0.08);
+  --color-yt-red-glow: rgba(239, 68, 68, 0.2);
+
+  --color-yt-text-primary: #0F172A;
+  --color-yt-text-secondary: #475569;
+  --color-yt-text-muted: #64748B;
+  --color-yt-text-faint: #94A3B8;
+}
+
+.dark {
   --color-yt-black: #0F0F0F;
   --color-yt-charcoal: #181818;
   --color-yt-elevated: #212121;
@@ -19,16 +42,14 @@
   --color-yt-text-secondary: #AAAAAA;
   --color-yt-text-muted: #717171;
   --color-yt-text-faint: #525252;
+}
 
+@theme {
   --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 @layer base {
-  * {
-    border-color: var(--color-yt-border);
-  }
-
   body {
     background-color: var(--color-yt-black);
     color: var(--color-yt-text-primary);
@@ -38,19 +59,18 @@
   }
 }
 
-/* Custom scrollbar for dark dashboard aesthetics */
+/* Custom scrollbars that adapt between dark and light modes */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0F0F0F;
+  background: var(--color-yt-black);
 }
 ::-webkit-scrollbar-thumb {
-  background: #272727;
+  background: var(--color-yt-border);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3F3F3F;
+  background: var(--color-yt-border-light);
 }
-

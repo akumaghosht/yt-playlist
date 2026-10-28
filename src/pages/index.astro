@@ -26,66 +26,66 @@ const defaultApiKey =
     {/* Feature Value Grid */}
     <section id="features" class="w-full max-w-5xl mx-auto pt-6 space-y-8">
       <div class="text-center space-y-2">
-        <span class="text-xs font-mono uppercase tracking-wider text-red-500">
+        <span class="text-xs font-mono uppercase tracking-wider text-red-600 dark:text-red-500 font-semibold">
           Engineered for Students, Creators & Power Users
         </span>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Why Use YouTube Playlist Length Analyser?
         </h2>
-        <p class="text-xs sm:text-sm text-[#AAAAAA] max-w-xl mx-auto">
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-[#AAAAAA] max-w-xl mx-auto">
           Unlike basic calculators that fail on large or private videos, our engine provides comprehensive course analytics.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Feature 1 */}
-        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
-          <div class="w-8 h-8 rounded-lg bg-red-950/60 border border-red-900/40 text-red-500 flex items-center justify-center font-bold text-sm">
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-red-50 border border-red-200 text-red-600 dark:bg-red-950/60 dark:border-red-900/40 dark:text-red-500 flex items-center justify-center font-bold text-sm">
             <Zap className="w-4 h-4" />
           </div>
-          <h3 class="text-sm font-bold text-white tracking-tight">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
             Paginated API Batching
           </h3>
-          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
             Paginates through 500+ videos in chunks of 50 via YouTube Data API v3, parsing ISO 8601 durations without timeouts.
           </p>
         </div>
 
         {/* Feature 2 */}
-        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
-          <div class="w-8 h-8 rounded-lg bg-amber-950/60 border border-amber-900/40 text-amber-500 flex items-center justify-center font-bold text-sm">
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200 text-amber-600 dark:bg-amber-950/60 dark:border-amber-900/40 dark:text-amber-500 flex items-center justify-center font-bold text-sm">
             <FastForward className="w-4 h-4" />
           </div>
-          <h3 class="text-sm font-bold text-white tracking-tight">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
             Playback Speed Matrix
           </h3>
-          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
             Instantly view exact runtimes at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x, plus fine-tune with a continuous custom slider.
           </p>
         </div>
 
         {/* Feature 3 */}
-        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
-          <div class="w-8 h-8 rounded-lg bg-emerald-950/60 border border-emerald-900/40 text-emerald-500 flex items-center justify-center font-bold text-sm">
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-600 dark:bg-emerald-950/60 dark:border-emerald-900/40 dark:text-emerald-500 flex items-center justify-center font-bold text-sm">
             <Target className="w-4 h-4" />
           </div>
-          <h3 class="text-sm font-bold text-white tracking-tight">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
             Range & Watched Sync
           </h3>
-          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
             Isolate specific lesson subsets (e.g. videos 10 to 30) and check off watched items with automatic localStorage saving.
           </p>
         </div>
 
         {/* Feature 4 */}
-        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
-          <div class="w-8 h-8 rounded-lg bg-indigo-950/60 border border-indigo-900/40 text-indigo-500 flex items-center justify-center font-bold text-sm">
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 dark:bg-indigo-950/60 dark:border-indigo-900/40 dark:text-indigo-500 flex items-center justify-center font-bold text-sm">
             <Calendar className="w-4 h-4" />
           </div>
-          <h3 class="text-sm font-bold text-white tracking-tight">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
             Smart Schedule Planner
           </h3>
-          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
             Map out your daily study routine. Enter your daily available minutes or set a hard deadline to project completion dates.
           </p>
         </div>

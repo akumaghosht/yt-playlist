@@ -105,38 +105,35 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           if (typeof prefs.speed === 'number' && prefs.speed > 0) {
             setCurrentSpeed(prefs.speed);
           }
-          if (typeof prefs.start === 'number' && prefs.start >= 1) {
-            setStartIndex(Math.min(prefs.start, analysis.videos.length));
-          } else {
-            setStartIndex(1);
+          if (typeof prefs.start === 'number' && typeof prefs.end === 'number') {
+            setStartIndex(Math.max(1, Math.min(prefs.start, analysis.videos.length)));
+            setEndIndex(Math.max(1, Math.min(prefs.end, analysis.videos.length)));
+            return;
           }
-          if (typeof prefs.end === 'number' && prefs.end >= 1) {
-            setEndIndex(Math.min(prefs.end, analysis.videos.length));
-          } else {
-            setEndIndex(analysis.videos.length);
-          }
-        } catch {
-          setStartIndex(1);
-          setEndIndex(analysis.videos.length);
-        }
-      } else {
-        setStartIndex(1);
-        setEndIndex(analysis.videos.length);
+        } catch {}
       }
-    }
-  }, [analysis?.playlist?.id]);
 
-  const savePreferences = (speed: number, start: number, end: number) => {
-    if (!analysis?.playlist?.id) return;
-    try {
-      const prefsKey = `yt_prefs_${analysis.playlist.id}`;
-      localStorage.setItem(prefsKey, JSON.stringify({ speed, start, end }));
-    } catch {
-      // Storage error ignored
+      // Default range: all videos
+      setStartIndex(1);
+      setEndIndex(analysis.videos.length);
     }
+  }, [analysis]);
+
+  // Persist preferences (speed and range) per playlist
+  const savePreferences = (speed: number, start: number, end: number) => {
+    if (!analysis) return;
+    const prefsKey = `yt_prefs_${analysis.playlist.id}`;
+    localStorage.setItem(
+      prefsKey,
+      JSON.stringify({
+        speed,
+        start,
+        end,
+      })
+    );
   };
 
-  // Persist watched state
+  // Toggle video watched state
   const handleToggleWatched = (videoId: string) => {
     if (!analysis) return;
     const next = new Set(watchedIds);
@@ -284,32 +281,32 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
       <section className="relative pt-6 pb-2">
         <div className="max-w-4xl mx-auto text-center space-y-4">
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
             YouTube Playlist <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-amber-500">Length Checker</span>
           </h1>
 
-          <p className="text-sm sm:text-base text-[#AAAAAA] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#AAAAAA] max-w-2xl mx-auto leading-relaxed">
             Calculate exact runtime at 1.0x to 2.0x speeds, customize subsets with range selectors, track progress, and project study deadlines in seconds.
           </p>
 
           {/* Search Box Form */}
           <form onSubmit={handleSubmit} className="pt-2 max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row items-stretch gap-2 p-1.5 bg-[#181818] border border-[#272727] rounded-xl sm:rounded-full shadow-2xl focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500 transition-all">
+            <div className="flex flex-col sm:flex-row items-stretch gap-2 p-1.5 bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-xl sm:rounded-full shadow-lg dark:shadow-2xl focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500 transition-all">
               <div className="flex items-center pl-3.5 flex-1 min-w-0">
-                <Search className="w-5 h-5 text-[#717171] shrink-0" />
+                <Search className="w-5 h-5 text-slate-400 dark:text-[#717171] shrink-0" />
                 <input
                   type="text"
                   placeholder="Paste YouTube playlist URL, video link, or ID..."
                   value={inputUrl}
                   onChange={(e) => setInputUrl(e.target.value)}
                   onPaste={handlePaste}
-                  className="w-full px-3 py-2.5 bg-transparent text-sm text-white placeholder-[#717171] focus:outline-none font-mono"
+                  className="w-full px-3 py-2.5 bg-transparent text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#717171] focus:outline-none font-mono"
                 />
                 {inputUrl && (
                   <button
                     type="button"
                     onClick={() => setInputUrl('')}
-                    className="p-1 text-[#717171] hover:text-white mr-1"
+                    className="p-1 text-slate-400 dark:text-[#717171] hover:text-slate-900 dark:hover:text-white mr-1"
                     title="Clear search"
                   >
                     <X className="w-4 h-4" />
@@ -321,7 +318,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                 <button
                   type="button"
                   onClick={() => setIsSettingsOpen(true)}
-                  className="p-2.5 rounded-full text-[#AAAAAA] hover:text-white hover:bg-[#272727] transition-colors relative"
+                  className="p-2.5 rounded-full text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#272727] transition-colors relative"
                   title="API Key Settings"
                   aria-label="API Settings"
                 >
@@ -334,7 +331,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-sm font-semibold tracking-wide transition-all shadow-lg shadow-red-950/40 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-sm font-semibold tracking-wide transition-all shadow-lg shadow-red-950/20 dark:shadow-red-950/40 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                 >
                   {isLoading ? (
                     <>
@@ -350,22 +347,22 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           </form>
 
           {/* Quick example link hints */}
-          <div className="text-xs text-[#717171] font-mono flex items-center justify-center gap-2 flex-wrap pt-1">
+          <div className="text-xs text-slate-400 dark:text-[#717171] font-mono flex items-center justify-center gap-2 flex-wrap pt-1">
             <span>Supports:</span>
-            <span className="text-[#AAAAAA]">youtube.com/playlist?list=...</span>
+            <span className="text-slate-600 dark:text-[#AAAAAA]">youtube.com/playlist?list=...</span>
             <span>&bull;</span>
-            <span className="text-[#AAAAAA]">watch?v=...&list=...</span>
+            <span className="text-slate-600 dark:text-[#AAAAAA]">watch?v=...&list=...</span>
             <span>&bull;</span>
-            <span className="text-[#AAAAAA]">youtu.be/...</span>
+            <span className="text-slate-600 dark:text-[#AAAAAA]">youtu.be/...</span>
             <span>&bull;</span>
-            <span className="text-[#AAAAAA]">Raw IDs (PL...)</span>
+            <span className="text-slate-600 dark:text-[#AAAAAA]">Raw IDs (PL...)</span>
           </div>
         </div>
       </section>
 
       {/* Subtle inline error feedback */}
       {errorMessage && (
-        <div className="pt-2 text-xs text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in">
+        <div className="pt-2 text-xs text-red-600 dark:text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in">
           <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
           <span>{errorMessage}</span>
         </div>
@@ -376,11 +373,11 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
         <div className="space-y-6 animate-pulse">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-28 bg-[#181818] border border-[#272727] rounded-xl" />
+              <div key={i} className="h-28 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
             ))}
           </div>
-          <div className="h-64 bg-[#181818] border border-[#272727] rounded-xl" />
-          <div className="h-96 bg-[#181818] border border-[#272727] rounded-xl" />
+          <div className="h-64 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
+          <div className="h-96 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
         </div>
       )}
 
@@ -388,9 +385,9 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
       {!isLoading && analysis && (
         <div className="space-y-8">
           {/* Playlist Header Banner */}
-          <div className="p-5 md:p-6 rounded-xl bg-[#181818] border border-[#272727] flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-xl">
+          <div className="p-5 md:p-6 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-sm dark:shadow-xl transition-colors">
             <div className="flex items-center gap-4">
-              <div className="relative w-24 h-16 sm:w-28 sm:h-20 shrink-0 rounded-lg overflow-hidden bg-[#212121] border border-[#272727]">
+              <div className="relative w-24 h-16 sm:w-28 sm:h-20 shrink-0 rounded-lg overflow-hidden bg-slate-200 dark:bg-[#212121] border border-slate-300 dark:border-[#272727]">
                 <img
                   src={analysis.playlist.thumbnail}
                   alt={analysis.playlist.title}
@@ -402,16 +399,16 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               </div>
               <div className="space-y-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight truncate">
+                  <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate">
                     {analysis.playlist.title}
                   </h2>
                 </div>
-                <p className="text-xs text-[#AAAAAA] flex items-center gap-2">
-                  <span>By <strong className="text-white">{analysis.playlist.channelTitle}</strong></span>
+                <p className="text-xs text-slate-600 dark:text-[#AAAAAA] flex items-center gap-2">
+                  <span>By <strong className="text-slate-900 dark:text-white">{analysis.playlist.channelTitle}</strong></span>
                   <span>&bull;</span>
                   <span>{analysis.totalVideos} total videos</span>
                   {analysis.unavailableCount > 0 && (
-                    <span className="text-amber-400 font-mono">
+                    <span className="text-amber-600 dark:text-amber-400 font-mono">
                       ({analysis.unavailableCount} unavailable)
                     </span>
                   )}
@@ -423,7 +420,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               <button
                 type="button"
                 onClick={() => fetchAnalysis(analysis.playlist.id, customApiKey, true)}
-                className="px-3 py-2 rounded-lg bg-[#212121] border border-[#272727] hover:border-[#383838] text-xs font-semibold text-[#AAAAAA] hover:text-white flex items-center gap-1.5 transition-colors"
+                className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838] text-xs font-semibold text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 transition-colors"
               >
                 <RotateCw className="w-3.5 h-3.5" />
                 <span>Refresh Live</span>
@@ -432,9 +429,9 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               <button
                 type="button"
                 onClick={handleCopyShareLink}
-                className="px-3.5 py-2 rounded-lg bg-[#212121] border border-[#272727] hover:border-[#383838] text-xs font-semibold text-white flex items-center gap-1.5 transition-colors"
+                className="px-3.5 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838] text-xs font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 transition-colors"
               >
-                {shareToast ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
+                {shareToast ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
                 <span>{shareToast ? 'Link Copied!' : 'Share Analysis'}</span>
               </button>
 
@@ -442,7 +439,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                 href={`https://www.youtube.com/playlist?list=${analysis.playlist.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-2 rounded-lg bg-red-600/20 border border-red-500/40 hover:bg-red-600/30 text-xs font-semibold text-red-400 flex items-center gap-1.5 transition-colors"
+                className="px-3.5 py-2 rounded-lg bg-red-50 dark:bg-red-600/20 border border-red-200 dark:border-red-500/40 hover:bg-red-100 dark:hover:bg-red-600/30 text-xs font-semibold text-red-600 dark:text-red-400 flex items-center gap-1.5 transition-colors"
               >
                 <span>Open on YouTube</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -453,32 +450,32 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           {/* Stat Overview Cards (Adhering to @DESIGN.md) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Stat 1: Total Duration */}
-            <div className="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2 relative group hover:border-[#383838] transition-colors">
-              <div className="flex items-center justify-between text-[#AAAAAA]">
+            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
                 <span className="text-xs font-mono uppercase tracking-wider">Total Duration</span>
                 <Clock className="w-4 h-4 text-red-500" />
               </div>
-              <div className="text-2xl font-extrabold text-white tracking-tight">
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {formatCompactDuration(analysis.totalDurationSeconds)}
               </div>
-              <p className="text-xs text-[#717171] leading-relaxed line-clamp-1" title={analysis.totalFormatted}>
+              <p className="text-xs text-slate-500 dark:text-[#717171] leading-relaxed line-clamp-1" title={analysis.totalFormatted}>
                 {analysis.totalFormatted}
               </p>
             </div>
 
             {/* Stat 2: Active vs Unavailable Videos */}
-            <div className="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2 relative group hover:border-[#383838] transition-colors">
-              <div className="flex items-center justify-between text-[#AAAAAA]">
+            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
                 <span className="text-xs font-mono uppercase tracking-wider">Videos Count</span>
                 <Layers className="w-4 h-4 text-blue-500" />
               </div>
-              <div className="text-2xl font-extrabold text-white tracking-tight">
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {analysis.activeCount}{' '}
-                <span className="text-xs font-normal text-[#AAAAAA]">active</span>
+                <span className="text-xs font-normal text-slate-500 dark:text-[#AAAAAA]">active</span>
               </div>
-              <p className="text-xs text-[#717171]">
+              <p className="text-xs text-slate-500 dark:text-[#717171]">
                 {analysis.unavailableCount > 0 ? (
-                  <span className="text-amber-400">
+                  <span className="text-amber-600 dark:text-amber-400">
                     {analysis.unavailableCount} private or deleted
                   </span>
                 ) : (
@@ -488,27 +485,27 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             </div>
 
             {/* Stat 3: Average Video Length */}
-            <div className="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2 relative group hover:border-[#383838] transition-colors">
-              <div className="flex items-center justify-between text-[#AAAAAA]">
+            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
                 <span className="text-xs font-mono uppercase tracking-wider">Average Video</span>
                 <TrendingUp className="w-4 h-4 text-emerald-500" />
               </div>
-              <div className="text-2xl font-extrabold text-white tracking-tight">
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {analysis.averageFormatted}
               </div>
-              <p className="text-xs text-[#717171]">Across active videos</p>
+              <p className="text-xs text-slate-500 dark:text-[#717171]">Across active videos</p>
             </div>
 
             {/* Stat 4: Total View Count */}
-            <div className="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2 relative group hover:border-[#383838] transition-colors">
-              <div className="flex items-center justify-between text-[#AAAAAA]">
+            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
                 <span className="text-xs font-mono uppercase tracking-wider">Total Views</span>
                 <Award className="w-4 h-4 text-purple-500" />
               </div>
-              <div className="text-2xl font-extrabold text-white tracking-tight">
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {formatViewCount(analysis.totalViews)}
               </div>
-              <p className="text-xs text-[#717171]">Combined playlist engagement</p>
+              <p className="text-xs text-slate-500 dark:text-[#717171]">Combined playlist engagement</p>
             </div>
           </div>
 
@@ -516,9 +513,9 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           {(analysis.longestVideo || analysis.shortestVideo) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {analysis.shortestVideo && (
-                <div className="p-4 rounded-xl bg-[#181818] border border-[#272727] flex items-center justify-between gap-3 text-xs">
+                <div className="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex items-center justify-between gap-3 text-xs shadow-sm">
                   <div className="min-w-0">
-                    <span className="text-[11px] font-mono uppercase text-emerald-400 tracking-wider font-semibold flex items-center gap-1.5">
+                    <span className="text-[11px] font-mono uppercase text-emerald-600 dark:text-emerald-400 tracking-wider font-semibold flex items-center gap-1.5">
                       <Zap className="w-3.5 h-3.5" />
                       Shortest Video
                     </span>
@@ -526,21 +523,21 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                       href={analysis.shortestVideo.videoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white hover:text-red-400 font-medium block truncate mt-0.5"
+                      className="text-slate-900 dark:text-white hover:text-red-600 dark:hover:text-red-400 font-medium block truncate mt-0.5"
                     >
                       #{analysis.shortestVideo.position}: {analysis.shortestVideo.title}
                     </a>
                   </div>
-                  <span className="px-2.5 py-1 rounded bg-[#212121] border border-[#272727] font-mono font-bold text-white shrink-0">
+                  <span className="px-2.5 py-1 rounded bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] font-mono font-bold text-slate-900 dark:text-white shrink-0">
                     {analysis.shortestVideo.durationFormatted}
                   </span>
                 </div>
               )}
 
               {analysis.longestVideo && (
-                <div className="p-4 rounded-xl bg-[#181818] border border-[#272727] flex items-center justify-between gap-3 text-xs">
+                <div className="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex items-center justify-between gap-3 text-xs shadow-sm">
                   <div className="min-w-0">
-                    <span className="text-[11px] font-mono uppercase text-amber-400 tracking-wider font-semibold flex items-center gap-1.5">
+                    <span className="text-[11px] font-mono uppercase text-amber-600 dark:text-amber-400 tracking-wider font-semibold flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5" />
                       Longest Video
                     </span>
@@ -548,12 +545,12 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                       href={analysis.longestVideo.videoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white hover:text-red-400 font-medium block truncate mt-0.5"
+                      className="text-slate-900 dark:text-white hover:text-red-600 dark:hover:text-red-400 font-medium block truncate mt-0.5"
                     >
                       #{analysis.longestVideo.position}: {analysis.longestVideo.title}
                     </a>
                   </div>
-                  <span className="px-2.5 py-1 rounded bg-[#212121] border border-[#272727] font-mono font-bold text-white shrink-0">
+                  <span className="px-2.5 py-1 rounded bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] font-mono font-bold text-slate-900 dark:text-white shrink-0">
                     {analysis.longestVideo.durationFormatted}
                   </span>
                 </div>
@@ -596,10 +593,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           {/* Interactive Video Table */}
           <div className="space-y-3">
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-base font-semibold text-white tracking-tight">
+              <h3 className="text-base font-semibold text-slate-900 dark:text-white tracking-tight">
                 All Videos in Playlist ({analysis.videos.length})
               </h3>
-              <span className="text-xs text-[#717171] font-mono">
+              <span className="text-xs text-slate-500 dark:text-[#717171] font-mono">
                 Click any row checkbox to mark as watched
               </span>
             </div>

@@ -30,7 +30,7 @@ const webAppSchema = {
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,8 +43,27 @@ const webAppSchema = {
     <meta name="description" content={description} />
     <meta name="keywords" content="youtube playlist length calculator, how long is this youtube playlist, youtube playlist duration at 1.5x speed, youtube playlist study schedule planner, youtube video runtime counter, youtube playlist length check, youtube course progress tracker" />
     <meta name="author" content="YouTube Playlist Length Analyser" />
-    <meta name="theme-color" content="#0F0F0F" />
+    <meta name="theme-color" content="#0F0F0F" id="theme-color-meta" />
     <link rel="canonical" href={siteUrl} />
+
+    {/* Inline script to prevent theme flash */}
+    <script is:inline>
+      (function() {
+        try {
+          const storedTheme = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            const meta = document.getElementById('theme-color-meta');
+            if (meta) meta.setAttribute('content', '#0F0F0F');
+          } else {
+            document.documentElement.classList.remove('dark');
+            const meta = document.getElementById('theme-color-meta');
+            if (meta) meta.setAttribute('content', '#FFFFFF');
+          }
+        } catch (e) {}
+      })();
+    </script>
 
     {/* Open Graph / Facebook */}
     <meta property="og:type" content="website" />
@@ -66,7 +85,7 @@ const webAppSchema = {
     {/* JSON-LD Web Application Schema */}
     <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
   </head>
-  <body class="bg-[#0F0F0F] text-[#F1F1F1] min-h-screen flex flex-col font-sans selection:bg-red-600 selection:text-white">
+  <body class="bg-slate-50 dark:bg-[#0F0F0F] text-slate-900 dark:text-[#F1F1F1] min-h-screen flex flex-col font-sans selection:bg-red-600 selection:text-white transition-colors duration-150">
     <slot />
   </body>
 </html>
