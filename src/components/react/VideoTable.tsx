@@ -149,7 +149,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
               className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] text-xs text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] flex items-center justify-center gap-1.5 transition-colors font-medium touch-manipulation min-h-[38px]"
               title="Copy clean summary to clipboard"
             >
-              <FileText className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 shrink-0" />
+              <FileText className="w-3.5 h-3.5 text-slate-700 dark:text-white shrink-0" />
               <span>Summary</span>
             </button>
             <button
@@ -158,7 +158,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
               className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] text-xs text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] flex items-center justify-center gap-1.5 transition-colors font-medium touch-manipulation min-h-[38px]"
               title="Copy all video links and titles"
             >
-              <Copy className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 shrink-0" />
+              <Copy className="w-3.5 h-3.5 text-slate-700 dark:text-white shrink-0" />
               <span>Full List</span>
             </button>
           </div>

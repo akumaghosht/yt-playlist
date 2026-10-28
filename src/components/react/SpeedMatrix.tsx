@@ -1,5 +1,5 @@
 import React from 'react';
-import { Gauge, Zap } from 'lucide-react';
+import { Gauge } from 'lucide-react';
 import { formatCompactDuration } from '../../utils/youtube';
 
 interface SpeedMatrixProps {
@@ -113,12 +113,9 @@ export const SpeedMatrix: React.FC<SpeedMatrixProps> = ({
       {/* Interactive Custom Speed Slider */}
       <div className="p-3.5 sm:p-4 rounded-lg bg-slate-50 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] space-y-2.5 sm:space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
-          <div className="flex items-center space-x-2">
-            <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 dark:text-amber-400 shrink-0" />
-            <span className="text-[11px] sm:text-xs font-semibold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
-              Custom Playback Multiplier
-            </span>
-          </div>
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
+            Custom Playback Multiplier
+          </span>
           <div className="text-xs font-mono text-slate-600 dark:text-[#AAAAAA] flex items-center gap-1.5 flex-wrap">
             <span>Result: <strong className="text-slate-900 dark:text-white text-xs sm:text-sm">{customStats.formatted}</strong></span>
             {customStats.pctSaved > 0 && (

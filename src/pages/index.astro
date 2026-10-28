@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import FaqSection from '../components/FaqSection.astro';
 import { PlaylistAnalyzer } from '../components/react/PlaylistAnalyzer';
-import { Zap, FastForward, Target, Calendar } from 'lucide-react';
+import { FastForward, Target, Calendar } from 'lucide-react';
 
 // Direct resolution of API key from environment
 const defaultApiKey =
@@ -37,23 +37,10 @@ const defaultApiKey =
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
         {/* Feature 1 */}
         <div class="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 sm:space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
           <div class="w-8 h-8 rounded-lg bg-red-50 border border-red-200 text-red-600 dark:bg-red-950/60 dark:border-red-900/40 dark:text-red-500 flex items-center justify-center font-bold text-sm">
-            <Zap className="w-4 h-4" />
-          </div>
-          <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
-            Paginated API Batching
-          </h3>
-          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
-            Paginates through 500+ videos in chunks of 50 via YouTube Data API v3, parsing ISO 8601 durations without timeouts.
-          </p>
-        </div>
-
-        {/* Feature 2 */}
-        <div class="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 sm:space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
-          <div class="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200 text-amber-600 dark:bg-amber-950/60 dark:border-amber-900/40 dark:text-amber-500 flex items-center justify-center font-bold text-sm">
             <FastForward className="w-4 h-4" />
           </div>
           <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
@@ -64,9 +51,9 @@ const defaultApiKey =
           </p>
         </div>
 
-        {/* Feature 3 */}
+        {/* Feature 2 */}
         <div class="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 sm:space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
-          <div class="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-600 dark:bg-emerald-950/60 dark:border-emerald-900/40 dark:text-emerald-500 flex items-center justify-center font-bold text-sm">
+          <div class="w-8 h-8 rounded-lg bg-red-50 border border-red-200 text-red-600 dark:bg-red-950/60 dark:border-red-900/40 dark:text-red-500 flex items-center justify-center font-bold text-sm">
             <Target className="w-4 h-4" />
           </div>
           <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
@@ -77,9 +64,9 @@ const defaultApiKey =
           </p>
         </div>
 
-        {/* Feature 4 */}
+        {/* Feature 3 */}
         <div class="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 sm:space-y-2.5 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
-          <div class="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 dark:bg-indigo-950/60 dark:border-indigo-900/40 dark:text-indigo-500 flex items-center justify-center font-bold text-sm">
+          <div class="w-8 h-8 rounded-lg bg-red-50 border border-red-200 text-red-600 dark:bg-red-950/60 dark:border-red-900/40 dark:text-red-500 flex items-center justify-center font-bold text-sm">
             <Calendar className="w-4 h-4" />
           </div>
           <h3 class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">

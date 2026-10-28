@@ -108,7 +108,7 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-[#272727]">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-500 shrink-0">
+          <div className="p-2 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-500 shrink-0">
             <Target className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
@@ -228,10 +228,10 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
         <div className="p-3.5 sm:p-4 rounded-lg bg-slate-50 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] space-y-3.5 sm:space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-[11px] sm:text-xs font-semibold text-slate-900 dark:text-white uppercase tracking-wider font-mono flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
               Watch Progress
             </span>
-            <span className="text-[11px] sm:text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
+            <span className="text-[11px] sm:text-xs font-mono text-red-600 dark:text-red-400 font-semibold">
               {watchedInRange.length}/{activeRangeVideos.length} watched ({watchedPercent}%)
             </span>
           </div>
@@ -248,7 +248,7 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
                 max={totalCount}
                 value={watchedIds.size}
                 onChange={(e) => handleWatchedCountChange(parseInt(e.target.value) || 0)}
-                className="w-16 px-2 py-1 bg-slate-50 dark:bg-[#0F0F0F] border border-slate-300 dark:border-[#272727] rounded text-center text-base sm:text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                className="w-16 px-2 py-1 bg-slate-50 dark:bg-[#0F0F0F] border border-slate-300 dark:border-[#272727] rounded text-center text-base sm:text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-red-500"
               />
               <span className="text-[11px] text-slate-500 dark:text-[#717171] font-mono">videos</span>
             </div>
@@ -257,7 +257,7 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
           {/* Progress Bar */}
           <div className="w-full h-2.5 bg-slate-200 dark:bg-[#0F0F0F] rounded-full overflow-hidden border border-slate-300 dark:border-[#272727]">
             <div
-              className="h-full bg-emerald-500 transition-all duration-300 rounded-full"
+              className="h-full bg-red-500 transition-all duration-300 rounded-full"
               style={{ width: `${watchedPercent}%` }}
             />
           </div>
@@ -289,7 +289,7 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
               onClick={() => onToggleAllWatched(true)}
               className="px-2.5 py-2 sm:py-1 text-xs rounded bg-slate-200 dark:bg-[#272727] hover:bg-slate-300 dark:hover:bg-[#333333] text-slate-800 dark:text-white flex items-center justify-center gap-1.5 transition-colors font-medium touch-manipulation"
             >
-              <CheckSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <CheckSquare className="w-3.5 h-3.5 text-red-600 dark:text-red-400 shrink-0" />
               <span>Mark Range Watched</span>
             </button>
             <button
