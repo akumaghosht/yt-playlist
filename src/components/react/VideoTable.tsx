@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   ArrowUpDown,
   Search,
@@ -7,6 +7,10 @@ import {
   Check,
   AlertTriangle,
   FileText,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from 'lucide-react';
 import type { VideoItem } from '../../types/playlist';
 import { formatCompactDuration, formatViewCount, formatPublishDate } from '../../utils/youtube';
@@ -22,16 +26,21 @@ type SortField = 'position' | 'title' | 'duration' | 'views' | 'date';
 type SortOrder = 'asc' | 'desc';
 type FilterStatus = 'all' | 'unwatched' | 'watched' | 'unavailable';
 
+const ITEMS_PER_PAGE = 10;
+
 export const VideoTable: React.FC<VideoTableProps> = ({
   videos,
   watchedIds,
   onToggleWatched,
   playlistTitle,
 }) => {
+  const tableRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<SortField>('position');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [jumpInput, setJumpInput] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -47,6 +56,11 @@ export const VideoTable: React.FC<VideoTableProps> = ({
       setSortOrder(field === 'position' || field === 'title' ? 'asc' : 'desc');
     }
   };
+
+  // Reset to first page whenever search query, filter status, or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterStatus, sortField, sortOrder]);
 
   // Filter & Search
   const filteredVideos = useMemo(() => {
@@ -88,6 +102,58 @@ export const VideoTable: React.FC<VideoTableProps> = ({
     });
   }, [filteredVideos, sortField, sortOrder]);
 
+  // Pagination Calculations
+  const totalItems = sortedVideos.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+  const activePage = Math.min(Math.max(1, currentPage), totalPages);
+
+  // Clamp current page if items count shrunk
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
+  const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+
+  const paginatedVideos = useMemo(() => {
+    return sortedVideos.slice(startIndex, endIndex);
+  }, [sortedVideos, startIndex, endIndex]);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages || newPage === activePage) return;
+    setCurrentPage(newPage);
+    if (tableRef.current) {
+      const rect = tableRef.current.getBoundingClientRect();
+      if (rect.top < 0) {
+        tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
+  const handleJumpSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = parseInt(jumpInput, 10);
+    if (!isNaN(val) && val >= 1 && val <= totalPages) {
+      handlePageChange(val);
+      setJumpInput('');
+    }
+  };
+
+  const pageNumbers = useMemo((): (number | 'ellipsis')[] => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    if (activePage <= 4) {
+      return [1, 2, 3, 4, 5, 'ellipsis', totalPages];
+    }
+    if (activePage >= totalPages - 3) {
+      return [1, 'ellipsis', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+    return [1, 'ellipsis', activePage - 1, activePage, activePage + 1, 'ellipsis', totalPages];
+  }, [activePage, totalPages]);
+
   const copySummary = () => {
     const activeVideos = videos.filter((v) => !v.isUnavailable);
     const watchedCount = activeVideos.filter((v) => watchedIds.has(v.id)).length;
@@ -116,7 +182,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-xl overflow-hidden shadow-sm transition-colors">
+    <div ref={tableRef} className="bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-xl overflow-hidden shadow-sm transition-colors">
       {/* Table Toolbar */}
       <div className="p-3.5 sm:p-5 border-b border-slate-200 dark:border-[#272727] space-y-3 sm:space-y-4 bg-slate-50/70 dark:bg-[#141414]">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 sm:gap-4">
@@ -164,30 +230,45 @@ export const VideoTable: React.FC<VideoTableProps> = ({
           </div>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
-          <span className="text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-[#717171] uppercase mr-0.5 shrink-0">Filter:</span>
-          {(
-            [
-              { id: 'all', label: `All (${videos.length})` },
-              { id: 'unwatched', label: `Unwatched (${videos.filter((v) => !v.isUnavailable && !watchedIds.has(v.id)).length})` },
-              { id: 'watched', label: `Watched (${videos.filter((v) => watchedIds.has(v.id)).length})` },
-              { id: 'unavailable', label: `Unavailable (${videos.filter((v) => v.isUnavailable).length})` },
-            ] as const
-          ).map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setFilterStatus(tab.id)}
-              className={`px-3 py-1.5 rounded-full font-mono transition-colors shrink-0 touch-manipulation min-h-[32px] flex items-center ${
-                filterStatus === tab.id
-                  ? 'bg-red-600 text-white font-semibold shadow-sm'
-                  : 'bg-white dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#272727]'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Filter Pills & Pagination Indicator */}
+        <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-[#717171] uppercase mr-0.5 shrink-0">Filter:</span>
+            {(
+              [
+                { id: 'all', label: `All (${videos.length})` },
+                { id: 'unwatched', label: `Unwatched (${videos.filter((v) => !v.isUnavailable && !watchedIds.has(v.id)).length})` },
+                { id: 'watched', label: `Watched (${videos.filter((v) => watchedIds.has(v.id)).length})` },
+                { id: 'unavailable', label: `Unavailable (${videos.filter((v) => v.isUnavailable).length})` },
+              ] as const
+            ).map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setFilterStatus(tab.id)}
+                className={`px-3 py-1.5 rounded-full font-mono transition-colors shrink-0 touch-manipulation min-h-[32px] flex items-center ${
+                  filterStatus === tab.id
+                    ? 'bg-red-600 text-white font-semibold shadow-sm'
+                    : 'bg-white dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#272727]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Quick badge showing page info and 10 videos/page */}
+          {totalItems > 0 && (
+            <div className="hidden md:flex items-center gap-2 text-[11px] font-mono text-slate-500 dark:text-[#AAAAAA] shrink-0 pl-2">
+              <span className="px-2 py-0.5 rounded bg-slate-200/60 dark:bg-[#212121] text-slate-700 dark:text-[#AAAAAA]">
+                10 videos / page
+              </span>
+              <span>
+                Page <strong className="text-slate-900 dark:text-white">{activePage}</strong> of{' '}
+                <strong className="text-slate-900 dark:text-white">{totalPages}</strong>
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Mobile Sort Pills Bar (Only shown on small screens) */}
@@ -224,12 +305,12 @@ export const VideoTable: React.FC<VideoTableProps> = ({
 
       {/* 1. MOBILE RESPONSIVE VIDEO LIST (Visible on < 640px) */}
       <div className="block sm:hidden divide-y divide-slate-100 dark:divide-[#222222]">
-        {sortedVideos.length === 0 ? (
+        {paginatedVideos.length === 0 ? (
           <div className="py-12 text-center text-xs text-slate-500 dark:text-[#717171]">
             No videos found matching your filter criteria.
           </div>
         ) : (
-          sortedVideos.map((video) => {
+          paginatedVideos.map((video) => {
             const isWatched = watchedIds.has(video.id);
 
             return (
@@ -343,14 +424,14 @@ export const VideoTable: React.FC<VideoTableProps> = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-[#222222] text-xs">
-            {sortedVideos.length === 0 ? (
+            {paginatedVideos.length === 0 ? (
               <tr>
                 <td colSpan={6} className="py-12 text-center text-slate-500 dark:text-[#717171]">
                   No videos found matching your filter criteria.
                 </td>
               </tr>
             ) : (
-              sortedVideos.map((video) => {
+              paginatedVideos.map((video) => {
                 const isWatched = watchedIds.has(video.id);
 
                 return (
@@ -442,6 +523,146 @@ export const VideoTable: React.FC<VideoTableProps> = ({
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Bar */}
+      {totalItems > 0 && (
+        <div className="p-3.5 sm:px-5 sm:py-3.5 border-t border-slate-200 dark:border-[#272727] bg-slate-50/70 dark:bg-[#141414] flex flex-col sm:flex-row items-center justify-between gap-3">
+          {/* Left: Summary text */}
+          <div className="text-xs font-mono text-slate-500 dark:text-[#AAAAAA] text-center sm:text-left flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+            <span>
+              Showing <strong className="text-slate-900 dark:text-white">{startIndex + 1}–{endIndex}</strong> of{' '}
+              <strong className="text-slate-900 dark:text-white">{totalItems}</strong> videos
+            </span>
+            <span className="hidden sm:inline text-slate-300 dark:text-[#383838]">&bull;</span>
+            <span>
+              Page <strong className="text-slate-900 dark:text-white">{activePage}</strong> of{' '}
+              <strong className="text-slate-900 dark:text-white">{totalPages}</strong>
+            </span>
+            <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-200/60 dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA]">
+              10 / page
+            </span>
+          </div>
+
+          {/* Right: Controls */}
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center">
+            {/* Go to page jump for playlists with > 5 pages */}
+            {totalPages > 5 && (
+              <form onSubmit={handleJumpSubmit} className="hidden lg:flex items-center gap-1 mr-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+                <span>Go:</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={totalPages}
+                  value={jumpInput}
+                  onChange={(e) => setJumpInput(e.target.value)}
+                  placeholder={String(activePage)}
+                  className="w-11 px-1.5 py-1 text-center bg-white dark:bg-[#0F0F0F] border border-slate-300 dark:border-[#272727] rounded text-slate-900 dark:text-white text-xs focus:outline-none focus:border-red-500 font-mono"
+                  aria-label="Jump to page"
+                />
+                <button
+                  type="submit"
+                  className="px-2 py-1 rounded bg-slate-200/80 dark:bg-[#212121] border border-slate-300 dark:border-[#272727] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white text-xs font-medium transition-colors"
+                >
+                  Jump
+                </button>
+              </form>
+            )}
+
+            {/* Pagination buttons */}
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                {/* First Page */}
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(1)}
+                  disabled={activePage === 1}
+                  className="p-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-[#AAAAAA] transition-colors touch-manipulation min-h-[34px] min-w-[34px] flex items-center justify-center"
+                  title="First page"
+                  aria-label="First page"
+                >
+                  <ChevronsLeft className="w-4 h-4" />
+                </button>
+
+                {/* Prev */}
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(activePage - 1)}
+                  disabled={activePage === 1}
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-xs font-medium text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-700 dark:disabled:hover:text-[#AAAAAA] transition-colors flex items-center gap-1 touch-manipulation min-h-[34px]"
+                  title="Previous page"
+                  aria-label="Previous page"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span className="hidden sm:inline">Prev</span>
+                </button>
+
+                {/* Desktop page number buttons */}
+                <div className="hidden sm:flex items-center gap-1">
+                  {pageNumbers.map((p, idx) => {
+                    if (p === 'ellipsis') {
+                      return (
+                        <span
+                          key={`ellipsis-${idx}`}
+                          className="px-1.5 py-1 text-xs text-slate-400 dark:text-[#717171] font-mono select-none"
+                        >
+                          &hellip;
+                        </span>
+                      );
+                    }
+                    const isCurrent = p === activePage;
+                    return (
+                      <button
+                        key={`page-${p}`}
+                        type="button"
+                        onClick={() => handlePageChange(p as number)}
+                        className={`min-w-[32px] h-[34px] px-2 rounded-lg text-xs font-mono font-semibold transition-colors flex items-center justify-center touch-manipulation ${
+                          isCurrent
+                            ? 'bg-red-600 text-white shadow-sm border border-red-600'
+                            : 'bg-white dark:bg-[#212121] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838]'
+                        }`}
+                        aria-current={isCurrent ? 'page' : undefined}
+                        aria-label={`Page ${p}`}
+                      >
+                        {p}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Mobile compact page indicator */}
+                <div className="flex sm:hidden items-center px-2 py-1 text-xs font-mono font-semibold text-slate-700 dark:text-[#CCCCCC]">
+                  {activePage} / {totalPages}
+                </div>
+
+                {/* Next */}
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(activePage + 1)}
+                  disabled={activePage === totalPages}
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-xs font-medium text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-700 dark:disabled:hover:text-[#AAAAAA] transition-colors flex items-center gap-1 touch-manipulation min-h-[34px]"
+                  title="Next page"
+                  aria-label="Next page"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+
+                {/* Last Page */}
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(totalPages)}
+                  disabled={activePage === totalPages}
+                  className="p-1.5 rounded-lg border border-slate-200 dark:border-[#272727] bg-white dark:bg-[#212121] text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-[#383838] disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-[#AAAAAA] transition-colors touch-manipulation min-h-[34px] min-w-[34px] flex items-center justify-center"
+                  title="Last page"
+                  aria-label="Last page"
+                >
+                  <ChevronsRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Toast Alert */}
       {toastMessage && (
