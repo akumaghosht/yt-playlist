@@ -13,7 +13,6 @@ import {
   PlaySquare,
   X,
   RotateCw,
-  Zap,
 } from 'lucide-react';
 import type { PlaylistAnalysis } from '../../types/playlist';
 import {
@@ -41,7 +40,6 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<PlaylistAnalysis | null>(null);
-  const [isCachedData, setIsCachedData] = useState(false);
 
   // Speed matrix active speed
   const [currentSpeed, setCurrentSpeed] = useState<number>(1.0);
@@ -210,7 +208,6 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
       const cached = getCachedPlaylist(playlistId);
       if (cached) {
         setAnalysis(cached);
-        setIsCachedData(true);
         setErrorMessage(null);
         updateBrowserUrl(playlistId);
         return;
@@ -219,13 +216,11 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
     setIsLoading(true);
     setErrorMessage(null);
-    setIsCachedData(false);
 
     try {
       const activeKey = apiKeyOverride || customApiKey || defaultApiKey || getActiveApiKey();
       const result = await fetchPlaylistFromYouTube(playlistId, activeKey, bypassCache);
       setAnalysis(result);
-      setIsCachedData(!bypassCache && !!getCachedPlaylist(playlistId));
       updateBrowserUrl(playlistId);
     } catch (err: any) {
       console.error('YouTube Data API fetch error:', err);
@@ -408,12 +403,6 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                   <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight truncate">
                     {analysis.playlist.title}
                   </h2>
-                  {isCachedData && (
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-                      <Zap className="w-3 h-3 text-emerald-400" />
-                      24h Cache
-                    </span>
-                  )}
                 </div>
                 <p className="text-xs text-[#AAAAAA] flex items-center gap-2">
                   <span>By <strong className="text-white">{analysis.playlist.channelTitle}</strong></span>
@@ -433,7 +422,6 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                 type="button"
                 onClick={() => fetchAnalysis(analysis.playlist.id, customApiKey, true)}
                 className="px-3 py-2 rounded-lg bg-[#212121] border border-[#272727] hover:border-[#383838] text-xs font-semibold text-[#AAAAAA] hover:text-white flex items-center gap-1.5 transition-colors"
-                title="Bypass 24-hour cache and refresh live data from YouTube"
               >
                 <RotateCw className="w-3.5 h-3.5" />
                 <span>Refresh Live</span>
