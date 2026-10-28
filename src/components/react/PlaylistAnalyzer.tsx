@@ -276,49 +276,66 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
     : 0;
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-6 sm:space-y-8">
       {/* 1. HERO SEARCH SECTION */}
-      <section className="relative pt-6 pb-2">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
+      <section className="relative pt-3 sm:pt-6 pb-2">
+        <div className="max-w-4xl mx-auto text-center space-y-3 sm:space-y-4 px-2">
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
             YouTube Playlist <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-amber-500">Length Checker</span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-600 dark:text-[#AAAAAA] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-[#AAAAAA] max-w-2xl mx-auto leading-relaxed">
             Calculate exact runtime at 1.0x to 2.0x speeds, customize subsets with range selectors, track progress, and project study deadlines in seconds.
           </p>
 
           {/* Search Box Form */}
           <form onSubmit={handleSubmit} className="pt-2 max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row items-stretch gap-2 p-1.5 bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-xl sm:rounded-full shadow-lg dark:shadow-2xl focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500 transition-all">
-              <div className="flex items-center pl-3.5 flex-1 min-w-0">
-                <Search className="w-5 h-5 text-slate-400 dark:text-[#717171] shrink-0" />
+            <div className="flex flex-col sm:flex-row items-stretch gap-2 p-1.5 sm:p-2 bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-2xl sm:rounded-full shadow-lg dark:shadow-2xl focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500 transition-all">
+              <div className="flex items-center pl-3.5 pr-1.5 flex-1 min-w-0">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 dark:text-[#717171] shrink-0" />
                 <input
                   type="text"
-                  placeholder="Paste YouTube playlist URL, video link, or ID..."
+                  placeholder="Paste playlist URL, video link, or ID..."
                   value={inputUrl}
                   onChange={(e) => setInputUrl(e.target.value)}
                   onPaste={handlePaste}
-                  className="w-full px-3 py-2.5 bg-transparent text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#717171] focus:outline-none font-mono"
+                  className="w-full px-2.5 sm:px-3 py-2 bg-transparent text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#717171] focus:outline-none font-mono min-h-[42px] sm:min-h-0"
+                  aria-label="YouTube Playlist URL or ID"
                 />
                 {inputUrl && (
                   <button
                     type="button"
                     onClick={() => setInputUrl('')}
-                    className="p-1 text-slate-400 dark:text-[#717171] hover:text-slate-900 dark:hover:text-white mr-1"
+                    className="p-1.5 text-slate-400 dark:text-[#717171] hover:text-slate-900 dark:hover:text-white mr-1 touch-manipulation shrink-0"
                     title="Clear search"
+                    aria-label="Clear input"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 )}
-              </div>
 
-              <div className="flex items-center gap-1.5 px-1.5 sm:px-0">
+                {/* Mobile Settings Icon button inside search input */}
                 <button
                   type="button"
                   onClick={() => setIsSettingsOpen(true)}
-                  className="p-2.5 rounded-full text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#272727] transition-colors relative"
+                  className="sm:hidden p-2 rounded-lg text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors relative touch-manipulation shrink-0"
+                  title="API Key Settings"
+                  aria-label="API Settings"
+                >
+                  <Key className="w-4 h-4" />
+                  {customApiKey && (
+                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-500" />
+                  )}
+                </button>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                {/* Desktop Settings button */}
+                <button
+                  type="button"
+                  onClick={() => setIsSettingsOpen(true)}
+                  className="hidden sm:flex p-2.5 rounded-full text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#272727] transition-colors relative touch-manipulation shrink-0"
                   title="API Key Settings"
                   aria-label="API Settings"
                 >
@@ -331,7 +348,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-sm font-semibold tracking-wide transition-all shadow-lg shadow-red-950/20 dark:shadow-red-950/40 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 py-2.5 sm:py-2.5 rounded-xl sm:rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs sm:text-sm font-semibold tracking-wide transition-all shadow-md shadow-red-950/20 dark:shadow-red-950/40 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 touch-manipulation min-h-[44px] sm:min-h-0 cursor-pointer"
                 >
                   {isLoading ? (
                     <>
@@ -346,23 +363,48 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             </div>
           </form>
 
-          {/* Quick example link hints */}
-          <div className="text-xs text-slate-400 dark:text-[#717171] font-mono flex items-center justify-center gap-2 flex-wrap pt-1">
+          {/* Quick Demo Playlist Chips for Instant Mobile Testing */}
+          <div className="flex items-center justify-center gap-1.5 flex-wrap pt-1 text-xs">
+            <span className="text-[11px] font-mono text-slate-400 dark:text-[#717171]">Try sample:</span>
+            <button
+              type="button"
+              onClick={() => {
+                const demoId = 'PL4cUxeGkcC9gUdyb82gveDC5tQ7m55h6C';
+                setInputUrl(demoId);
+                fetchAnalysis(demoId);
+              }}
+              className="px-2.5 py-1 rounded-full bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500 text-[11px] font-mono text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors touch-manipulation cursor-pointer shadow-xs"
+            >
+              React Tutorial
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const demoId = 'PLr6-GrH6237g8CFrqR7G3_5sQvWk6P2-B';
+                setInputUrl(demoId);
+                fetchAnalysis(demoId);
+              }}
+              className="px-2.5 py-1 rounded-full bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500 text-[11px] font-mono text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors touch-manipulation cursor-pointer shadow-xs"
+            >
+              Python Basics
+            </button>
+          </div>
+
+          {/* Supported formats hint */}
+          <div className="text-[11px] text-slate-400 dark:text-[#717171] font-mono flex items-center justify-center gap-2 flex-wrap pt-0.5">
             <span>Supports:</span>
-            <span className="text-slate-600 dark:text-[#AAAAAA]">youtube.com/playlist?list=...</span>
+            <span className="text-slate-500 dark:text-[#888888]">playlist?list=...</span>
             <span>&bull;</span>
-            <span className="text-slate-600 dark:text-[#AAAAAA]">watch?v=...&list=...</span>
+            <span className="text-slate-500 dark:text-[#888888]">watch?v=...&list=...</span>
             <span>&bull;</span>
-            <span className="text-slate-600 dark:text-[#AAAAAA]">youtu.be/...</span>
-            <span>&bull;</span>
-            <span className="text-slate-600 dark:text-[#AAAAAA]">Raw IDs (PL...)</span>
+            <span className="text-slate-500 dark:text-[#888888]">Raw IDs</span>
           </div>
         </div>
       </section>
 
       {/* Subtle inline error feedback */}
       {errorMessage && (
-        <div className="pt-2 text-xs text-red-600 dark:text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in">
+        <div className="pt-2 text-xs text-red-600 dark:text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in text-center px-4">
           <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
           <span>{errorMessage}</span>
         </div>
@@ -370,43 +412,41 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
       {/* Loading Skeleton */}
       {isLoading && (
-        <div className="space-y-6 animate-pulse">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="space-y-5 animate-pulse">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-28 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
+              <div key={i} className="h-24 sm:h-28 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
             ))}
           </div>
-          <div className="h-64 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
-          <div className="h-96 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
+          <div className="h-56 sm:h-64 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
+          <div className="h-72 sm:h-96 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
         </div>
       )}
 
       {/* 2. ANALYZED DASHBOARD CONTENT */}
       {!isLoading && analysis && (
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-200">
           {/* Playlist Header Banner */}
-          <div className="p-5 md:p-6 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-sm dark:shadow-xl transition-colors">
-            <div className="flex items-center gap-4">
-              <div className="relative w-24 h-16 sm:w-28 sm:h-20 shrink-0 rounded-lg overflow-hidden bg-slate-200 dark:bg-[#212121] border border-slate-300 dark:border-[#272727]">
+          <div className="p-4 sm:p-6 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-5 shadow-sm dark:shadow-xl transition-colors">
+            <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+              <div className="relative w-20 h-14 sm:w-28 sm:h-20 shrink-0 rounded-lg overflow-hidden bg-slate-200 dark:bg-[#212121] border border-slate-300 dark:border-[#272727]">
                 <img
                   src={analysis.playlist.thumbnail}
                   alt={analysis.playlist.title}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
-                  <PlaySquare className="w-6 h-6 text-white/90 drop-shadow" />
+                  <PlaySquare className="w-5 h-5 sm:w-6 sm:h-6 text-white/90 drop-shadow" />
                 </div>
               </div>
-              <div className="space-y-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate">
-                    {analysis.playlist.title}
-                  </h2>
-                </div>
-                <p className="text-xs text-slate-600 dark:text-[#AAAAAA] flex items-center gap-2">
+              <div className="space-y-1 min-w-0 flex-1">
+                <h2 className="text-sm sm:text-lg md:text-xl font-bold text-slate-900 dark:text-white tracking-tight line-clamp-2 leading-snug">
+                  {analysis.playlist.title}
+                </h2>
+                <p className="text-[11px] sm:text-xs text-slate-600 dark:text-[#AAAAAA] flex items-center gap-1.5 flex-wrap">
                   <span>By <strong className="text-slate-900 dark:text-white">{analysis.playlist.channelTitle}</strong></span>
                   <span>&bull;</span>
-                  <span>{analysis.totalVideos} total videos</span>
+                  <span>{analysis.totalVideos} videos</span>
                   {analysis.unavailableCount > 0 && (
                     <span className="text-amber-600 dark:text-amber-400 font-mono">
                       ({analysis.unavailableCount} unavailable)
@@ -416,107 +456,108 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0 flex-wrap">
+            {/* Actions: 3 equal buttons on mobile, auto flex on desktop */}
+            <div className="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-[#222222]">
               <button
                 type="button"
                 onClick={() => fetchAnalysis(analysis.playlist.id, customApiKey, true)}
-                className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838] text-xs font-semibold text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 transition-colors"
+                className="px-2.5 sm:px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838] text-xs font-semibold text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white flex items-center justify-center gap-1.5 transition-colors touch-manipulation min-h-[38px]"
               >
-                <RotateCw className="w-3.5 h-3.5" />
-                <span>Refresh Live</span>
+                <RotateCw className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Refresh</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleCopyShareLink}
-                className="px-3.5 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838] text-xs font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 transition-colors"
+                className="px-2.5 sm:px-3.5 py-2 rounded-lg bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838] text-xs font-semibold text-slate-900 dark:text-white flex items-center justify-center gap-1.5 transition-colors touch-manipulation min-h-[38px]"
               >
-                {shareToast ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
-                <span>{shareToast ? 'Link Copied!' : 'Share Analysis'}</span>
+                {shareToast ? <Check className="w-4 h-4 text-emerald-500 shrink-0" /> : <Share2 className="w-3.5 h-3.5 shrink-0" />}
+                <span className="truncate">{shareToast ? 'Copied!' : 'Share'}</span>
               </button>
 
               <a
                 href={`https://www.youtube.com/playlist?list=${analysis.playlist.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-2 rounded-lg bg-red-50 dark:bg-red-600/20 border border-red-200 dark:border-red-500/40 hover:bg-red-100 dark:hover:bg-red-600/30 text-xs font-semibold text-red-600 dark:text-red-400 flex items-center gap-1.5 transition-colors"
+                className="px-2.5 sm:px-3.5 py-2 rounded-lg bg-red-50 dark:bg-red-600/20 border border-red-200 dark:border-red-500/40 hover:bg-red-100 dark:hover:bg-red-600/30 text-xs font-semibold text-red-600 dark:text-red-400 flex items-center justify-center gap-1 transition-colors touch-manipulation min-h-[38px]"
               >
-                <span>Open on YouTube</span>
-                <ExternalLink className="w-3.5 h-3.5" />
+                <span className="truncate">YouTube</span>
+                <ExternalLink className="w-3 h-3 shrink-0" />
               </a>
             </div>
           </div>
 
-          {/* Stat Overview Cards (Adhering to @DESIGN.md) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Stat Overview Cards: 2x2 grid on mobile, 4-col on desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
             {/* Stat 1: Total Duration */}
-            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+            <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
               <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-xs font-mono uppercase tracking-wider">Total Duration</span>
-                <Clock className="w-4 h-4 text-red-500" />
+                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Total Duration</span>
+                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500 shrink-0" />
               </div>
-              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {formatCompactDuration(analysis.totalDurationSeconds)}
               </div>
-              <p className="text-xs text-slate-500 dark:text-[#717171] leading-relaxed line-clamp-1" title={analysis.totalFormatted}>
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-[#717171] leading-relaxed line-clamp-1" title={analysis.totalFormatted}>
                 {analysis.totalFormatted}
               </p>
             </div>
 
             {/* Stat 2: Active vs Unavailable Videos */}
-            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+            <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
               <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-xs font-mono uppercase tracking-wider">Videos Count</span>
-                <Layers className="w-4 h-4 text-blue-500" />
+                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Videos Count</span>
+                <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500 shrink-0" />
               </div>
-              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {analysis.activeCount}{' '}
                 <span className="text-xs font-normal text-slate-500 dark:text-[#AAAAAA]">active</span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-[#717171]">
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-[#717171] truncate">
                 {analysis.unavailableCount > 0 ? (
                   <span className="text-amber-600 dark:text-amber-400">
-                    {analysis.unavailableCount} private or deleted
+                    {analysis.unavailableCount} private / deleted
                   </span>
                 ) : (
-                  '100% active streamable'
+                  '100% playable'
                 )}
               </p>
             </div>
 
             {/* Stat 3: Average Video Length */}
-            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+            <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
               <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-xs font-mono uppercase tracking-wider">Average Video</span>
-                <TrendingUp className="w-4 h-4 text-emerald-500" />
+                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Average Video</span>
+                <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500 shrink-0" />
               </div>
-              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {analysis.averageFormatted}
               </div>
-              <p className="text-xs text-slate-500 dark:text-[#717171]">Across active videos</p>
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-[#717171] truncate">Across active items</p>
             </div>
 
             {/* Stat 4: Total View Count */}
-            <div className="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
+            <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
               <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-xs font-mono uppercase tracking-wider">Total Views</span>
-                <Award className="w-4 h-4 text-purple-500" />
+                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Total Views</span>
+                <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-500 shrink-0" />
               </div>
-              <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {formatViewCount(analysis.totalViews)}
               </div>
-              <p className="text-xs text-slate-500 dark:text-[#717171]">Combined playlist engagement</p>
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-[#717171] truncate">Combined engagement</p>
             </div>
           </div>
 
           {/* Longest & Shortest Highlights */}
           {(analysis.longestVideo || analysis.shortestVideo) && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-4">
               {analysis.shortestVideo && (
-                <div className="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex items-center justify-between gap-3 text-xs shadow-sm">
-                  <div className="min-w-0">
-                    <span className="text-[11px] font-mono uppercase text-emerald-600 dark:text-emerald-400 tracking-wider font-semibold flex items-center gap-1.5">
-                      <Zap className="w-3.5 h-3.5" />
+                <div className="p-3 sm:p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex items-center justify-between gap-3 text-xs shadow-sm">
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[10px] sm:text-[11px] font-mono uppercase text-emerald-600 dark:text-emerald-400 tracking-wider font-semibold flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5 shrink-0" />
                       Shortest Video
                     </span>
                     <a
@@ -528,17 +569,17 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                       #{analysis.shortestVideo.position}: {analysis.shortestVideo.title}
                     </a>
                   </div>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] font-mono font-bold text-slate-900 dark:text-white shrink-0">
+                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] font-mono font-bold text-slate-900 dark:text-white shrink-0 text-xs">
                     {analysis.shortestVideo.durationFormatted}
                   </span>
                 </div>
               )}
 
               {analysis.longestVideo && (
-                <div className="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex items-center justify-between gap-3 text-xs shadow-sm">
-                  <div className="min-w-0">
-                    <span className="text-[11px] font-mono uppercase text-amber-600 dark:text-amber-400 tracking-wider font-semibold flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5" />
+                <div className="p-3 sm:p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] flex items-center justify-between gap-3 text-xs shadow-sm">
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[10px] sm:text-[11px] font-mono uppercase text-amber-600 dark:text-amber-400 tracking-wider font-semibold flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 shrink-0" />
                       Longest Video
                     </span>
                     <a
@@ -550,7 +591,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                       #{analysis.longestVideo.position}: {analysis.longestVideo.title}
                     </a>
                   </div>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] font-mono font-bold text-slate-900 dark:text-white shrink-0">
+                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#272727] font-mono font-bold text-slate-900 dark:text-white shrink-0 text-xs">
                     {analysis.longestVideo.durationFormatted}
                   </span>
                 </div>
@@ -590,14 +631,14 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             currentSpeed={currentSpeed}
           />
 
-          {/* Interactive Video Table */}
-          <div className="space-y-3">
+          {/* Interactive Video Table / Mobile Video List */}
+          <div className="space-y-2.5 sm:space-y-3">
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-white tracking-tight">
-                All Videos in Playlist ({analysis.videos.length})
+              <h3 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white tracking-tight">
+                Playlist Videos ({analysis.videos.length})
               </h3>
-              <span className="text-xs text-slate-500 dark:text-[#717171] font-mono">
-                Click any row checkbox to mark as watched
+              <span className="text-[10px] sm:text-xs text-slate-500 dark:text-[#717171] font-mono">
+                Tap checkbox to mark watched
               </span>
             </div>
             <VideoTable

@@ -2,11 +2,11 @@
 import { Play } from 'lucide-react';
 ---
 
-<footer class="w-full border-t border-slate-200 dark:border-[#272727] bg-slate-100/70 dark:bg-[#0A0A0A] text-slate-500 dark:text-[#717171] text-xs py-12 px-4 transition-colors duration-150">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+<footer class="w-full border-t border-slate-200 dark:border-[#272727] bg-slate-100/70 dark:bg-[#0A0A0A] text-slate-500 dark:text-[#717171] text-xs pt-8 sm:pt-12 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] px-4 transition-colors duration-150">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
     <div class="flex flex-col items-center md:items-start space-y-1">
       <div class="flex items-center space-x-2 text-slate-900 dark:text-white font-bold text-sm tracking-tight">
-        <div class="w-6 h-6 rounded-lg bg-red-600 flex items-center justify-center">
+        <div class="w-6 h-6 rounded-lg bg-red-600 flex items-center justify-center shrink-0">
           <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
         </div>
         <span>YouTube Playlist Length Analyser</span>
@@ -16,14 +16,14 @@ import { Play } from 'lucide-react';
       </p>
     </div>
 
-    <div class="flex items-center space-x-6 text-[11px] font-mono">
-      <a href="#analyzer" class="hover:text-slate-900 dark:hover:text-white transition-colors">Analyzer</a>
-      <a href="#faq" class="hover:text-slate-900 dark:hover:text-white transition-colors">FAQ</a>
+    <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-mono">
+      <a href="#analyzer" class="hover:text-slate-900 dark:hover:text-white transition-colors py-1">Analyzer</a>
+      <a href="#faq" class="hover:text-slate-900 dark:hover:text-white transition-colors py-1">FAQ</a>
       <a
         href="https://github.com/sharatsachin/ytplaylist-len"
         target="_blank"
         rel="noopener noreferrer"
-        class="hover:text-slate-900 dark:hover:text-white transition-colors"
+        class="hover:text-slate-900 dark:hover:text-white transition-colors py-1"
       >
         Reference Architecture
       </a>
@@ -31,7 +31,7 @@ import { Play } from 'lucide-react';
         href="https://developers.google.com/youtube/v3"
         target="_blank"
         rel="noopener noreferrer"
-        class="hover:text-slate-900 dark:hover:text-white transition-colors"
+        class="hover:text-slate-900 dark:hover:text-white transition-colors py-1"
       >
         YouTube API v3
       </a>

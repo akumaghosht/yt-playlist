@@ -1,25 +1,25 @@
 ---
-import { Play, Sun, Moon } from 'lucide-react';
+import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
 ---
 
 <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-[#272727] bg-white/90 dark:bg-[#0F0F0F]/90 backdrop-blur-md transition-colors duration-150">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
     {/* Brand Logo */}
-    <a href="/" class="flex items-center space-x-2.5 group">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-lg shadow-red-950/20 dark:shadow-red-950/50 group-hover:scale-105 transition-transform">
-        <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+    <a href="/" class="flex items-center space-x-2 sm:space-x-2.5 group">
+      <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-lg shadow-red-950/20 dark:shadow-red-950/50 group-hover:scale-105 transition-transform shrink-0">
+        <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white fill-white ml-0.5" />
       </div>
-      <div class="flex flex-col">
-        <span class="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
+      <div class="flex flex-col min-w-0">
+        <span class="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-1 truncate">
           YT Playlist <span class="text-red-600 dark:text-red-500">Length</span>
         </span>
-        <span class="text-[10px] font-mono text-slate-500 dark:text-[#AAAAAA] -mt-0.5 tracking-wider uppercase">
+        <span class="text-[9px] sm:text-[10px] font-mono text-slate-500 dark:text-[#AAAAAA] -mt-0.5 tracking-wider uppercase truncate">
           Analyser & Planner
         </span>
       </div>
     </a>
 
-    {/* Navigation links */}
+    {/* Desktop Navigation links */}
     <nav class="hidden md:flex items-center space-x-6 text-xs font-medium text-slate-600 dark:text-[#AAAAAA]">
       <a href="#analyzer" class="hover:text-slate-900 dark:hover:text-white transition-colors">Analyzer</a>
       <a href="#features" class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a>
@@ -27,29 +27,86 @@ import { Play, Sun, Moon } from 'lucide-react';
     </nav>
 
     {/* Right actions */}
-    <div class="flex items-center space-x-3">
+    <div class="flex items-center space-x-2 sm:space-x-3">
       {/* Theme Toggle Button */}
       <button
         id="theme-toggle"
         type="button"
         aria-label="Toggle light and dark mode"
-        class="p-2 rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-100 dark:bg-[#181818] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#222222] transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/40"
+        class="p-2 sm:p-2 rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-100 dark:bg-[#181818] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#222222] transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/40 touch-manipulation min-w-[38px] min-h-[38px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
       >
         <Sun className="w-4 h-4 hidden dark:block text-amber-400" />
         <Moon className="w-4 h-4 block dark:hidden text-slate-700" />
       </button>
 
+      {/* Desktop Analyze CTA */}
       <a
         href="#analyzer"
-        class="px-4 py-1.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-semibold tracking-wide transition-colors shadow-md shadow-red-950/20 dark:shadow-red-950/40"
+        class="hidden sm:inline-flex items-center px-4 py-1.5 rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs font-semibold tracking-wide transition-colors shadow-md shadow-red-950/20 dark:shadow-red-950/40"
       >
         Analyze Now
+      </a>
+
+      {/* Mobile Hamburger Menu Button */}
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        aria-label="Toggle mobile menu"
+        aria-expanded="false"
+        class="md:hidden p-2 rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-100 dark:bg-[#181818] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-500/40"
+      >
+        <span id="menu-icon-open">
+          <Menu className="w-4 h-4" />
+        </span>
+        <span id="menu-icon-close" class="hidden">
+          <X className="w-4 h-4" />
+        </span>
+      </button>
+    </div>
+  </div>
+
+  {/* Mobile Navigation Drawer / Dropdown */}
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden border-t border-slate-200 dark:border-[#272727] bg-white/98 dark:bg-[#0F0F0F]/98 backdrop-blur-xl px-4 py-4 space-y-3 animate-in slide-in-from-top-2 duration-150"
+  >
+    <div class="grid grid-cols-1 gap-1 text-sm font-medium text-slate-700 dark:text-[#AAAAAA]">
+      <a
+        href="#analyzer"
+        class="mobile-nav-link flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
+      >
+        <span>Playlist Analyzer</span>
+        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+      </a>
+      <a
+        href="#features"
+        class="mobile-nav-link flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
+      >
+        <span>Features & Speed Matrix</span>
+        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+      </a>
+      <a
+        href="#faq"
+        class="mobile-nav-link flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
+      >
+        <span>FAQ & Guides</span>
+        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+      </a>
+    </div>
+
+    <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
+      <a
+        href="#analyzer"
+        class="mobile-nav-link w-full flex items-center justify-center py-2.5 rounded-xl bg-red-600 active:bg-red-700 text-white text-xs font-semibold tracking-wide shadow-md shadow-red-950/20"
+      >
+        Calculate Playlist Now
       </a>
     </div>
   </div>
 </header>
 
 <script is:inline>
+  // Theme toggle handler
   const toggleBtn = document.getElementById('theme-toggle');
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
@@ -61,6 +118,42 @@ import { Play, Sun, Moon } from 'lucide-react';
           meta.setAttribute('content', isDark ? '#0F0F0F' : '#FFFFFF');
         }
       } catch (e) {}
+    });
+  }
+
+  // Mobile menu toggle handler
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIconOpen = document.getElementById('menu-icon-open');
+  const menuIconClose = document.getElementById('menu-icon-close');
+
+  if (mobileMenuToggle && mobileMenu) {
+    const toggleMenu = () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      if (isOpen) {
+        mobileMenu.classList.add('hidden');
+        menuIconOpen?.classList.remove('hidden');
+        menuIconClose?.classList.add('hidden');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      } else {
+        mobileMenu.classList.remove('hidden');
+        menuIconOpen?.classList.add('hidden');
+        menuIconClose?.classList.remove('hidden');
+        mobileMenuToggle.setAttribute('aria-expanded', 'true');
+      }
+    };
+
+    mobileMenuToggle.addEventListener('click', toggleMenu);
+
+    // Close menu when clicking any nav link
+    const links = mobileMenu.querySelectorAll('.mobile-nav-link');
+    links.forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIconOpen?.classList.remove('hidden');
+        menuIconClose?.classList.add('hidden');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 </script>
