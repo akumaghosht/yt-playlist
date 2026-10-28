@@ -3,9 +3,6 @@ import {
   Search,
   Key,
   Clock,
-  Layers,
-  TrendingUp,
-  Award,
   Share2,
   ExternalLink,
   AlertCircle,
@@ -492,9 +489,8 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
             {/* Stat 1: Total Duration */}
             <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
-              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Total Duration</span>
-                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500 shrink-0" />
+              <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-[#AAAAAA] truncate">
+                Total Duration
               </div>
               <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {formatCompactDuration(analysis.totalDurationSeconds)}
@@ -506,9 +502,8 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
             {/* Stat 2: Active vs Unavailable Videos */}
             <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
-              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Videos Count</span>
-                <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500 shrink-0" />
+              <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-[#AAAAAA] truncate">
+                Videos Count
               </div>
               <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {analysis.activeCount}{' '}
@@ -527,9 +522,8 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
             {/* Stat 3: Average Video Length */}
             <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
-              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Average Video</span>
-                <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500 shrink-0" />
+              <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-[#AAAAAA] truncate">
+                Average Video
               </div>
               <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {analysis.averageFormatted}
@@ -539,9 +533,8 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
             {/* Stat 4: Total View Count */}
             <div className="p-3.5 sm:p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-1.5 sm:space-y-2 relative group hover:border-slate-300 dark:hover:border-[#383838] shadow-sm transition-colors">
-              <div className="flex items-center justify-between text-slate-500 dark:text-[#AAAAAA]">
-                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider truncate">Total Views</span>
-                <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-500 shrink-0" />
+              <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-[#AAAAAA] truncate">
+                Total Views
               </div>
               <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {formatViewCount(analysis.totalViews)}
