@@ -77,18 +77,15 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
     }
   }, []);
 
-  // Update Range indices when analysis data changes
+  // Update Range indices and preferences when analysis data changes
   useEffect(() => {
     if (analysis?.videos) {
-      setStartIndex(1);
-      setEndIndex(analysis.videos.length);
-
-      // Load saved watched IDs for this playlist
-      const storageKey = `yt_watched_${analysis.playlist.id}`;
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
+      // 1. Load saved watched IDs (permanent)
+      const watchedKey = `yt_watched_${analysis.playlist.id}`;
+      const savedWatched = localStorage.getItem(watchedKey);
+      if (savedWatched) {
         try {
-          const parsed = JSON.parse(saved);
+          const parsed = JSON.parse(savedWatched);
           if (Array.isArray(parsed)) {
             setWatchedIds(new Set(parsed));
           }
@@ -98,8 +95,46 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
       } else {
         setWatchedIds(new Set());
       }
+
+      // 2. Load custom user preferences (speed, range selection - permanent)
+      const prefsKey = `yt_prefs_${analysis.playlist.id}`;
+      const savedPrefs = localStorage.getItem(prefsKey);
+      if (savedPrefs) {
+        try {
+          const prefs = JSON.parse(savedPrefs);
+          if (typeof prefs.speed === 'number' && prefs.speed > 0) {
+            setCurrentSpeed(prefs.speed);
+          }
+          if (typeof prefs.start === 'number' && prefs.start >= 1) {
+            setStartIndex(Math.min(prefs.start, analysis.videos.length));
+          } else {
+            setStartIndex(1);
+          }
+          if (typeof prefs.end === 'number' && prefs.end >= 1) {
+            setEndIndex(Math.min(prefs.end, analysis.videos.length));
+          } else {
+            setEndIndex(analysis.videos.length);
+          }
+        } catch {
+          setStartIndex(1);
+          setEndIndex(analysis.videos.length);
+        }
+      } else {
+        setStartIndex(1);
+        setEndIndex(analysis.videos.length);
+      }
     }
   }, [analysis?.playlist?.id]);
+
+  const savePreferences = (speed: number, start: number, end: number) => {
+    if (!analysis?.playlist?.id) return;
+    try {
+      const prefsKey = `yt_prefs_${analysis.playlist.id}`;
+      localStorage.setItem(prefsKey, JSON.stringify({ speed, start, end }));
+    } catch {
+      // Storage error ignored
+    }
+  };
 
   // Persist watched state
   const handleToggleWatched = (videoId: string) => {
@@ -241,9 +276,9 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
   // Compute active range seconds for SchedulePlanner
   const activeRangeSeconds = analysis
     ? analysis.videos
-        .slice(Math.max(0, startIndex - 1), endIndex)
-        .filter((v) => !v.isUnavailable && !watchedIds.has(v.id))
-        .reduce((acc, v) => acc + v.durationSeconds, 0)
+      .slice(Math.max(0, startIndex - 1), endIndex)
+      .filter((v) => !v.isUnavailable && !watchedIds.has(v.id))
+      .reduce((acc, v) => acc + v.durationSeconds, 0)
     : 0;
 
   return (
@@ -251,11 +286,6 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
       {/* 1. HERO SEARCH SECTION */}
       <section className="relative pt-6 pb-2">
         <div className="max-w-4xl mx-auto text-center space-y-4">
-          {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/50 border border-red-800/40 text-red-400 text-xs font-mono font-medium tracking-wide">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-            <span>Client-Side YouTube Duration & Schedule Engine</span>
-          </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
             YouTube Playlist <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-amber-500">Length Checker</span>
@@ -336,13 +366,13 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
         </div>
       </section>
 
-          {/* Subtle inline error feedback */}
-          {errorMessage && (
-            <div className="pt-2 text-xs text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in">
-              <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
-              <span>{errorMessage}</span>
-            </div>
-          )}
+      {/* Subtle inline error feedback */}
+      {errorMessage && (
+        <div className="pt-2 text-xs text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in">
+          <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
+          <span>{errorMessage}</span>
+        </div>
+      )}
 
       {/* Loading Skeleton */}
       {isLoading && (
@@ -543,7 +573,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           <SpeedMatrix
             totalSeconds={analysis.totalDurationSeconds}
             currentSpeed={currentSpeed}
-            onSpeedSelect={(speed) => setCurrentSpeed(speed)}
+            onSpeedSelect={(speed) => {
+              setCurrentSpeed(speed);
+              savePreferences(speed, startIndex, endIndex);
+            }}
           />
 
           {/* Range & Progress Tracker */}
@@ -554,6 +587,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             onRangeChange={(s, e) => {
               setStartIndex(s);
               setEndIndex(e);
+              savePreferences(currentSpeed, s, e);
             }}
             watchedIds={watchedIds}
             onToggleAllWatched={handleToggleAllWatched}

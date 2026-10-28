@@ -6,8 +6,6 @@ import {
   Copy,
   Check,
   AlertTriangle,
-  FileSpreadsheet,
-  FileCode,
   FileText,
 } from 'lucide-react';
 import type { VideoItem } from '../../types/playlist';
@@ -90,42 +88,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({
     });
   }, [filteredVideos, sortField, sortOrder]);
 
-  // Export functions
-  const exportToCSV = () => {
-    const headers = ['#', 'Title', 'Duration (Seconds)', 'Duration (Formatted)', 'Views', 'Published Date', 'Status', 'URL'];
-    const rows = videos.map((v) => [
-      v.position,
-      `"${v.title.replace(/"/g, '""')}"`,
-      v.durationSeconds,
-      `"${v.durationFormatted}"`,
-      v.viewCount,
-      `"${v.publishedAt}"`,
-      v.isUnavailable ? 'Unavailable' : watchedIds.has(v.id) ? 'Watched' : 'Unwatched',
-      `"${v.videoUrl}"`,
-    ]);
-
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `${playlistTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_videos.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    showToast('Exported playlist to CSV successfully!');
-  };
-
-  const exportToJSON = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(videos, null, 2));
-    const link = document.createElement('a');
-    link.setAttribute('href', dataStr);
-    link.setAttribute('download', `${playlistTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_videos.json`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    showToast('Exported playlist to JSON successfully!');
-  };
-
   const copySummary = () => {
     const activeVideos = videos.filter((v) => !v.isUnavailable);
     const watchedCount = activeVideos.filter((v) => watchedIds.has(v.id)).length;
@@ -179,17 +141,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({
             )}
           </div>
 
-          {/* Export and Copy buttons */}
+          {/* Copy buttons */}
           <div className="flex items-center gap-2 self-start lg:self-auto flex-wrap">
-            <button
-              type="button"
-              onClick={exportToCSV}
-              className="px-3 py-1.5 rounded-lg bg-[#212121] border border-[#272727] text-xs text-[#AAAAAA] hover:text-white hover:border-[#383838] flex items-center gap-1.5 transition-colors"
-              title="Download CSV spreadsheet"
-            >
-              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-              Export CSV
-            </button>
             <button
               type="button"
               onClick={copySummary}
@@ -207,15 +160,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({
             >
               <Copy className="w-3.5 h-3.5 text-blue-400" />
               Copy List
-            </button>
-            <button
-              type="button"
-              onClick={exportToJSON}
-              className="px-3 py-1.5 rounded-lg bg-[#212121] border border-[#272727] text-xs text-[#AAAAAA] hover:text-white hover:border-[#383838] flex items-center gap-1.5 transition-colors"
-              title="Download JSON data"
-            >
-              <FileCode className="w-3.5 h-3.5 text-amber-400" />
-              JSON
             </button>
           </div>
         </div>

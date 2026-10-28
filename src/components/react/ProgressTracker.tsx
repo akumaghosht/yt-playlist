@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Sliders, CheckCircle2, RotateCcw, CheckSquare, Target, Clock, Check } from 'lucide-react';
 import { formatCompactDuration } from '../../utils/youtube';
 import type { VideoItem } from '../../types/playlist';
@@ -48,8 +48,40 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
       : 0;
 
   // Presets
+  const [lastPreset, setLastPreset] = useState<'all' | 'first10' | 'firstHalf' | 'secondHalf' | null>('all');
+
+  const half = Math.max(1, Math.floor(totalCount / 2));
+  const matchesAll = totalCount > 0 && startIndex === 1 && endIndex === totalCount;
+  const matchesFirst10 = totalCount > 0 && startIndex === 1 && endIndex === Math.min(10, totalCount);
+  const matchesFirstHalf = totalCount > 1 && startIndex === 1 && endIndex === half;
+  const matchesSecondHalf = totalCount > 1 && startIndex === half + 1 && endIndex === totalCount;
+
+  let activePreset: 'all' | 'first10' | 'firstHalf' | 'secondHalf' | null = null;
+  if (lastPreset === 'all' && matchesAll) {
+    activePreset = 'all';
+  } else if (lastPreset === 'first10' && matchesFirst10) {
+    activePreset = 'first10';
+  } else if (lastPreset === 'firstHalf' && matchesFirstHalf) {
+    activePreset = 'firstHalf';
+  } else if (lastPreset === 'secondHalf' && matchesSecondHalf) {
+    activePreset = 'secondHalf';
+  } else if (matchesAll) {
+    activePreset = 'all';
+  } else if (matchesFirst10 && totalCount > 10) {
+    activePreset = 'first10';
+  } else if (matchesFirstHalf && half !== totalCount) {
+    activePreset = 'firstHalf';
+  } else if (matchesSecondHalf) {
+    activePreset = 'secondHalf';
+  }
+
   const setPreset = (type: 'all' | 'first10' | 'next10' | 'firstHalf' | 'secondHalf') => {
     if (totalCount === 0) return;
+    if (type !== 'next10') {
+      setLastPreset(type);
+    } else {
+      setLastPreset(null);
+    }
     if (type === 'all') {
       onRangeChange(1, totalCount);
     } else if (type === 'first10') {
@@ -59,10 +91,8 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
       const nextEnd = Math.min(nextStart + 9, totalCount);
       onRangeChange(nextStart, nextEnd);
     } else if (type === 'firstHalf') {
-      const half = Math.max(1, Math.floor(totalCount / 2));
       onRangeChange(1, half);
     } else if (type === 'secondHalf') {
-      const half = Math.max(1, Math.floor(totalCount / 2));
       onRangeChange(half + 1, totalCount);
     }
   };
@@ -94,7 +124,7 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
             type="button"
             onClick={() => setPreset('all')}
             className={`px-2.5 py-1 text-xs rounded-md border font-mono transition-colors ${
-              startIndex === 1 && endIndex === totalCount
+              activePreset === 'all'
                 ? 'bg-[#272727] text-white border-red-500'
                 : 'bg-[#212121] text-[#AAAAAA] border-[#272727] hover:text-white'
             }`}
@@ -104,21 +134,33 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
           <button
             type="button"
             onClick={() => setPreset('first10')}
-            className="px-2.5 py-1 text-xs rounded-md bg-[#212121] text-[#AAAAAA] border border-[#272727] hover:text-white font-mono transition-colors"
+            className={`px-2.5 py-1 text-xs rounded-md border font-mono transition-colors ${
+              activePreset === 'first10'
+                ? 'bg-[#272727] text-white border-red-500'
+                : 'bg-[#212121] text-[#AAAAAA] border-[#272727] hover:text-white'
+            }`}
           >
             1 - 10
           </button>
           <button
             type="button"
             onClick={() => setPreset('firstHalf')}
-            className="px-2.5 py-1 text-xs rounded-md bg-[#212121] text-[#AAAAAA] border border-[#272727] hover:text-white font-mono transition-colors"
+            className={`px-2.5 py-1 text-xs rounded-md border font-mono transition-colors ${
+              activePreset === 'firstHalf'
+                ? 'bg-[#272727] text-white border-red-500'
+                : 'bg-[#212121] text-[#AAAAAA] border-[#272727] hover:text-white'
+            }`}
           >
             1st Half
           </button>
           <button
             type="button"
             onClick={() => setPreset('secondHalf')}
-            className="px-2.5 py-1 text-xs rounded-md bg-[#212121] text-[#AAAAAA] border border-[#272727] hover:text-white font-mono transition-colors"
+            className={`px-2.5 py-1 text-xs rounded-md border font-mono transition-colors ${
+              activePreset === 'secondHalf'
+                ? 'bg-[#272727] text-white border-red-500'
+                : 'bg-[#212121] text-[#AAAAAA] border-[#272727] hover:text-white'
+            }`}
           >
             2nd Half
           </button>
@@ -150,6 +192,7 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
                 max={endIndex}
                 value={startIndex}
                 onChange={(e) => {
+                  setLastPreset(null);
                   const val = Math.max(1, Math.min(parseInt(e.target.value) || 1, endIndex));
                   onRangeChange(val, endIndex);
                 }}
@@ -166,6 +209,7 @@ export const ProgressTracker: React.FC<ProgressTrackerProps> = ({
                 max={totalCount}
                 value={endIndex}
                 onChange={(e) => {
+                  setLastPreset(null);
                   const val = Math.max(startIndex, Math.min(parseInt(e.target.value) || totalCount, totalCount));
                   onRangeChange(startIndex, val);
                 }}
