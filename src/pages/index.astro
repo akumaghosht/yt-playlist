@@ -1,11 +1,99 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import FaqSection from '../components/FaqSection.astro';
+import { PlaylistAnalyzer } from '../components/react/PlaylistAnalyzer';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Direct resolution of API key from environment
+const defaultApiKey =
+  import.meta.env.PUBLIC_YOUTUBE_API_KEY ||
+  process.env.PUBLIC_YOUTUBE_API_KEY ||
+  process.env.YOUTUBE_API_KEY ||
+  '';
 ---
 
 <Layout>
-	<Welcome />
+  <Navbar />
+
+  <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+    {/* Central Interactive Analyzer Island */}
+    <section id="analyzer" class="w-full">
+      <PlaylistAnalyzer client:load defaultApiKey={defaultApiKey} />
+    </section>
+
+    {/* Feature Value Grid */}
+    <section id="features" class="w-full max-w-5xl mx-auto pt-6 space-y-8">
+      <div class="text-center space-y-2">
+        <span class="text-xs font-mono uppercase tracking-wider text-red-500">
+          Engineered for Students, Creators & Power Users
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          Why Use YouTube Playlist Length Analyser?
+        </h2>
+        <p class="text-xs sm:text-sm text-[#AAAAAA] max-w-xl mx-auto">
+          Unlike basic calculators that fail on large or private videos, our engine provides comprehensive course analytics.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Feature 1 */}
+        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-red-950/60 border border-red-900/40 text-red-500 flex items-center justify-center font-bold text-sm">
+            ⚡
+          </div>
+          <h3 class="text-sm font-bold text-white tracking-tight">
+            Paginated API Batching
+          </h3>
+          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+            Paginates through 500+ videos in chunks of 50 via YouTube Data API v3, parsing ISO 8601 durations without timeouts.
+          </p>
+        </div>
+
+        {/* Feature 2 */}
+        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-amber-950/60 border border-amber-900/40 text-amber-500 flex items-center justify-center font-bold text-sm">
+            ⏩
+          </div>
+          <h3 class="text-sm font-bold text-white tracking-tight">
+            Playback Speed Matrix
+          </h3>
+          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+            Instantly view exact runtimes at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x, plus fine-tune with a continuous custom slider.
+          </p>
+        </div>
+
+        {/* Feature 3 */}
+        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-emerald-950/60 border border-emerald-900/40 text-emerald-500 flex items-center justify-center font-bold text-sm">
+            🎯
+          </div>
+          <h3 class="text-sm font-bold text-white tracking-tight">
+            Range & Watched Sync
+          </h3>
+          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+            Isolate specific lesson subsets (e.g. videos 10 to 30) and check off watched items with automatic localStorage saving.
+          </p>
+        </div>
+
+        {/* Feature 4 */}
+        <div class="p-5 rounded-xl bg-[#181818] border border-[#272727] space-y-2.5 hover:border-[#383838] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-indigo-950/60 border border-indigo-900/40 text-indigo-500 flex items-center justify-center font-bold text-sm">
+            📅
+          </div>
+          <h3 class="text-sm font-bold text-white tracking-tight">
+            Smart Schedule Planner
+          </h3>
+          <p class="text-xs text-[#AAAAAA] leading-relaxed">
+            Map out your daily study routine. Enter your daily available minutes or set a hard deadline to project completion dates.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* FAQ & Knowledge Section */}
+    <FaqSection />
+  </main>
+
+  <Footer />
 </Layout>

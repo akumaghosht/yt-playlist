@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-yt-black: #0F0F0F;
+  --color-yt-charcoal: #181818;
+  --color-yt-elevated: #212121;
+  --color-yt-card: #181818;
+  --color-yt-card-hover: #222222;
+  --color-yt-border: #272727;
+  --color-yt-border-light: #383838;
+  
+  --color-yt-red: #FF0000;
+  --color-yt-red-deep: #DC2626;
+  --color-yt-red-hover: #E50914;
+  --color-yt-red-soft: rgba(255, 0, 0, 0.12);
+  --color-yt-red-glow: rgba(255, 0, 0, 0.25);
+
+  --color-yt-text-primary: #F1F1F1;
+  --color-yt-text-secondary: #AAAAAA;
+  --color-yt-text-muted: #717171;
+  --color-yt-text-faint: #525252;
+
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-yt-border);
+  }
+
+  body {
+    background-color: var(--color-yt-black);
+    color: var(--color-yt-text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom scrollbar for dark dashboard aesthetics */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0F0F0F;
+}
+::-webkit-scrollbar-thumb {
+  background: #272727;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3F3F3F;
+}
+
