@@ -91,9 +91,6 @@ export const SpeedMatrix: React.FC<SpeedMatrixProps> = ({
                   : 'bg-slate-50 dark:bg-[#212121] border-slate-200 dark:border-[#272727] hover:border-slate-300 dark:hover:border-[#383838] hover:bg-slate-100 dark:hover:bg-[#252525]'
               }`}
             >
-              {isSelected && (
-                <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              )}
               <div className="flex items-center justify-between">
                 <span className={`text-sm font-bold font-mono ${isSelected ? 'text-red-600 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>
                   {preset.speed.toFixed(2)}x
