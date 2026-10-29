@@ -103,6 +103,20 @@ export const SchedulePlanner: React.FC<SchedulePlannerProps> = ({
     { label: formatTickHour(timelineMax), hours: timelineMax },
   ];
 
+  // 17 ruler graduation ticks (4 segments x 4 subdivisions = 16 intervals = 17 ticks)
+  const rulerTicks = Array.from({ length: 17 }, (_, i) => {
+    const percent = (i / 16) * 100;
+    const isMajor = i % 4 === 0;
+    const hours = (i / 16) * timelineMax;
+    const displayHours = i === 0 ? 0.25 : Math.round(hours * 100) / 100;
+    return {
+      index: i,
+      percent,
+      isMajor,
+      hours: displayHours,
+    };
+  });
+
   // Actual seconds to watch factored by playback speed
   const effectiveSeconds = Math.round(totalSecondsToWatch / currentSpeed);
   const effectiveMinutes = Math.ceil(effectiveSeconds / 60);
@@ -220,36 +234,73 @@ export const SchedulePlanner: React.FC<SchedulePlannerProps> = ({
                   </div>
                 </div>
 
-                <input
-                  type="range"
-                  min="0"
-                  max={timelineMax}
-                  step="0.25"
-                  value={dailyMinutes / 60}
-                  onChange={(e) => handleSliderChange(parseFloat(e.target.value))}
-                  className="w-full h-3 sm:h-2 bg-slate-200 dark:bg-[#0F0F0F] rounded-lg appearance-none cursor-pointer accent-red-600 touch-pan-x"
-                  aria-label="Daily study time hours slider"
-                />
+                <div className="space-y-1.5 pt-1">
+                  <input
+                    type="range"
+                    min="0"
+                    max={timelineMax}
+                    step="0.25"
+                    value={dailyMinutes / 60}
+                    onChange={(e) => handleSliderChange(parseFloat(e.target.value))}
+                    className="w-full h-3 sm:h-2 bg-slate-200 dark:bg-[#0F0F0F] rounded-lg appearance-none cursor-pointer accent-red-600 touch-pan-x"
+                    aria-label="Daily study time hours slider"
+                  />
 
-                <div className="flex justify-between text-[10px] font-mono text-slate-500 dark:text-[#717171] mt-1 px-0.5">
-                  {calibrationTicks.map((tick, index) => {
-                    const isSelected = Math.abs(dailyMinutes - Math.round(tick.hours * 60)) < 5;
-                    return (
-                      <button
-                        key={index}
-                        type="button"
-                        onClick={() => {
-                          setDailyMinutes(Math.round(tick.hours * 60));
-                          setCustomHoursInput(formatHoursForInput(tick.hours));
-                        }}
-                        className={`hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer py-1 touch-manipulation ${
-                          isSelected ? 'text-red-600 dark:text-red-400 font-bold' : ''
-                        }`}
-                      >
-                        {tick.label}
-                      </button>
-                    );
-                  })}
+                  {/* Calibrated scale with tiny lines towards labels */}
+                  <div className="relative pt-1 select-none">
+                    {/* Ruler graduation tick lines */}
+                    <div className="relative h-2.5 sm:h-3 mx-2 sm:mx-2.5 pointer-events-none" aria-hidden="true">
+                      {rulerTicks.map((tick) => {
+                        const tickMinutes = Math.round(tick.hours * 60);
+                        const isClose = Math.abs(dailyMinutes - tickMinutes) < 5;
+                        const isPassed = tick.hours <= (dailyMinutes / 60) + 0.01;
+                        return (
+                          <div
+                            key={tick.index}
+                            style={{ left: `${tick.percent}%` }}
+                            className={`absolute -translate-x-1/2 top-0 rounded-full transition-colors ${
+                              tick.isMajor
+                                ? 'w-[1.5px] h-2.5 sm:h-3'
+                                : 'w-[1px] h-1.5 sm:h-2'
+                            } ${
+                              isClose
+                                ? 'bg-red-600 dark:bg-red-500 ring-1 ring-red-400/40'
+                                : isPassed
+                                ? 'bg-slate-400/80 dark:bg-[#555555]'
+                                : 'bg-slate-300 dark:bg-[#2e2e2e]'
+                            }`}
+                          />
+                        );
+                      })}
+                    </div>
+
+                    {/* Labels marked across the scale */}
+                    <div className="relative h-6 mx-2 sm:mx-2.5 mt-1">
+                      {calibrationTicks.map((tick, index) => {
+                        const percent = (index / (calibrationTicks.length - 1)) * 100;
+                        const isSelected = Math.abs(dailyMinutes - Math.round(tick.hours * 60)) < 5;
+                        return (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => {
+                              setDailyMinutes(Math.round(tick.hours * 60));
+                              setCustomHoursInput(formatHoursForInput(tick.hours));
+                            }}
+                            style={{ left: `${percent}%` }}
+                            className={`absolute -translate-x-1/2 text-[10px] sm:text-[11px] font-mono transition-colors cursor-pointer py-0.5 touch-manipulation hover:text-slate-900 dark:hover:text-white ${
+                              isSelected
+                                ? 'text-red-600 dark:text-red-400 font-bold'
+                                : 'text-slate-500 dark:text-[#717171]'
+                            }`}
+                            title={`Set study time to ${tick.label}`}
+                          >
+                            {tick.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
 

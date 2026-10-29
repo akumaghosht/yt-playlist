@@ -543,6 +543,38 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             </div>
           </div>
 
+          {/* Speed Matrix Grid */}
+          <SpeedMatrix
+            totalSeconds={analysis.totalDurationSeconds}
+            currentSpeed={currentSpeed}
+            onSpeedSelect={(speed) => {
+              setCurrentSpeed(speed);
+              savePreferences(speed, startIndex, endIndex);
+            }}
+          />
+
+          {/* Range & Progress Tracker */}
+          <ProgressTracker
+            videos={analysis.videos}
+            startIndex={startIndex}
+            endIndex={endIndex}
+            onRangeChange={(s, e) => {
+              setStartIndex(s);
+              setEndIndex(e);
+              savePreferences(currentSpeed, s, e);
+            }}
+            watchedIds={watchedIds}
+            onToggleAllWatched={handleToggleAllWatched}
+            onSetWatchedCount={handleSetWatchedCount}
+            currentSpeed={currentSpeed}
+          />
+
+          {/* Smart Study & Schedule Planner */}
+          <SchedulePlanner
+            totalSecondsToWatch={activeRangeSeconds > 0 ? activeRangeSeconds : analysis.totalDurationSeconds}
+            currentSpeed={currentSpeed}
+          />
+
           {/* Longest & Shortest Highlights */}
           {(analysis.longestVideo || analysis.shortestVideo) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-4">
@@ -591,38 +623,6 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               )}
             </div>
           )}
-
-          {/* Speed Matrix Grid */}
-          <SpeedMatrix
-            totalSeconds={analysis.totalDurationSeconds}
-            currentSpeed={currentSpeed}
-            onSpeedSelect={(speed) => {
-              setCurrentSpeed(speed);
-              savePreferences(speed, startIndex, endIndex);
-            }}
-          />
-
-          {/* Range & Progress Tracker */}
-          <ProgressTracker
-            videos={analysis.videos}
-            startIndex={startIndex}
-            endIndex={endIndex}
-            onRangeChange={(s, e) => {
-              setStartIndex(s);
-              setEndIndex(e);
-              savePreferences(currentSpeed, s, e);
-            }}
-            watchedIds={watchedIds}
-            onToggleAllWatched={handleToggleAllWatched}
-            onSetWatchedCount={handleSetWatchedCount}
-            currentSpeed={currentSpeed}
-          />
-
-          {/* Smart Study & Schedule Planner */}
-          <SchedulePlanner
-            totalSecondsToWatch={activeRangeSeconds > 0 ? activeRangeSeconds : analysis.totalDurationSeconds}
-            currentSpeed={currentSpeed}
-          />
 
           {/* Interactive Video Table / Mobile Video List */}
           <div className="space-y-2.5 sm:space-y-3">

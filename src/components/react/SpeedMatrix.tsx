@@ -8,6 +8,23 @@ interface SpeedMatrixProps {
   onSpeedSelect: (speed: number) => void;
 }
 
+const SPEED_MARKS = [
+  { value: 0.5, label: '0.5x', sub: 'Slow' },
+  { value: 1.0, label: '1.0x' },
+  { value: 1.5, label: '1.5x' },
+  { value: 2.0, label: '2.0x' },
+  { value: 2.5, label: '2.5x' },
+  { value: 3.0, label: '3.0x', sub: 'Hyper' },
+];
+
+// 26 ruler graduation ticks from 0.5x to 3.0x (every 0.1x)
+const SPEED_TICKS = Array.from({ length: 26 }, (_, i) => {
+  const value = Math.round((0.5 + i * 0.1) * 10) / 10;
+  const percent = (i / 25) * 100;
+  const isMajor = i % 5 === 0;
+  return { value, percent, isMajor };
+});
+
 export const SpeedMatrix: React.FC<SpeedMatrixProps> = ({
   totalSeconds,
   currentSpeed,
@@ -126,7 +143,7 @@ export const SpeedMatrix: React.FC<SpeedMatrixProps> = ({
           </div>
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-1.5 pt-1">
           <input
             type="range"
             min="0.5"
@@ -137,13 +154,64 @@ export const SpeedMatrix: React.FC<SpeedMatrixProps> = ({
             className="w-full h-3 sm:h-2 bg-slate-200 dark:bg-[#0F0F0F] rounded-lg appearance-none cursor-pointer accent-red-600 touch-pan-x"
             aria-label="Custom playback speed multiplier"
           />
-          <div className="flex justify-between text-[10px] font-mono text-slate-500 dark:text-[#717171] px-0.5">
-            <span>0.5x<span className="hidden sm:inline"> (Slow)</span></span>
-            <span>1.0x</span>
-            <span>1.5x</span>
-            <span>2.0x</span>
-            <span>2.5x</span>
-            <span>3.0x<span className="hidden sm:inline"> (Hyper)</span></span>
+
+          {/* Calibrated scale with tiny lines towards labels */}
+          <div className="relative pt-1 select-none">
+            {/* Calibration scale ruler lines */}
+            <div className="relative h-2.5 sm:h-3 mx-2 sm:mx-2.5 pointer-events-none" aria-hidden="true">
+              {SPEED_TICKS.map((tick) => {
+                const isActive = Math.abs(currentSpeed - tick.value) < 0.03;
+                const isPassed = tick.value <= currentSpeed + 0.001;
+                return (
+                  <div
+                    key={tick.value}
+                    style={{ left: `${tick.percent}%` }}
+                    className={`absolute -translate-x-1/2 top-0 rounded-full transition-colors ${
+                      tick.isMajor
+                        ? 'w-[1.5px] h-2.5 sm:h-3'
+                        : 'w-[1px] h-1.5 sm:h-2'
+                    } ${
+                      isActive
+                        ? 'bg-red-600 dark:bg-red-500 ring-1 ring-red-400/40'
+                        : isPassed
+                        ? 'bg-slate-400/80 dark:bg-[#555555]'
+                        : 'bg-slate-300 dark:bg-[#2e2e2e]'
+                    }`}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Labels marked across the scale */}
+            <div className="relative h-6 mx-2 sm:mx-2.5 mt-1">
+              {SPEED_MARKS.map((mark) => {
+                const percent = ((mark.value - 0.5) / 2.5) * 100;
+                const isSelected = Math.abs(currentSpeed - mark.value) < 0.03;
+                return (
+                  <button
+                    key={mark.value}
+                    type="button"
+                    onClick={() => onSpeedSelect(mark.value)}
+                    style={{ left: `${percent}%` }}
+                    className={`absolute -translate-x-1/2 flex flex-col items-center cursor-pointer transition-colors touch-manipulation group ${
+                      isSelected
+                        ? 'text-red-600 dark:text-red-400 font-bold'
+                        : 'text-slate-500 dark:text-[#717171] hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                    title={`Set speed to ${mark.label}${mark.sub ? ` (${mark.sub})` : ''}`}
+                  >
+                    <span className="text-[10px] sm:text-[11px] font-mono leading-tight">
+                      {mark.label}
+                    </span>
+                    {mark.sub && (
+                      <span className="hidden sm:inline text-[9px] font-mono opacity-70 leading-none">
+                        {mark.sub}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
