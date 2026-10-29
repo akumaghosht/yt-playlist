@@ -400,7 +400,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           {/* Hero Navigation Pages Strip */}
           <nav
             aria-label="Quick links"
-            className="pt-6 sm:pt-10 pb-4 sm:pb-6 flex items-center justify-center gap-3 sm:gap-4 flex-wrap text-xs sm:text-sm text-slate-500 dark:text-[#888888]"
+            className="pt-3 sm:pt-4 pb-1 sm:pb-2 flex items-center justify-center gap-2 sm:gap-2.5 flex-wrap text-xs sm:text-sm text-slate-500 dark:text-[#888888]"
           >
             <a
               href="/about"
