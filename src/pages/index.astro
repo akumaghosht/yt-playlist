@@ -17,14 +17,14 @@ const defaultApiKey =
 <Layout>
   <Navbar />
 
-  <main class="flex-1 w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-10 sm:space-y-16">
+  <main class="flex-1 w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-10">
     {/* Central Interactive Analyzer Island */}
     <section id="analyzer" class="w-full scroll-mt-20">
       <PlaylistAnalyzer client:load defaultApiKey={defaultApiKey} />
     </section>
 
     {/* Feature Value Grid */}
-    <section id="features" class="w-full max-w-5xl mx-auto pt-4 sm:pt-6 space-y-6 sm:space-y-8 scroll-mt-20">
+    <section id="features" class="w-full max-w-5xl mx-auto space-y-6 sm:space-y-8 scroll-mt-20">
       <div class="text-center space-y-2 px-2">
         <span class="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-red-600 dark:text-red-500 font-semibold">
           Engineered for Students, Creators & Power Users

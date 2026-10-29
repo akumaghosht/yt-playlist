@@ -1,0 +1,184 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { FileText, ShieldAlert, CheckCircle2, AlertTriangle, ExternalLink, Scale } from 'lucide-react';
+---
+
+<Layout
+  title="Terms and Conditions | YouTube Playlist Length Analyser"
+  description="Terms and Conditions for YouTube Playlist Length Analyser. Review our acceptable use policy, YouTube API compliance, and service disclaimers."
+>
+  <Navbar />
+
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-12">
+    {/* Breadcrumbs & Header */}
+    <div class="space-y-3">
+      <nav class="flex items-center space-x-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+        <a href="/" class="hover:text-red-600 dark:hover:text-red-500 transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-slate-900 dark:text-white">Terms and Conditions</span>
+      </nav>
+
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/40 text-blue-600 dark:text-blue-400 text-xs font-mono font-medium">
+          <Scale className="w-3.5 h-3.5" />
+          <span>Effective Date: October 2026</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Terms and Conditions
+        </h1>
+        <p class="text-xs sm:text-sm md:text-base text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+          Please read these Terms and Conditions carefully before using YouTube Playlist Length Analyser. By accessing or using our website, you agree to be bound by these terms.
+        </p>
+      </div>
+    </div>
+
+    {/* Key Takeaways Cards */}
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <div class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+          <Scale className="w-4 h-4" />
+        </div>
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white">Independent Utility</h3>
+        <p class="text-[11px] text-slate-500 dark:text-[#AAAAAA] leading-relaxed">
+          We are an independent software tool and are not affiliated with, endorsed by, or sponsored by YouTube or Google LLC.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <div class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+          <ExternalLink className="w-4 h-4" />
+        </div>
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white">YouTube ToS Agreement</h3>
+        <p class="text-[11px] text-slate-500 dark:text-[#AAAAAA] leading-relaxed">
+          By utilizing our YouTube playlist tools, users also agree to be bound by the official YouTube Terms of Service.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <div class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+          <CheckCircle2 className="w-4 h-4" />
+        </div>
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white">Free & Educational</h3>
+        <p class="text-[11px] text-slate-500 dark:text-[#AAAAAA] leading-relaxed">
+          Free to use for personal, academic, course planning, and non-commercial analysis.
+        </p>
+      </div>
+    </div>
+
+    {/* Detailed Terms */}
+    <div class="space-y-8 text-xs sm:text-sm text-slate-700 dark:text-[#CCCCCC] leading-relaxed">
+      {/* 1. Agreement */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          1. Agreement to Terms
+        </h2>
+        <p>
+          These Terms and Conditions constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("you") and YouTube Playlist Length Analyser ("we", "us", or "our"), concerning your access to and use of our website. By accessing the site, you acknowledge that you have read, understood, and agreed to be bound by all of these Terms and Conditions. If you do not agree with all of these terms, you are prohibited from using the site.
+        </p>
+      </section>
+
+      {/* 2. YouTube API Terms */}
+      <section class="space-y-2.5 p-5 rounded-2xl bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#262626]">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          2. YouTube Terms of Service & API Compliance
+        </h2>
+        <p>
+          Our application retrieves public video metadata and duration figures using the YouTube Data API v3. In accordance with Google and YouTube developer policies:
+        </p>
+        <p class="font-medium text-slate-900 dark:text-white">
+          By using this application, you explicitly agree to be bound by the{' '}
+          <a
+            href="https://www.youtube.com/t/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-red-600 dark:text-red-400 underline inline-flex items-center gap-1"
+          >
+            <span>YouTube Terms of Service</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+          .
+        </p>
+        <p class="text-slate-500 dark:text-[#AAAAAA] text-xs">
+          Users who configure a custom YouTube API key in the application settings must also comply with Google Cloud Platform Terms of Service and YouTube API Services Developer Policies.
+        </p>
+      </section>
+
+      {/* 3. Acceptable Use */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          3. Acceptable Use Policy
+        </h2>
+        <p>
+          You agree not to use the website for any unlawful, harmful, or prohibited purpose, including:
+        </p>
+        <ul class="list-disc pl-5 space-y-1.5">
+          <li>Attempting to overload, compromise, or disrupt the site or upstream YouTube API servers via automated scrapers, bot attacks, or rate limit circumvention.</li>
+          <li>Distributing malicious code, exploits, or automated scripts targeting other site visitors.</li>
+          <li>Impersonating another user or claiming false affiliation with YouTube Playlist Length Analyser or YouTube/Google LLC.</li>
+          <li>Reverse-engineering the application in order to distribute spyware or malware.</li>
+        </ul>
+      </section>
+
+      {/* 4. Intellectual Property */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          4. Intellectual Property Rights & Trademarks
+        </h2>
+        <p>
+          <strong>YouTube</strong> and the YouTube logo are trademarks of Google LLC. All playlist names, video titles, channel names, thumbnails, and descriptions displayed by our tool are the intellectual property of their respective creators and copyright owners on YouTube.
+        </p>
+        <p>
+          The custom code, user interface design, speed matrix algorithms, and brand assets of YouTube Playlist Length Analyser are protected by copyright and intellectual property laws.
+        </p>
+      </section>
+
+      {/* 5. Calculation Accuracy Disclaimer */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          5. Accuracy of Calculations & Disclaimers
+        </h2>
+        <p>
+          Calculations provided on this website are based on ISO 8601 duration values returned by the YouTube Data API. While we strive for absolute mathematical precision:
+        </p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Playlists containing live streams, upcoming premieres, or region-restricted videos may exhibit discrepancies between reported and playable runtime.</li>
+          <li>Deleted or private videos cannot be analyzed and are excluded from final durations.</li>
+          <li>Playback speeds and completion estimates are projected models designed to assist study planning.</li>
+        </ul>
+      </section>
+
+      {/* 6. Limitation of Liability */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          6. Limitation of Liability & Warranty Disclaimer
+        </h2>
+        <p>
+          THE SERVICE IS PROVIDED ON AN "AS-IS" AND "AS-AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WE DISCLAIM ALL WARRANTIES, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL WE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF YOUR USE OF THE SERVICE.
+        </p>
+      </section>
+
+      {/* 7. Modifications to Service */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          7. Modifications to the Service and Terms
+        </h2>
+        <p>
+          We reserve the right to modify, suspend, or discontinue any aspect of the service at any time without prior notice. We also reserve the right to amend these Terms and Conditions at our sole discretion. Your continued use of the website following any changes constitutes your acceptance of the revised terms.
+        </p>
+      </section>
+
+      {/* 8. Contact Information */}
+      <section class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Questions About Terms?</h3>
+        <p class="text-xs text-slate-600 dark:text-[#AAAAAA]">
+          If you have questions regarding these Terms and Conditions, please reach out via our <a href="/contact" class="text-red-600 dark:text-red-400 font-semibold underline">contact page</a> or email <span class="font-mono text-slate-900 dark:text-white">support@youtubeplaylistlengthcheck.com</span>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+

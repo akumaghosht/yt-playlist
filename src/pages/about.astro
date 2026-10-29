@@ -1,0 +1,232 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import {
+  FastForward,
+  Target,
+  Calendar,
+  Key,
+  ShieldCheck,
+  Zap,
+  ArrowRight,
+  Code,
+  Sparkles,
+  CheckCircle,
+  HelpCircle,
+  Play
+} from 'lucide-react';
+---
+
+<Layout
+  title="About Us | YouTube Playlist Length Analyser"
+  description="Learn about YouTube Playlist Length Analyser — our mission, speed calculation engine, privacy architecture, and why we built this study tool."
+>
+  <Navbar />
+
+  <main class="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+    {/* Breadcrumbs & Header */}
+    <div class="space-y-4">
+      <nav class="flex items-center space-x-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+        <a href="/" class="hover:text-red-600 dark:hover:text-red-500 transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-slate-900 dark:text-white">About Us</span>
+      </nav>
+
+      <div class="space-y-3">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 text-xs font-mono font-medium">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Our Story & Mission</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Precision Playlist Intelligence <br class="hidden sm:inline" />
+          <span class="text-red-600 dark:text-red-500">Built for Modern Learners</span>
+        </h1>
+        <p class="text-sm sm:text-base text-slate-600 dark:text-[#AAAAAA] max-w-3xl leading-relaxed">
+          YouTube Playlist Length Analyser was created out of frustration with clunky, ad-saturated calculators that freeze on long courses and fail to provide the exact playback metrics modern students and professionals need.
+        </p>
+      </div>
+    </div>
+
+    {/* The Problem & Our Solution */}
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+      <div class="p-6 sm:p-7 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-4 flex flex-col justify-between">
+        <div class="space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center font-bold">
+            01
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+            The Problem With Old Calculators
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            Most online video runtime calculators were built a decade ago. They are crowded with disruptive ads, crash or truncate when playlists exceed 50 videos, offer no continuous speed adjustments (like 1.35x or 1.6x), and don't allow you to exclude videos you've already watched or calculate realistic study schedules.
+          </p>
+        </div>
+        <div class="pt-3 border-t border-slate-100 dark:border-[#222222] text-xs font-mono text-slate-500">
+          ✕ Cluttered with ads • ✕ No custom speeds • ✕ Fails on large series
+        </div>
+      </div>
+
+      <div class="p-6 sm:p-7 rounded-2xl bg-white dark:bg-[#181818] border border-red-500/30 dark:border-red-500/20 shadow-sm space-y-4 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-red-600/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="space-y-3 relative z-10">
+          <div class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center font-bold">
+            02
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+            Our Engineered Solution
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            We built a high-performance, ad-free web application powered by modern web technologies. Every calculation is instant and transparent: see exact durations across 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x, select any custom sub-range (e.g. video 15 to 45), check off completed lessons, and project your finishing date based on your daily available study time.
+          </p>
+        </div>
+        <div class="pt-3 border-t border-slate-100 dark:border-[#222222] text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold relative z-10">
+          ✓ Instant calculation • ✓ Local progress sync • ✓ Zero trackers
+        </div>
+      </div>
+    </section>
+
+    {/* Key Capabilities Grid */}
+    <section class="space-y-6">
+      <div class="space-y-2">
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+          What Makes Our Platform Different
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-[#AAAAAA]">
+          Engineered specifically for self-paced students, bootcamp trainees, developers, and power YouTube consumers.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Capability 1 */}
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <FastForward className="w-4 h-4" />
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Speed Multiplier Matrix</h3>
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            Quickly compare runtimes at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x, with an interactive slider down to two decimals for custom browser extensions.
+          </p>
+        </div>
+
+        {/* Capability 2 */}
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <Target className="w-4 h-4" />
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Range & Watched Checkoff</h3>
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            Studying only specific modules? Isolate any range of videos (e.g. #10 through #30) and check off finished videos with automatic localStorage persistence.
+          </p>
+        </div>
+
+        {/* Capability 3 */}
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <Calendar className="w-4 h-4" />
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Smart Schedule Planner</h3>
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            Enter your daily available minutes (or set a target completion deadline) to automatically see how many days it will take to complete the curriculum.
+          </p>
+        </div>
+
+        {/* Capability 4 */}
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <Key className="w-4 h-4" />
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">BYOK API Transparency</h3>
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            Provide your own free Google YouTube API key in Settings if you encounter public quota limits. Stored safely in your browser, never transmitted to external servers.
+          </p>
+        </div>
+
+        {/* Capability 5 */}
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <ShieldCheck className="w-4 h-4" />
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Zero Account & No Tracking</h3>
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            No signup, no passwords, no behavioral cookies. Everything you do stays in your browser's private local sandbox.
+          </p>
+        </div>
+
+        {/* Capability 6 */}
+        <div class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <Zap className="w-4 h-4" />
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Sub-Second Performance</h3>
+          <p class="text-xs text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+            Built using Astro SSG with React Islands. Lightweight JavaScript footprint, blazing fast page loads, and zero layout shift.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* Architecture & Tech Stack */}
+    <section class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-5">
+      <div class="flex items-center gap-2">
+        <Code className="w-5 h-5 text-red-600 dark:text-red-400" />
+        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+          Modern Architecture & Tech Stack
+        </h2>
+      </div>
+
+      <p class="text-xs sm:text-sm text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+        Our codebase is designed to be lean, accessible, and compliant with modern web interface standards. We do not run heavy backend servers with user databases. All playlist parsing happens through standard YouTube Data API v3 endpoints, with intelligent client-side batching and localStorage caching.
+      </p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#202020] border border-slate-200 dark:border-[#2d2d2d] text-center space-y-1">
+          <div class="text-xs font-mono font-bold text-slate-900 dark:text-white">Astro v5+</div>
+          <div class="text-[10px] text-slate-500">Static Islands & SEO</div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#202020] border border-slate-200 dark:border-[#2d2d2d] text-center space-y-1">
+          <div class="text-xs font-mono font-bold text-slate-900 dark:text-white">Tailwind CSS v4</div>
+          <div class="text-[10px] text-slate-500">Geist Design System</div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#202020] border border-slate-200 dark:border-[#2d2d2d] text-center space-y-1">
+          <div class="text-xs font-mono font-bold text-slate-900 dark:text-white">React 19 Islands</div>
+          <div class="text-[10px] text-slate-500">Isolated Interactivity</div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#202020] border border-slate-200 dark:border-[#2d2d2d] text-center space-y-1">
+          <div class="text-xs font-mono font-bold text-slate-900 dark:text-white">YouTube Data API</div>
+          <div class="text-[10px] text-slate-500">v3 REST Endpoints</div>
+        </div>
+      </div>
+    </section>
+
+    {/* CTA Banner */}
+    <section class="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl shadow-red-950/20">
+      <div class="space-y-1.5 text-center sm:text-left">
+        <h3 class="text-xl font-bold tracking-tight">Ready to calculate your playlist?</h3>
+        <p class="text-xs sm:text-sm text-red-100 max-w-xl">
+          Paste any YouTube playlist URL or ID and get instant runtime analytics across every playback speed.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 shrink-0 flex-wrap justify-center">
+        <a
+          href="/#analyzer"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-slate-900 hover:bg-slate-100 text-xs font-bold transition-all shadow-md shadow-red-950/30"
+        >
+          <Play className="w-3.5 h-3.5 fill-slate-900" />
+          <span>Go to Analyzer</span>
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-800/80 hover:bg-red-800 text-white text-xs font-bold transition-all border border-red-400/40"
+        >
+          <span>Contact Team</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+

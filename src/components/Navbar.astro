@@ -1,5 +1,12 @@
 ---
 import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/' || pathname === '';
+const isAbout = pathname === '/about' || pathname === '/about-us';
+const isContact = pathname === '/contact' || pathname === '/contact-us';
+const isPrivacy = pathname === '/privacy' || pathname === '/privacy-policy';
+const isTerms = pathname === '/terms' || pathname === '/terms-and-conditions';
 ---
 
 <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-[#272727] bg-white/90 dark:bg-[#0F0F0F]/90 backdrop-blur-md transition-colors duration-150">
@@ -20,10 +27,37 @@ import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
     </a>
 
     {/* Desktop Navigation links */}
-    <nav class="hidden md:flex items-center space-x-6 text-xs font-medium text-slate-600 dark:text-[#AAAAAA]">
-      <a href="#analyzer" class="hover:text-slate-900 dark:hover:text-white transition-colors">Analyzer</a>
-      <a href="#features" class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a>
-      <a href="#faq" class="hover:text-slate-900 dark:hover:text-white transition-colors">FAQ & Guides</a>
+    <nav class="hidden md:flex items-center space-x-6 text-xs font-medium">
+      <a
+        href={isHome ? '#analyzer' : '/#analyzer'}
+        class={`transition-colors ${isHome ? 'text-slate-900 dark:text-white font-semibold' : 'text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white'}`}
+      >
+        Analyzer
+      </a>
+      <a
+        href={isHome ? '#features' : '/#features'}
+        class="text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors"
+      >
+        Features
+      </a>
+      <a
+        href="/about"
+        class={`transition-colors ${isAbout ? 'text-red-600 dark:text-red-500 font-semibold' : 'text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white'}`}
+      >
+        About Us
+      </a>
+      <a
+        href="/contact"
+        class={`transition-colors ${isContact ? 'text-red-600 dark:text-red-500 font-semibold' : 'text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white'}`}
+      >
+        Contact
+      </a>
+      <a
+        href={isHome ? '#faq' : '/#faq'}
+        class="text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors"
+      >
+        FAQ
+      </a>
     </nav>
 
     {/* Right actions */}
@@ -33,7 +67,7 @@ import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
         id="theme-toggle"
         type="button"
         aria-label="Toggle light and dark mode"
-        class="p-2 sm:p-2 rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-100 dark:bg-[#181818] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#222222] transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/40 touch-manipulation min-w-[38px] min-h-[38px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
+        class="p-2 sm:p-2 rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-100 dark:bg-[#181818] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#222222] transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/40 touch-manipulation min-w-[38px] min-h-[38px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center cursor-pointer"
       >
         <Sun className="w-4 h-4 hidden dark:block text-amber-400" />
         <Moon className="w-4 h-4 block dark:hidden text-slate-700" />
@@ -41,7 +75,7 @@ import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
 
       {/* Desktop Analyze CTA */}
       <a
-        href="#analyzer"
+        href={isHome ? '#analyzer' : '/#analyzer'}
         class="hidden sm:inline-flex items-center px-4 py-1.5 rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs font-semibold tracking-wide transition-colors shadow-md shadow-red-950/20 dark:shadow-red-950/40"
       >
         Analyze Now
@@ -53,7 +87,7 @@ import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
         type="button"
         aria-label="Toggle mobile menu"
         aria-expanded="false"
-        class="md:hidden p-2 rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-100 dark:bg-[#181818] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-500/40"
+        class="md:hidden p-2 rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-100 dark:bg-[#181818] text-slate-700 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-500/40 cursor-pointer"
       >
         <span id="menu-icon-open">
           <Menu className="w-4 h-4" />
@@ -72,22 +106,50 @@ import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
   >
     <div class="grid grid-cols-1 gap-1 text-sm font-medium text-slate-700 dark:text-[#AAAAAA]">
       <a
-        href="#analyzer"
-        class="mobile-nav-link flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
+        href={isHome ? '#analyzer' : '/#analyzer'}
+        class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
       >
         <span>Playlist Analyzer</span>
         <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
       </a>
       <a
-        href="#features"
-        class="mobile-nav-link flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
+        href={isHome ? '#features' : '/#features'}
+        class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
       >
         <span>Features & Speed Matrix</span>
         <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
       </a>
       <a
-        href="#faq"
-        class="mobile-nav-link flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
+        href="/about"
+        class={`mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors ${isAbout ? 'text-red-600 dark:text-red-500 font-semibold bg-red-50/50 dark:bg-red-950/20' : ''}`}
+      >
+        <span>About Us</span>
+        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+      </a>
+      <a
+        href="/contact"
+        class={`mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors ${isContact ? 'text-red-600 dark:text-red-500 font-semibold bg-red-50/50 dark:bg-red-950/20' : ''}`}
+      >
+        <span>Contact Us</span>
+        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+      </a>
+      <a
+        href="/privacy"
+        class={`mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors ${isPrivacy ? 'text-red-600 dark:text-red-500 font-semibold bg-red-50/50 dark:bg-red-950/20' : ''}`}
+      >
+        <span>Privacy Policy</span>
+        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+      </a>
+      <a
+        href="/terms"
+        class={`mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors ${isTerms ? 'text-red-600 dark:text-red-500 font-semibold bg-red-50/50 dark:bg-red-950/20' : ''}`}
+      >
+        <span>Terms and Conditions</span>
+        <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+      </a>
+      <a
+        href={isHome ? '#faq' : '/#faq'}
+        class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#181818] hover:text-slate-900 dark:hover:text-white transition-colors"
       >
         <span>FAQ & Guides</span>
         <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
@@ -96,7 +158,7 @@ import { Play, Sun, Moon, Menu, X, ArrowRight } from 'lucide-react';
 
     <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
       <a
-        href="#analyzer"
+        href={isHome ? '#analyzer' : '/#analyzer'}
         class="mobile-nav-link w-full flex items-center justify-center py-2.5 rounded-xl bg-red-600 active:bg-red-700 text-white text-xs font-semibold tracking-wide shadow-md shadow-red-950/20"
       >
         Calculate Playlist Now

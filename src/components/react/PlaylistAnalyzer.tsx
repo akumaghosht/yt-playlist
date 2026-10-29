@@ -396,6 +396,40 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             <span>&bull;</span>
             <span className="text-slate-500 dark:text-[#888888]">Raw IDs</span>
           </div>
+
+          {/* Hero Navigation Pages Strip */}
+          <nav
+            aria-label="Quick links"
+            className="pt-6 sm:pt-10 pb-4 sm:pb-6 flex items-center justify-center gap-3 sm:gap-4 flex-wrap text-xs sm:text-sm text-slate-500 dark:text-[#888888]"
+          >
+            <a
+              href="/about"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              About Us
+            </a>
+            <span className="text-slate-300 dark:text-[#444444] select-none" aria-hidden="true">&bull;</span>
+            <a
+              href="/contact"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              Contact Us
+            </a>
+            <span className="text-slate-300 dark:text-[#444444] select-none" aria-hidden="true">&bull;</span>
+            <a
+              href="/privacy"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </a>
+            <span className="text-slate-300 dark:text-[#444444] select-none" aria-hidden="true">&bull;</span>
+            <a
+              href="/terms"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              Terms & Conditions
+            </a>
+          </nav>
         </div>
       </section>
 

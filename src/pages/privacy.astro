@@ -1,0 +1,228 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { Shield, Lock, EyeOff, Database, ServerOff, CheckCircle2, FileText, ExternalLink } from 'lucide-react';
+---
+
+<Layout
+  title="Privacy Policy | YouTube Playlist Length Analyser"
+  description="Privacy Policy for YouTube Playlist Length Analyser. Learn how we handle YouTube API data, browser local storage, and safeguard your privacy."
+>
+  <Navbar />
+
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-12">
+    {/* Breadcrumbs & Header */}
+    <div class="space-y-3">
+      <nav class="flex items-center space-x-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+        <a href="/" class="hover:text-red-600 dark:hover:text-red-500 transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-slate-900 dark:text-white">Privacy Policy</span>
+      </nav>
+
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-medium">
+          <Shield className="w-3.5 h-3.5" />
+          <span>Last Updated: October 2026</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Privacy Policy
+        </h1>
+        <p class="text-xs sm:text-sm md:text-base text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+          At YouTube Playlist Length Analyser, your privacy is our foundational principle. This Privacy Policy details our data practices, YouTube API disclosure, and browser storage model.
+        </p>
+      </div>
+    </div>
+
+    {/* Highlight Cards */}
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <div class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <ServerOff className="w-4 h-4" />
+        </div>
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white">Zero User Database</h3>
+        <p class="text-[11px] text-slate-500 dark:text-[#AAAAAA] leading-relaxed">
+          We operate without server-side user accounts, login credentials, or centralized databases tracking playlists you search.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <div class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <EyeOff className="w-4 h-4" />
+        </div>
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white">No Tracking Pixels</h3>
+        <p class="text-[11px] text-slate-500 dark:text-[#AAAAAA] leading-relaxed">
+          We do not inject third-party ad retargeting pixels, fingerprinting scripts, or cross-site tracking cookies.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <div class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <Lock className="w-4 h-4" />
+        </div>
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white">Local API Key Vault</h3>
+        <p class="text-[11px] text-slate-500 dark:text-[#AAAAAA] leading-relaxed">
+          Custom YouTube API keys are stored exclusively in your own browser's localStorage and never transmitted to our servers.
+        </p>
+      </div>
+    </div>
+
+    {/* Policy Clauses */}
+    <div class="space-y-8 text-xs sm:text-sm text-slate-700 dark:text-[#CCCCCC] leading-relaxed">
+      {/* 1. Introduction */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <span>1. Introduction & Scope</span>
+        </h2>
+        <p>
+          YouTube Playlist Length Analyser provides a web-based utility for calculating video durations, speeds, study schedules, and range subsets for public and unlisted YouTube playlists. We do not require users to register accounts, provide personal identification, or share private personal information.
+        </p>
+      </section>
+
+      {/* 2. YouTube API Disclosure */}
+      <section class="space-y-2.5 p-5 rounded-2xl bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#262626]">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <span>2. YouTube API Services & Google Privacy Policy</span>
+        </h2>
+        <p>
+          This website utilizes the official <strong>YouTube Data API v3</strong> to retrieve metadata associated with requested playlists (including video IDs, titles, durations, and channel identifiers).
+        </p>
+        <p>
+          By using this service to analyze YouTube playlists, you acknowledge and agree that your interaction with YouTube data is governed by:
+        </p>
+        <ul class="list-disc pl-5 space-y-1 font-medium text-slate-900 dark:text-white">
+          <li>
+            <a
+              href="https://www.youtube.com/t/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-red-600 dark:text-red-400 underline inline-flex items-center gap-1"
+            >
+              <span>YouTube Terms of Service</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-red-600 dark:text-red-400 underline inline-flex items-center gap-1"
+            >
+              <span>Google Privacy Policy</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </li>
+        </ul>
+        <p class="text-slate-500 dark:text-[#AAAAAA] text-xs">
+          Our application does not access, store, or share private user Google account credentials, watch history, or private playlist content.
+        </p>
+      </section>
+
+      {/* 3. Local Storage Disclosure */}
+      <section class="space-y-3">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <Database className="w-4 h-4 text-red-600 dark:text-red-400" />
+          <span>3. What We Store Locally in Your Browser (localStorage)</span>
+        </h2>
+        <p>
+          To deliver a smooth user experience without requiring backend accounts, our application uses standard HTML5 <code class="font-mono bg-slate-100 dark:bg-[#202020] px-1 py-0.5 rounded text-red-600 dark:text-red-400">localStorage</code> on your local device. The table below lists all keys used:
+        </p>
+
+        <div class="overflow-x-auto border border-slate-200 dark:border-[#272727] rounded-xl">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-100 dark:bg-[#202020] border-b border-slate-200 dark:border-[#272727] text-slate-900 dark:text-white font-mono">
+              <tr>
+                <th class="p-3">Key Name</th>
+                <th class="p-3">Purpose</th>
+                <th class="p-3">Storage Location</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-[#222222]">
+              <tr>
+                <td class="p-3 font-mono text-red-600 dark:text-red-400 font-semibold">user_yt_api_key</td>
+                <td class="p-3">Your optional custom Google YouTube API key (BYOK mode)</td>
+                <td class="p-3">Local browser only</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-red-600 dark:text-red-400 font-semibold">yt_watched_&lt;id&gt;</td>
+                <td class="p-3">List of video IDs you marked as watched for that playlist</td>
+                <td class="p-3">Local browser only</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-red-600 dark:text-red-400 font-semibold">yt_prefs_&lt;id&gt;</td>
+                <td class="p-3">Saved custom speed (e.g. 1.35x) and range boundaries</td>
+                <td class="p-3">Local browser only</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-red-600 dark:text-red-400 font-semibold">theme</td>
+                <td class="p-3">Light or dark mode display preference</td>
+                <td class="p-3">Local browser only</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-red-600 dark:text-red-400 font-semibold">yt_cache_&lt;id&gt;</td>
+                <td class="p-3">Temporary metadata cache to prevent repetitive API requests</td>
+                <td class="p-3">Local browser only</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* 4. Contact Form Information */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          4. Contact Form Inquiries
+        </h2>
+        <p>
+          If you voluntarily contact us through our Contact page, we receive your name, email address, topic, and message content. This information is used strictly to respond to your inquiry and troubleshoot any reported technical issues. We never sell, rent, or distribute contact lists to third-party marketers or data brokers.
+        </p>
+      </section>
+
+      {/* 5. How to Clear or Delete Your Data */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          5. Data Erasure & Your Control
+        </h2>
+        <p>
+          Because all preference data resides in your browser's local sandbox, you maintain absolute control over your information. You can permanently erase all stored playlist progress, API keys, and cached durations at any time by:
+        </p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Clicking the <strong>Settings</strong> button in the Analyzer interface and deleting your API key.</li>
+          <li>Clearing website cookies and site data for this domain via your browser settings.</li>
+        </ul>
+      </section>
+
+      {/* 6. Children's Privacy */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          6. Children's Online Privacy Protection
+        </h2>
+        <p>
+          Our service is a general utility designed for learners of all ages. We do not knowingly collect personal identifiable information from children under the age of 13.
+        </p>
+      </section>
+
+      {/* 7. Changes to Policy */}
+      <section class="space-y-2.5">
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          7. Policy Updates
+        </h2>
+        <p>
+          We may occasionally update this Privacy Policy to reflect technical enhancements or regulatory changes. Any modifications will be posted to this page with an updated "Last Updated" timestamp.
+        </p>
+      </section>
+
+      {/* 8. Contact */}
+      <section class="p-5 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] space-y-2">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Questions Regarding This Policy?</h3>
+        <p class="text-xs text-slate-600 dark:text-[#AAAAAA]">
+          If you have questions about our data practices or need clarification on our YouTube API usage, feel free to <a href="/contact" class="text-red-600 dark:text-red-400 font-semibold underline">contact us</a> or email <span class="font-mono text-slate-900 dark:text-white">support@youtubeplaylistlengthcheck.com</span>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
