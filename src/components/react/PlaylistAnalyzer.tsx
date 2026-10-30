@@ -432,40 +432,6 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             </div>
           </form>
 
-          {/* Quick Demo Playlist Chips for Instant Mobile Testing */}
-          <div className="flex items-center justify-center gap-1.5 flex-wrap pt-1 text-xs">
-            <span className="text-[11px] font-mono text-slate-400 dark:text-[#717171]">Try sample:</span>
-            <button
-              type="button"
-              onClick={() => {
-                if (cooldownSeconds > 0) {
-                  setShowCooldownNotice(true);
-                  return;
-                }
-                const demoId = 'PL4cUxeGkcC9gUdyb82gveDC5tQ7m55h6C';
-                setInputUrl(demoId);
-                fetchAnalysis(demoId);
-              }}
-              className="px-2.5 py-1 rounded-full bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500 text-[11px] font-mono text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors touch-manipulation cursor-pointer shadow-xs"
-            >
-              React Tutorial
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                if (cooldownSeconds > 0) {
-                  setShowCooldownNotice(true);
-                  return;
-                }
-                const demoId = 'PLr6-GrH6237g8CFrqR7G3_5sQvWk6P2-B';
-                setInputUrl(demoId);
-                fetchAnalysis(demoId);
-              }}
-              className="px-2.5 py-1 rounded-full bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500 text-[11px] font-mono text-slate-600 dark:text-[#AAAAAA] hover:text-slate-900 dark:hover:text-white transition-colors touch-manipulation cursor-pointer shadow-xs"
-            >
-              Python Basics
-            </button>
-          </div>
 
           {/* Supported formats hint */}
           <div className="text-[11px] text-slate-400 dark:text-[#717171] font-mono flex items-center justify-center gap-2 flex-wrap pt-0.5">
