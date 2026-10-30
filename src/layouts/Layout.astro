@@ -4,27 +4,67 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  canonical?: string;
+  ogType?: string;
+  ogImage?: string;
+  keywords?: string;
 }
 
 const {
-  title = "YouTube Playlist Length Calculator & Watch Time Analyser",
-  description = "Calculate total YouTube playlist duration at 1.25x, 1.5x, and 2.0x speed. Filter by length, view count, and plan your study schedule."
+  title = "YouTube Playlist Length Calculator - Check & Calculate Duration Online",
+  description = "Calculate YouTube playlist length instantly with our free online tool. Check duration at 1.25x, 1.5x, 2x speed, track watched videos & plan your schedule.",
+  canonical,
+  ogType = "website",
+  ogImage = "https://youtubeplaylistlengthcheck.com/og-image.png",
+  keywords = "youtube playlist length, youtube playlist length calculator, calculate youtube playlist length, youtube playlist length checker, check youtube playlist length, find youtube playlist length, youtube playlist length calc, how to see youtube playlist length, youtube playlist length finder, youtube playlist length analyzer tool, youtube playlist length calculator online tool, see youtube playlist length, youtube playlist length calculator online, get youtube playlist length",
 } = Astro.props;
 
 const siteUrl = "https://youtubeplaylistlengthcheck.com";
+const canonicalUrl = canonical || (Astro.url.pathname === '/' || Astro.url.pathname === '' ? siteUrl : `${siteUrl}${Astro.url.pathname.replace(/\/$/, '')}`);
+const fullOgImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`;
 
 const webAppSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "YouTube Playlist Length Checker",
+  "name": "YouTube Playlist Length Calculator",
+  "alternateName": [
+    "YouTube Playlist Length Checker",
+    "YouTube Playlist Length Calc",
+    "YouTube Playlist Length Finder",
+    "YouTube Playlist Length Analyzer Tool"
+  ],
   "url": siteUrl,
   "description": description,
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Calculate YouTube playlist length at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x playback speed",
+    "Check YouTube playlist duration and total video count",
+    "Custom video range selector (e.g., video 5 to 25)",
+    "Interactive daily study schedule planner with completion date forecasts",
+    "Watched video progress tracking with persistent browser memory",
+    "Automatic filtering of private, deleted, and unavailable videos"
+  ]
+};
+
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "YouTube Playlist Length Calculator",
+  "url": siteUrl,
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://youtubeplaylistlengthcheck.com/?list={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
   }
 };
 ---
@@ -47,10 +87,11 @@ const webAppSchema = {
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="keywords" content="youtube playlist length calculator, how long is this youtube playlist, youtube playlist duration at 1.5x speed, youtube playlist study schedule planner, youtube video runtime counter, youtube playlist length check, youtube course progress tracker" />
-    <meta name="author" content="YouTube Playlist Length Analyser" />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="YouTube Playlist Length Calculator" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="#0F0F0F" id="theme-color-meta" />
-    <link rel="canonical" href={siteUrl} />
+    <link rel="canonical" href={canonicalUrl} />
 
     {/* Inline script to prevent theme flash */}
     <script is:inline>
@@ -71,25 +112,36 @@ const webAppSchema = {
       })();
     </script>
 
-    {/* Open Graph / Facebook */}
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={siteUrl} />
+    {/* Open Graph / Facebook / LinkedIn */}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="YouTube Playlist Length Calculator" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullOgImageUrl} />
+    <meta property="og:image:secure_url" content={fullOgImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="YouTube Playlist Length Calculator and Analyzer Tool" />
 
-    {/* Twitter */}
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={siteUrl} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
+    {/* Twitter Cards */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImageUrl} />
+    <meta name="twitter:image:alt" content="YouTube Playlist Length Calculator and Analyzer Tool" />
 
     {/* Fonts */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    {/* JSON-LD Web Application Schema */}
+    {/* JSON-LD Schemas */}
     <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
   </head>
   <body class="bg-slate-50 dark:bg-[#0F0F0F] text-slate-900 dark:text-[#F1F1F1] min-h-screen flex flex-col font-sans selection:bg-red-600 selection:text-white transition-colors duration-150">
     <slot />

@@ -3,16 +3,16 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: "How do I calculate the total length of a YouTube playlist?",
-    answer: "Simply copy any YouTube playlist URL (or video link containing &list=) and paste it into the search box above. Our analyzer queries the official YouTube Data API v3 in paginated batches, converts each video's ISO 8601 duration string into seconds, and aggregates the total watch time instantly."
+    question: "How do I check YouTube playlist length and calculate total duration?",
+    answer: "To check YouTube playlist length, simply copy any YouTube playlist URL (or video link containing &list=) and paste it into the search box above. Our YouTube playlist length calculator online tool queries the official YouTube Data API v3 in paginated batches, converts each video's ISO 8601 duration string into seconds, and aggregates the total watch time instantly."
   },
   {
-    question: "How much time do I save watching a playlist at 1.25x, 1.5x, or 2.0x speed?",
-    answer: "Watching at 1.25x speed cuts your watch time by 20% (you save 12 minutes per hour). At 1.5x speed, you save 33.3% of total runtime (20 minutes per hour). At 2.0x speed, you finish in half the time (50% reduction). Our Playback Speed Matrix computes exact savings down to the second for any custom multiplier."
+    question: "How much time do I save when I calculate YouTube playlist length at 1.25x, 1.5x, or 2.0x speed?",
+    answer: "Watching at 1.25x speed cuts your watch time by 20% (saving 12 minutes per hour). At 1.5x speed, you save 33.3% of total runtime (20 minutes per hour). At 2.0x speed, you finish in half the time (50% reduction). Our YouTube playlist length calc computes exact time savings down to the second for any custom speed multiplier."
   },
   {
-    question: "Can I calculate the duration for a specific range of videos (e.g. video #10 to #25)?",
-    answer: "Yes! Use the Range & Progress Tracker to set custom start and end video numbers, or pick quick presets like 'First 10', 'First Half', or 'Second Half'. The total duration, speed comparisons, and study projections will update in real-time exclusively for your selected subset."
+    question: "Can I find YouTube playlist length for a specific range of videos?",
+    answer: "Yes! Use the Range & Progress Tracker to set custom start and end video numbers, or pick quick presets like 'First 10', 'First Half', or 'Second Half'. Our YouTube playlist length analyzer tool updates the total duration, speed comparisons, and study projections in real-time exclusively for your selected subset."
   },
   {
     question: "How does the Smart Study & Schedule Planner work?",
@@ -27,8 +27,8 @@ const faqs = [
     answer: "Our backend handles paginated requests up to 1,000 videos per playlist using token-based pagination (`nextPageToken`) and batch processing (`videos.list` up to 50 items per call). This comfortably handles massive courses, tutorials, and music archives."
   },
   {
-    question: "Do I need my own YouTube API key to use this tool?",
-    answer: "No, you can test all features immediately with our built-in interactive demo sample playlists. If you analyze custom live playlists and encounter global quota limits, you can easily plug in your own free YouTube Data API v3 key in the Settings modal (it takes under 2 minutes to create in Google Cloud and grants 10,000 free quota units daily)."
+    question: "Is this YouTube playlist length calculator online tool free to use?",
+    answer: "Yes, this YouTube playlist length calculator online tool is 100% free with no registration required. You can check YouTube playlist length immediately with our interactive demo samples or analyze live playlists using the shared key or your own free YouTube Data API v3 key in Settings."
   }
 ];
 
