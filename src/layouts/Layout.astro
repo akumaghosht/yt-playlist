@@ -12,12 +12,12 @@ interface Props {
 }
 
 const {
-  title = "YouTube Playlist Length Calculator - Check & Calculate Duration Online",
-  description = "Calculate YouTube playlist length instantly with our free online tool. Check duration at 1.25x, 1.5x, 2x speed, track watched videos & plan your schedule.",
+  title = "YouTube Playlist Length Checker - Check & Calculate Duration Online",
+  description = "Check and calculate YouTube playlist length instantly with our free online tool. Check duration at 1.25x, 1.5x, 2x speed, track watched videos & plan your schedule.",
   canonical,
   ogType = "website",
   ogImage = "https://youtubeplaylistlengthcheck.com/og-image.png",
-  keywords = "youtube playlist length, youtube playlist length calculator, calculate youtube playlist length, youtube playlist length checker, check youtube playlist length, find youtube playlist length, youtube playlist length calc, how to see youtube playlist length, how to see the length of a playlist on youtube, how long can a youtube playlist be, why can i only see 200 videos in my youtube playlist, what is the ideal length of a playlist, does youtube limit the number of playlists, do youtube playlists count as views, why wont youtube show my full playlist, youtube playlist length finder, youtube playlist length analyzer tool, youtube playlist length calculator online tool, see youtube playlist length, youtube playlist length calculator online, get youtube playlist length",
+  keywords = "youtube playlist length, youtube playlist length checker, check youtube playlist length, youtube playlist length calculator, calculate youtube playlist length, find youtube playlist length, youtube playlist length calc, how to see youtube playlist length, how to see the length of a playlist on youtube, how long can a youtube playlist be, why can i only see 200 videos in my youtube playlist, what is the ideal length of a playlist, does youtube limit the number of playlists, do youtube playlists count as views, why wont youtube show my full playlist, youtube playlist length finder, youtube playlist length analyzer tool, youtube playlist length calculator online tool, see youtube playlist length, youtube playlist length calculator online, get youtube playlist length",
   robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
 } = Astro.props;
 
@@ -28,9 +28,9 @@ const fullOgImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogIma
 const webAppSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "YouTube Playlist Length Calculator",
+  "name": "YouTube Playlist Length Checker",
   "alternateName": [
-    "YouTube Playlist Length Checker",
+    "YouTube Playlist Length Calculator",
     "YouTube Playlist Length Calc",
     "YouTube Playlist Length Finder",
     "YouTube Playlist Length Analyzer Tool"
@@ -46,8 +46,8 @@ const webAppSchema = {
     "priceCurrency": "USD"
   },
   "featureList": [
-    "Calculate YouTube playlist length at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x playback speed",
     "Check YouTube playlist duration and total video count",
+    "Calculate YouTube playlist length at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x playback speed",
     "Custom video range selector (e.g., video 5 to 25)",
     "Interactive daily study schedule planner with completion date forecasts",
     "Watched video progress tracking with persistent browser memory",
@@ -58,7 +58,7 @@ const webAppSchema = {
 const webSiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "YouTube Playlist Length Calculator",
+  "name": "YouTube Playlist Length Checker",
   "url": siteUrl,
   "potentialAction": {
     "@type": "SearchAction",
@@ -90,7 +90,7 @@ const webSiteSchema = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
-    <meta name="author" content="YouTube Playlist Length Calculator" />
+    <meta name="author" content="YouTube Playlist Length Checker" />
     <meta name="robots" content={robots} />
     <meta name="theme-color" content="#0F0F0F" id="theme-color-meta" />
     <link rel="canonical" href={canonicalUrl} />
@@ -116,7 +116,7 @@ const webSiteSchema = {
 
     {/* Open Graph / Facebook / LinkedIn */}
     <meta property="og:type" content={ogType} />
-    <meta property="og:site_name" content="YouTube Playlist Length Calculator" />
+    <meta property="og:site_name" content="YouTube Playlist Length Checker" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
@@ -126,7 +126,7 @@ const webSiteSchema = {
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="YouTube Playlist Length Calculator and Analyzer Tool" />
+    <meta property="og:image:alt" content="YouTube Playlist Length Checker and Duration Tool" />
 
     {/* Twitter Cards */}
     <meta name="twitter:card" content="summary_large_image" />
@@ -134,7 +134,7 @@ const webSiteSchema = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={fullOgImageUrl} />
-    <meta name="twitter:image:alt" content="YouTube Playlist Length Calculator and Analyzer Tool" />
+    <meta name="twitter:image:alt" content="YouTube Playlist Length Checker and Duration Tool" />
 
     {/* Fonts */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
