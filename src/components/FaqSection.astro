@@ -2,33 +2,52 @@
 import { ChevronDown } from 'lucide-react';
 
 const faqs = [
+  // 1. Core Site / Tool Usage & Features (Top Priority)
   {
-    question: "How do I check YouTube playlist length and calculate total duration?",
-    answer: "To check YouTube playlist length, simply copy any YouTube playlist URL (or video link containing &list=) and paste it into the search box above. Our YouTube playlist length calculator online tool queries the official YouTube Data API v3 in paginated batches, converts each video's ISO 8601 duration string into seconds, and aggregates the total watch time instantly."
-  },
-  {
-    question: "How much time do I save when I calculate YouTube playlist length at 1.25x, 1.5x, or 2.0x speed?",
-    answer: "Watching at 1.25x speed cuts your watch time by 20% (saving 12 minutes per hour). At 1.5x speed, you save 33.3% of total runtime (20 minutes per hour). At 2.0x speed, you finish in half the time (50% reduction). Our YouTube playlist length calc computes exact time savings down to the second for any custom speed multiplier."
-  },
-  {
-    question: "Can I find YouTube playlist length for a specific range of videos?",
-    answer: "Yes! Use the Range & Progress Tracker to set custom start and end video numbers, or pick quick presets like 'First 10', 'First Half', or 'Second Half'. Our YouTube playlist length analyzer tool updates the total duration, speed comparisons, and study projections in real-time exclusively for your selected subset."
-  },
-  {
-    question: "How does the Smart Study & Schedule Planner work?",
-    answer: "The study planner offers two flexible modes: 'By Daily Time' allows you to choose your daily study limit (e.g. 45 mins/day) and days per week to project your realistic completion date. 'By Target Deadline' lets you select a calendar target date to calculate the exact minutes you must watch daily at your chosen playback speed."
-  },
-  {
-    question: "Why do some videos say 'Unavailable' or 'Private'?",
-    answer: "YouTube allows creators to delete or set individual videos within a public playlist to private. Our engine tags these videos with an 'Unavailable' badge and excludes them from total duration calculations so your time estimates remain 100% accurate."
-  },
-  {
-    question: "Is there a limit on how many videos a playlist can have?",
-    answer: "Our backend handles paginated requests up to 1,000 videos per playlist using token-based pagination (`nextPageToken`) and batch processing (`videos.list` up to 50 items per call). This comfortably handles massive courses, tutorials, and music archives."
+    question: "How to see the length of a playlist on YouTube?",
+    answer: "YouTube does not natively display the total duration of a playlist on its website or mobile app. To see the total length of a YouTube playlist, copy the playlist URL (or any video link containing &list=) and paste it into our YouTube playlist length calculator above. Click 'Analyze' to instantly fetch all video durations via the official YouTube Data API v3 and view the cumulative watch time in days, hours, minutes, and seconds, along with runtimes at 1.25x, 1.5x, 1.75x, and 2.0x playback speeds."
   },
   {
     question: "Is this YouTube playlist length calculator online tool free to use?",
-    answer: "Yes, this YouTube playlist length calculator online tool is 100% free with no registration required. You can check YouTube playlist length immediately with our interactive demo samples or analyze live playlists using the shared key or your own free YouTube Data API v3 key in Settings."
+    answer: "Yes, this YouTube playlist length calculator online tool is 100% free with no registration, subscription, or software downloads required. You can check YouTube playlist length immediately with our interactive demo samples or analyze live playlists using the shared key or your own free YouTube Data API v3 key in Settings."
+  },
+  {
+    question: "How much time do I save when I calculate YouTube playlist length at 1.25x, 1.5x, or 2.0x speed?",
+    answer: "Watching at 1.25x speed cuts your watch time by 20% (saving 12 minutes per hour). At 1.5x speed, you save 33.3% of total runtime (20 minutes per hour). At 1.75x speed, you save nearly 43% (25.7 minutes per hour). At 2.0x speed, you finish in exactly half the time (50% reduction, or 30 minutes saved per hour). Our YouTube playlist length calculator computes exact time savings down to the second for any custom speed multiplier."
+  },
+  {
+    question: "Can I find YouTube playlist length for a specific range of videos?",
+    answer: "Yes! Use the Range & Progress Tracker to set custom start and end video numbers (e.g., videos #5 to #25), or select quick presets like 'First 10', 'First Half', or 'Second Half'. Our analyzer updates total duration, speed comparisons, and study projections in real-time exclusively for your selected subset."
+  },
+  {
+    question: "How does the Smart Study & Schedule Planner work?",
+    answer: "The study planner offers two flexible modes: 'By Daily Time' allows you to choose your daily study limit (e.g., 45 minutes/day) and active study days per week to project your realistic completion date. 'By Target Deadline' lets you select a calendar target date to calculate the exact minutes you must watch daily at your chosen playback speed to finish on time."
+  },
+  {
+    question: "Why can I only see 200 videos in my YouTube playlist?",
+    answer: "When you play a playlist on YouTube, the sidebar watch queue deliberately caps the displayed list at 200 videos. This is a client-side performance optimization designed by YouTube to avoid heavy browser memory consumption and lag. The remaining videos still exist in the playlist, but they only render dynamically as you advance or if you browse the playlist's dedicated library URL. Our calculator bypasses this 200-video UI limit by fetching the complete playlist via the official YouTube API."
+  },
+  {
+    question: "Why won't YouTube show my full playlist?",
+    answer: "YouTube may not show your full playlist for three main reasons: (1) Deleted or Private Videos—if an uploader removes a video or sets it to private, YouTube hides it from public view while the header video count still includes it; (2) Regional or Age Restrictions—certain videos are blocked in specific countries or require age verification; and (3) The 200-video queue limit on the active player page. Our tool flags unavailable and private videos automatically so your total watch time calculations stay 100% accurate."
+  },
+  {
+    question: "How long can a YouTube playlist be?",
+    answer: "A YouTube playlist can contain a maximum of 5,000 videos. If you attempt to add more than 5,000 videos, YouTube will prevent additional uploads. However, YouTube enforces no limit on the cumulative duration of a playlist—it can run for hundreds or thousands of hours. Our online playlist duration calculator can process and calculate total watch times for up to 1,000 videos per playlist in a single analysis."
+  },
+
+  // 2. Broader Platform & YouTube Knowledge
+  {
+    question: "Do YouTube playlists count as views?",
+    answer: "Yes, watching videos through a YouTube playlist counts toward each video's public view count, total watch time, and channel analytics. The standard YouTube view verification guidelines apply: the viewer must initiate playback and watch for a meaningful duration (typically at least 30 seconds). However, looping a playlist continuously on mute or using automated scripts may trigger YouTube's spam algorithms and discount repeated views from the same IP address."
+  },
+  {
+    question: "What is the ideal length of a playlist?",
+    answer: "The ideal playlist length depends on your objective. For educational courses and tutorials, 15 to 30 videos (totaling 1 to 3 hours) is ideal to maintain student momentum and prevent burnout. For content creators optimizing YouTube SEO and viewer retention, 5 to 12 videos per playlist performs best for the recommendation algorithm and binging sessions. For music and study playlists, 30 to 60 tracks (around 2 to 3 hours) provides variety without repetitive loops."
+  },
+  {
+    question: "Does YouTube limit the number of playlists?",
+    answer: "YouTube does not place a public hard cap on the total number of playlists a channel can create over its lifetime. However, YouTube enforces a daily rate limit on creating new playlists to prevent spam and automated bot abuse. If you create dozens of playlists in a single day, you may encounter an error asking you to wait 24 hours before making additional playlists."
   }
 ];
 
@@ -55,7 +74,7 @@ const faqJsonLd = {
       Frequently Asked Questions
     </h2>
     <p class="text-xs sm:text-sm text-slate-600 dark:text-[#AAAAAA] max-w-xl mx-auto">
-      Everything you need to know about YouTube playlist length calculations, playback speeds, and study scheduling.
+      Everything you need to know about calculating YouTube playlist lengths, speeds, schedules, limits, and views.
     </p>
   </div>
 
@@ -64,7 +83,9 @@ const faqJsonLd = {
       <details class="group bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-xl overflow-hidden transition-all duration-200 hover:border-slate-300 dark:hover:border-[#383838] shadow-sm">
         <summary class="flex items-center justify-between p-3.5 sm:p-5 cursor-pointer list-none select-none text-xs sm:text-sm font-semibold text-slate-900 dark:text-white group-open:text-red-600 dark:group-open:text-red-400 touch-manipulation min-h-[44px]">
           <span class="flex items-center gap-2.5 sm:gap-3 text-left">
-            <span class="text-[11px] sm:text-xs font-mono text-slate-400 dark:text-[#717171] shrink-0">0{index + 1}</span>
+            <span class="text-[11px] sm:text-xs font-mono text-slate-400 dark:text-[#717171] shrink-0">
+              {String(index + 1).padStart(2, '0')}
+            </span>
             <span class="leading-snug">{faq.question}</span>
           </span>
           <span class="ml-3 sm:ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-slate-400 dark:text-[#717171]">
