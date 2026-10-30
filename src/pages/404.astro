@@ -1,0 +1,375 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import {
+  FileQuestion,
+  Home,
+  ArrowLeft,
+  Search,
+  Play,
+  FastForward,
+  Calendar,
+  HelpCircle,
+  Mail,
+  Copy,
+  Check,
+  Compass,
+  ArrowRight
+} from 'lucide-react';
+---
+
+<Layout
+  title="404: Page Not Found | YouTube Playlist Length Analyser"
+  description="The page you are looking for does not exist or has been moved. Calculate YouTube playlist length, explore speed multipliers, or jump back to our homepage."
+  robots="noindex, nofollow"
+>
+  <Navbar />
+
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10 sm:space-y-12">
+    {/* Breadcrumbs */}
+    <nav class="flex items-center space-x-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+      <a href="/" class="hover:text-red-600 dark:hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <span class="text-slate-900 dark:text-white font-semibold">404 Not Found</span>
+    </nav>
+
+    {/* Hero Section */}
+    <section class="text-center space-y-6 pt-2 pb-4">
+      {/* Visual Error Code & Icon */}
+      <div class="inline-flex items-center justify-center relative">
+        {/* Glow backdrop */}
+        <div class="absolute -inset-4 bg-red-600/10 dark:bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative flex flex-col items-center">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center shadow-lg shadow-red-950/10 mb-4">
+            <FileQuestion className="w-8 h-8 sm:w-10 sm:h-10" />
+          </div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-[#1f1f1f] border border-slate-200 dark:border-[#333333] text-[11px] font-mono font-medium text-slate-600 dark:text-[#AAAAAA]">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span>HTTP STATUS 404 • ROUTE_NOT_FOUND</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3 max-w-2xl mx-auto">
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Lost in the <span class="text-red-600 dark:text-red-500">Queue?</span>
+        </h1>
+        <p class="text-sm sm:text-base text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+          The page or URL you requested could not be located. It may have been moved, renamed, or never added to our playlist index.
+        </p>
+      </div>
+
+      {/* Auto-detected Playlist Notification (Shown dynamically if URL contains playlist parameters) */}
+      <div id="detected-playlist-alert" class="hidden max-w-xl mx-auto p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 text-left space-y-2">
+        <div class="flex items-center gap-2 text-amber-800 dark:text-amber-300 text-xs font-bold font-mono">
+          <Play className="w-3.5 h-3.5 fill-amber-600 text-amber-600 dark:fill-amber-400 dark:text-amber-400" />
+          <span>Did you mean to calculate this playlist?</span>
+        </div>
+        <p class="text-xs text-amber-700 dark:text-amber-300/80">
+          We found a playlist parameter in your link: <code id="detected-playlist-id" class="font-mono font-bold bg-amber-100 dark:bg-amber-900/60 px-1.5 py-0.5 rounded"></code>
+        </p>
+        <a
+          id="detected-playlist-btn"
+          href="/"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition-colors shadow-sm"
+        >
+          <span>Calculate This Playlist Now</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </a>
+      </div>
+
+      {/* Quick Playlist URL Search / Jump Tool */}
+      <div class="max-w-xl mx-auto p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-3 text-left">
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
+          <Search className="w-4 h-4 text-red-600 dark:text-red-500" />
+          <span>Looking to calculate a YouTube playlist?</span>
+        </div>
+        <p class="text-xs text-slate-500 dark:text-[#888888]">
+          Paste any YouTube playlist link, share link, or playlist ID below to analyze it immediately:
+        </p>
+        <form id="quick-analyze-form" class="flex flex-col sm:flex-row gap-2">
+          <div class="relative flex-1">
+            <input
+              id="quick-analyze-input"
+              type="text"
+              placeholder="e.g. https://www.youtube.com/playlist?list=PL..."
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#333333] bg-slate-50 dark:bg-[#202020] text-slate-900 dark:text-white placeholder-slate-400 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-500"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs font-semibold transition-colors shadow-md shadow-red-950/20 shrink-0 cursor-pointer"
+          >
+            <Play className="w-3.5 h-3.5 fill-white" />
+            <span>Analyze</span>
+          </button>
+        </form>
+      </div>
+
+      {/* Primary Actions */}
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs sm:text-sm font-semibold transition-colors shadow-md shadow-slate-950/10"
+        >
+          <Home className="w-4 h-4" />
+          <span>Back to Homepage</span>
+        </a>
+
+        <button
+          id="go-back-btn"
+          type="button"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-[#181818] hover:bg-slate-50 dark:hover:bg-[#222222] border border-slate-200 dark:border-[#272727] text-slate-700 dark:text-[#CCCCCC] text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Previous Page</span>
+        </button>
+      </div>
+    </section>
+
+    {/* Helpful Navigation Hub */}
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <Compass className="w-4 h-4 text-red-600 dark:text-red-500" />
+          <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
+            Popular Destinations
+          </h2>
+        </div>
+        <span class="text-xs text-slate-400 font-mono">Quick Navigation</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <a
+          href="/#analyzer"
+          class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500/40 dark:hover:border-red-500/40 transition-all group shadow-sm flex flex-col justify-between space-y-3"
+        >
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Play className="w-4 h-4 fill-red-600 dark:fill-red-400" />
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white pt-1">Playlist Analyzer</h3>
+            <p class="text-[11px] text-slate-500 dark:text-[#888888] leading-relaxed">
+              Calculate total runtime, video count, and average duration of any playlist.
+            </p>
+          </div>
+          <div class="flex items-center gap-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+            <span>Open Tool</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </a>
+
+        <a
+          href="/#features"
+          class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500/40 dark:hover:border-red-500/40 transition-all group shadow-sm flex flex-col justify-between space-y-3"
+        >
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <FastForward className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white pt-1">Speed Multipliers</h3>
+            <p class="text-[11px] text-slate-500 dark:text-[#888888] leading-relaxed">
+              View duration matrix at 1.25x, 1.5x, 1.75x, and 2.0x playback speed.
+            </p>
+          </div>
+          <div class="flex items-center gap-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+            <span>Compare Speeds</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </a>
+
+        <a
+          href="/#analyzer"
+          class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500/40 dark:hover:border-red-500/40 transition-all group shadow-sm flex flex-col justify-between space-y-3"
+        >
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Calendar className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white pt-1">Study Schedule Planner</h3>
+            <p class="text-[11px] text-slate-500 dark:text-[#888888] leading-relaxed">
+              Set daily minutes to forecast exact completion dates for courses.
+            </p>
+          </div>
+          <div class="flex items-center gap-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+            <span>Plan Schedule</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </a>
+
+        <a
+          href="/#faq"
+          class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500/40 dark:hover:border-red-500/40 transition-all group shadow-sm flex flex-col justify-between space-y-3"
+        >
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <HelpCircle className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white pt-1">Help & FAQ</h3>
+            <p class="text-[11px] text-slate-500 dark:text-[#888888] leading-relaxed">
+              Answers to playlist limits, private video exclusions, and API quotas.
+            </p>
+          </div>
+          <div class="flex items-center gap-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+            <span>Read FAQs</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </a>
+
+        <a
+          href="/about"
+          class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500/40 dark:hover:border-red-500/40 transition-all group shadow-sm flex flex-col justify-between space-y-3"
+        >
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Compass className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white pt-1">About Us</h3>
+            <p class="text-[11px] text-slate-500 dark:text-[#888888] leading-relaxed">
+              Our engineering philosophy, privacy architecture, and zero-ad promise.
+            </p>
+          </div>
+          <div class="flex items-center gap-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+            <span>Learn More</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </a>
+
+        <a
+          href="/contact"
+          class="p-4 rounded-xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] hover:border-red-500/40 dark:hover:border-red-500/40 transition-all group shadow-sm flex flex-col justify-between space-y-3"
+        >
+          <div class="space-y-1">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Mail className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white pt-1">Contact Support</h3>
+            <p class="text-[11px] text-slate-500 dark:text-[#888888] leading-relaxed">
+              Found a broken link or need technical help? Send our team a message.
+            </p>
+          </div>
+          <div class="flex items-center gap-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+            <span>Get Support</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </a>
+      </div>
+    </section>
+
+    {/* Technical Diagnostic Details Card */}
+    <section class="p-5 rounded-2xl bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#222222] space-y-3 text-xs">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-slate-500 dark:text-[#888888] text-[11px] uppercase tracking-wider font-semibold">
+          Diagnostic Information
+        </span>
+        <button
+          id="copy-diag-btn"
+          type="button"
+          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-[#202020] border border-slate-200 dark:border-[#333333] hover:text-slate-900 dark:hover:text-white text-[11px] font-mono text-slate-600 dark:text-[#AAAAAA] transition-colors cursor-pointer"
+        >
+          <Copy className="w-3 h-3" id="copy-diag-icon" />
+          <span id="copy-diag-text">Copy Details</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] font-mono">
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">Requested URL</span>
+          <span id="diagnostic-url" class="text-slate-800 dark:text-[#DDDDDD] truncate block">Loading...</span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">Referrer</span>
+          <span id="diagnostic-ref" class="text-slate-800 dark:text-[#DDDDDD] truncate block">Direct Navigation</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  // Populate diagnostic information safely
+  try {
+    const urlEl = document.getElementById('diagnostic-url');
+    const refEl = document.getElementById('diagnostic-ref');
+    if (urlEl) urlEl.textContent = window.location.href;
+    if (refEl) refEl.textContent = document.referrer || 'Direct Navigation / No Referrer';
+
+    // Check if the current URL had a playlist ID embedded (e.g. /playlist?list=PLxxx or ?list=PLxxx)
+    const urlParams = new URLSearchParams(window.location.search);
+    let potentialId = urlParams.get('list') || urlParams.get('playlist');
+    
+    // Check if pathname contains PL pattern
+    if (!potentialId) {
+      const match = window.location.pathname.match(/(PL[a-zA-Z0-9_-]{10,})/i);
+      if (match) potentialId = match[1];
+    }
+
+    if (potentialId) {
+      const alertBox = document.getElementById('detected-playlist-alert');
+      const idEl = document.getElementById('detected-playlist-id');
+      const btnEl = document.getElementById('detected-playlist-btn');
+      if (alertBox && idEl && btnEl) {
+        idEl.textContent = potentialId;
+        btnEl.href = `/?list=${encodeURIComponent(potentialId)}#analyzer`;
+        alertBox.classList.remove('hidden');
+      }
+    }
+  } catch (e) {}
+
+  // Previous page button handler
+  const backBtn = document.getElementById('go-back-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    });
+  }
+
+  // Quick Analyze Form handler
+  const quickForm = document.getElementById('quick-analyze-form');
+  const quickInput = document.getElementById('quick-analyze-input');
+  if (quickForm && quickInput) {
+    quickForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = quickInput.value.trim();
+      if (!val) return;
+
+      // Extract playlist ID if full URL, or use raw input
+      let playlistId = val;
+      const listMatch = val.match(/[?&]list=([^&#]+)/i);
+      if (listMatch) {
+        playlistId = listMatch[1];
+      }
+
+      window.location.href = `/?list=${encodeURIComponent(playlistId)}#analyzer`;
+    });
+  }
+
+  // Copy diagnostic button handler
+  const copyBtn = document.getElementById('copy-diag-btn');
+  const copyText = document.getElementById('copy-diag-text');
+  if (copyBtn && copyText) {
+    copyBtn.addEventListener('click', async () => {
+      const diagText = `Error 404 Report:\nURL: ${window.location.href}\nReferrer: ${document.referrer || 'None'}\nTime: ${new Date().toISOString()}`;
+      try {
+        await navigator.clipboard.writeText(diagText);
+        copyText.textContent = 'Copied!';
+        setTimeout(() => {
+          copyText.textContent = 'Copy Details';
+        }, 2000);
+      } catch (err) {
+        copyText.textContent = 'Error copying';
+      }
+    });
+  }
+</script>
+

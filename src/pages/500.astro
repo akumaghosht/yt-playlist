@@ -1,0 +1,281 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import {
+  ServerCrash,
+  RefreshCw,
+  Home,
+  Key,
+  Trash2,
+  Mail,
+  HelpCircle,
+  Copy,
+  ArrowRight,
+  ShieldAlert,
+  Play,
+  LifeBuoy
+} from 'lucide-react';
+
+interface Props {
+  error?: unknown;
+}
+
+const { error } = Astro.props;
+const safeErrorMessage =
+  error instanceof Error
+    ? error.message
+    : typeof error === 'string'
+      ? error
+      : null;
+---
+
+<Layout
+  title="500: Server Error | YouTube Playlist Length Analyser"
+  description="An internal server error occurred while processing your playlist request. Try reloading the page, clearing cache, or checking our troubleshooting guide."
+  robots="noindex, nofollow"
+>
+  <Navbar />
+
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10 sm:space-y-12">
+    {/* Breadcrumbs */}
+    <nav class="flex items-center space-x-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+      <a href="/" class="hover:text-red-600 dark:hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <span class="text-slate-900 dark:text-white font-semibold">500 Server Error</span>
+    </nav>
+
+    {/* Hero Section */}
+    <section class="text-center space-y-6 pt-2 pb-4">
+      {/* Visual Error Code & Icon */}
+      <div class="inline-flex items-center justify-center relative">
+        <div class="absolute -inset-4 bg-red-600/10 dark:bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative flex flex-col items-center">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center shadow-lg shadow-red-950/10 mb-4">
+            <ServerCrash className="w-8 h-8 sm:w-10 sm:h-10" />
+          </div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-[#1f1f1f] border border-slate-200 dark:border-[#333333] text-[11px] font-mono font-medium text-slate-600 dark:text-[#AAAAAA]">
+            <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+            <span>HTTP STATUS 500 • INTERNAL_SERVER_ERROR</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3 max-w-2xl mx-auto">
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Unexpected <span class="text-red-600 dark:text-red-500">Server Error</span>
+        </h1>
+        <p class="text-sm sm:text-base text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+          Something went wrong while processing your request. This is usually transient and may be caused by external YouTube API latency or quota limits.
+        </p>
+      </div>
+
+      {/* Dynamic Error Notice if provided */}
+      {safeErrorMessage && (
+        <div class="max-w-xl mx-auto p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-left">
+          <span class="text-[10px] uppercase font-mono tracking-wider text-red-600 dark:text-red-400 font-bold block mb-1">
+            Reported Exception
+          </span>
+          <code class="text-xs font-mono text-red-700 dark:text-red-300 break-words block">
+            {safeErrorMessage}
+          </code>
+        </div>
+      )}
+
+      {/* Primary Recovery Actions */}
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <button
+          id="reload-page-btn"
+          type="button"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs sm:text-sm font-semibold transition-colors shadow-md shadow-red-950/20 cursor-pointer"
+        >
+          <RefreshCw className="w-4 h-4" id="reload-icon" />
+          <span>Reload Page</span>
+        </button>
+
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs sm:text-sm font-semibold transition-colors shadow-md shadow-slate-950/10"
+        >
+          <Home className="w-4 h-4" />
+          <span>Back to Homepage</span>
+        </a>
+      </div>
+    </section>
+
+    {/* Guided Troubleshooting Steps */}
+    <section class="space-y-4">
+      <div class="flex items-center gap-2">
+        <LifeBuoy className="w-4 h-4 text-red-600 dark:text-red-400" />
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
+          Common Causes & Troubleshooting
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Cause 1: YouTube API Quota */}
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
+              <Key className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">YouTube API Quota</h3>
+            <p class="text-xs text-slate-500 dark:text-[#888888] leading-relaxed">
+              Google enforces a daily quota on public API keys. If the shared pool is exhausted, requests may fail temporarily.
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
+            <a
+              href="/#analyzer"
+              class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:underline"
+            >
+              <span>Add Your Own Free Key</span>
+              <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+
+        {/* Cause 2: Stale Local Storage */}
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
+              <Trash2 className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">Corrupted Local Cache</h3>
+            <p class="text-xs text-slate-500 dark:text-[#888888] leading-relaxed">
+              In rare situations, damaged playlist cache in your browser can cause rendering crashes.
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
+            <button
+              id="clear-cache-btn"
+              type="button"
+              class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-[#CCCCCC] hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer"
+            >
+              <span id="clear-cache-text">Clear Browser Cache</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Cause 3: Contact Support */}
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
+              <Mail className="w-4 h-4" />
+            </div>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">Report System Outage</h3>
+            <p class="text-xs text-slate-500 dark:text-[#888888] leading-relaxed">
+              If the error persists after reloading, notify our development team and we will investigate promptly.
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
+            <a
+              href="/contact"
+              class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:underline"
+            >
+              <span>Contact Support</span>
+              <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Technical Diagnostic Details */}
+    <section class="p-5 rounded-2xl bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#222222] space-y-3 text-xs">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-slate-500 dark:text-[#888888] text-[11px] uppercase tracking-wider font-semibold">
+          Error Incident Summary
+        </span>
+        <button
+          id="copy-incident-btn"
+          type="button"
+          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-[#202020] border border-slate-200 dark:border-[#333333] hover:text-slate-900 dark:hover:text-white text-[11px] font-mono text-slate-600 dark:text-[#AAAAAA] transition-colors cursor-pointer"
+        >
+          <Copy className="w-3 h-3" />
+          <span id="copy-incident-text">Copy Incident Report</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">Timestamp</span>
+          <span id="incident-timestamp" class="text-slate-800 dark:text-[#DDDDDD] truncate block">Loading...</span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">User Agent</span>
+          <span id="incident-ua" class="text-slate-800 dark:text-[#DDDDDD] truncate block">Loading...</span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">Status Code</span>
+          <span class="text-red-600 dark:text-red-400 font-bold block">500 Server Error</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  // Timestamp & UA population
+  try {
+    const timeEl = document.getElementById('incident-timestamp');
+    const uaEl = document.getElementById('incident-ua');
+    if (timeEl) timeEl.textContent = new Date().toISOString();
+    if (uaEl) uaEl.textContent = navigator.userAgent;
+  } catch (e) {}
+
+  // Reload handler
+  const reloadBtn = document.getElementById('reload-page-btn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => {
+      window.location.reload();
+    });
+  }
+
+  // Clear cache handler
+  const clearBtn = document.getElementById('clear-cache-btn');
+  const clearText = document.getElementById('clear-cache-text');
+  if (clearBtn && clearText) {
+    clearBtn.addEventListener('click', () => {
+      try {
+        // Clear all yt-playlist related items from localStorage
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.startsWith('yt_') || key.startsWith('playlist_'))) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach((k) => localStorage.removeItem(k));
+        clearText.textContent = '✓ Cache Cleared! Reloading...';
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 800);
+      } catch (err) {
+        clearText.textContent = 'Failed to clear storage';
+      }
+    });
+  }
+
+  // Copy incident report handler
+  const copyBtn = document.getElementById('copy-incident-btn');
+  const copyText = document.getElementById('copy-incident-text');
+  if (copyBtn && copyText) {
+    copyBtn.addEventListener('click', async () => {
+      const report = `Incident Report (500 Error):\nTime: ${new Date().toISOString()}\nURL: ${window.location.href}\nUA: ${navigator.userAgent}`;
+      try {
+        await navigator.clipboard.writeText(report);
+        copyText.textContent = 'Copied!';
+        setTimeout(() => {
+          copyText.textContent = 'Copy Incident Report';
+        }, 2000);
+      } catch (err) {
+        copyText.textContent = 'Error copying';
+      }
+    });
+  }
+</script>
+

@@ -1,0 +1,275 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import {
+  AlertTriangle,
+  Home,
+  RefreshCw,
+  ArrowLeft,
+  Key,
+  Mail,
+  Copy,
+  HelpCircle,
+  Play,
+  ArrowRight
+} from 'lucide-react';
+---
+
+<Layout
+  title="Application Error | YouTube Playlist Length Analyser"
+  description="An unexpected error occurred while processing your request. Check troubleshooting steps and resolve YouTube playlist analytics."
+  robots="noindex, nofollow"
+>
+  <Navbar />
+
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10 sm:space-y-12">
+    {/* Breadcrumbs */}
+    <nav class="flex items-center space-x-2 text-xs font-mono text-slate-500 dark:text-[#AAAAAA]">
+      <a href="/" class="hover:text-red-600 dark:hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <span class="text-slate-900 dark:text-white font-semibold">Error Status</span>
+    </nav>
+
+    {/* Hero Section */}
+    <section class="text-center space-y-6 pt-2 pb-4">
+      {/* Visual Error Code & Icon */}
+      <div class="inline-flex items-center justify-center relative">
+        <div class="absolute -inset-4 bg-red-600/10 dark:bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative flex flex-col items-center">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center shadow-lg shadow-red-950/10 mb-4">
+            <AlertTriangle className="w-8 h-8 sm:w-10 sm:h-10" />
+          </div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-[#1f1f1f] border border-slate-200 dark:border-[#333333] text-[11px] font-mono font-medium text-slate-600 dark:text-[#AAAAAA]">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+            <span id="error-badge-text">SYSTEM ERROR</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3 max-w-2xl mx-auto">
+        <h1 id="error-heading" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Something Went <span class="text-red-600 dark:text-red-500">Wrong</span>
+        </h1>
+        <p id="error-description" class="text-sm sm:text-base text-slate-600 dark:text-[#AAAAAA] leading-relaxed">
+          An unexpected condition prevented the application from fulfilling your request.
+        </p>
+      </div>
+
+      {/* Dynamic Error Detail Box */}
+      <div id="error-detail-box" class="hidden max-w-xl mx-auto p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-left">
+        <span class="text-[10px] uppercase font-mono tracking-wider text-red-600 dark:text-red-400 font-bold block mb-1">
+          Error Message
+        </span>
+        <code id="error-detail-msg" class="text-xs font-mono text-red-700 dark:text-red-300 break-words block"></code>
+      </div>
+
+      {/* Primary Actions */}
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <button
+          id="reload-btn"
+          type="button"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs sm:text-sm font-semibold transition-colors shadow-md shadow-red-950/20 cursor-pointer"
+        >
+          <RefreshCw className="w-4 h-4" />
+          <span>Try Again</span>
+        </button>
+
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs sm:text-sm font-semibold transition-colors shadow-md shadow-slate-950/10"
+        >
+          <Home className="w-4 h-4" />
+          <span>Homepage</span>
+        </a>
+
+        <button
+          id="go-back-btn"
+          type="button"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-[#181818] hover:bg-slate-50 dark:hover:bg-[#222222] border border-slate-200 dark:border-[#272727] text-slate-700 dark:text-[#CCCCCC] text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Go Back</span>
+        </button>
+      </div>
+    </section>
+
+    {/* Guided Assistance Cards */}
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-3 flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <Key className="w-4 h-4" />
+          </div>
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">API Quota / Rate Limits</h3>
+          <p class="text-xs text-slate-500 dark:text-[#888888] leading-relaxed">
+            Exceeded requests? Configure your own Google YouTube Data API v3 key in Analyzer settings for unlimited access.
+          </p>
+        </div>
+        <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
+          <a
+            href="/#analyzer"
+            class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:underline"
+          >
+            <span>Open Settings</span>
+            <ArrowRight className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-3 flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <HelpCircle className="w-4 h-4" />
+          </div>
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">Knowledge Base</h3>
+          <p class="text-xs text-slate-500 dark:text-[#888888] leading-relaxed">
+            Check our frequently asked questions on playlist video limits, private video skips, and speed playback metrics.
+          </p>
+        </div>
+        <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
+          <a
+            href="/#faq"
+            class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:underline"
+          >
+            <span>Read FAQs</span>
+            <ArrowRight className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] shadow-sm space-y-3 flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <Mail className="w-4 h-4" />
+          </div>
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">Contact Support</h3>
+          <p class="text-xs text-slate-500 dark:text-[#888888] leading-relaxed">
+            Encountering a bug or persistent issue? Send a direct message to our engineering support team.
+          </p>
+        </div>
+        <div class="pt-2 border-t border-slate-100 dark:border-[#222222]">
+          <a
+            href="/contact"
+            class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:underline"
+          >
+            <span>Message Support</span>
+            <ArrowRight className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* Technical Diagnostic Details */}
+    <section class="p-5 rounded-2xl bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#222222] space-y-3 text-xs">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-slate-500 dark:text-[#888888] text-[11px] uppercase tracking-wider font-semibold">
+          Error Incident Summary
+        </span>
+        <button
+          id="copy-incident-btn"
+          type="button"
+          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-[#202020] border border-slate-200 dark:border-[#333333] hover:text-slate-900 dark:hover:text-white text-[11px] font-mono text-slate-600 dark:text-[#AAAAAA] transition-colors cursor-pointer"
+        >
+          <Copy className="w-3 h-3" />
+          <span id="copy-incident-text">Copy Incident Report</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">Timestamp</span>
+          <span id="incident-timestamp" class="text-slate-800 dark:text-[#DDDDDD] truncate block">Loading...</span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">Error Code</span>
+          <span id="incident-code" class="text-slate-800 dark:text-[#DDDDDD] truncate block">Generic</span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#262626] overflow-hidden">
+          <span class="text-slate-400 dark:text-[#666666] block text-[10px]">Current URL</span>
+          <span id="incident-url" class="text-slate-800 dark:text-[#DDDDDD] truncate block">Loading...</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('status') || params.get('code') || 'ERROR';
+    const msg = params.get('msg') || params.get('message');
+
+    const badgeEl = document.getElementById('error-badge-text');
+    const headingEl = document.getElementById('error-heading');
+    const descEl = document.getElementById('error-description');
+    const detailBox = document.getElementById('error-detail-box');
+    const detailMsg = document.getElementById('error-detail-msg');
+    const codeEl = document.getElementById('incident-code');
+    const timeEl = document.getElementById('incident-timestamp');
+    const urlEl = document.getElementById('incident-url');
+
+    if (timeEl) timeEl.textContent = new Date().toISOString();
+    if (urlEl) urlEl.textContent = window.location.href;
+    if (codeEl) codeEl.textContent = code;
+
+    if (badgeEl) {
+      badgeEl.textContent = `STATUS ${code}`;
+    }
+
+    if (code === '429') {
+      if (headingEl) headingEl.innerHTML = 'Rate Limit <span class="text-red-600 dark:text-red-500">Exceeded</span>';
+      if (descEl) descEl.textContent = 'Too many requests were sent in a short period or YouTube API quota was reached. Please wait a moment or supply a personal API key.';
+    } else if (code === '400') {
+      if (headingEl) headingEl.innerHTML = 'Bad <span class="text-red-600 dark:text-red-500">Request</span>';
+      if (descEl) descEl.textContent = 'The playlist identifier or query syntax provided was invalid. Verify your YouTube playlist URL.';
+    } else if (code === '503') {
+      if (headingEl) headingEl.innerHTML = 'Service <span class="text-red-600 dark:text-red-500">Unavailable</span>';
+      if (descEl) descEl.textContent = 'Our backend or the YouTube Data API is temporarily unavailable. We are working to restore normal operation.';
+    }
+
+    if (msg && detailBox && detailMsg) {
+      detailMsg.textContent = msg;
+      detailBox.classList.remove('hidden');
+    }
+  } catch (e) {}
+
+  const reloadBtn = document.getElementById('reload-btn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => {
+      window.location.reload();
+    });
+  }
+
+  const backBtn = document.getElementById('go-back-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    });
+  }
+
+  const copyBtn = document.getElementById('copy-incident-btn');
+  const copyText = document.getElementById('copy-incident-text');
+  if (copyBtn && copyText) {
+    copyBtn.addEventListener('click', async () => {
+      const report = `Incident Report:\nTime: ${new Date().toISOString()}\nURL: ${window.location.href}`;
+      try {
+        await navigator.clipboard.writeText(report);
+        copyText.textContent = 'Copied!';
+        setTimeout(() => {
+          copyText.textContent = 'Copy Incident Report';
+        }, 2000);
+      } catch (err) {
+        copyText.textContent = 'Copy failed';
+      }
+    });
+  }
+</script>
+
