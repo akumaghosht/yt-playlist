@@ -22,6 +22,11 @@ import {
   formatViewCount,
 } from '../../utils/youtube';
 import { getCachedPlaylist } from '../../utils/cache';
+import {
+  checkRateLimit,
+  recordApiRequest,
+  getCooldownRemainingSeconds,
+} from '../../utils/rateLimit';
 import { SpeedMatrix } from './SpeedMatrix';
 import { ProgressTracker } from './ProgressTracker';
 import { SchedulePlanner } from './SchedulePlanner';
@@ -38,6 +43,8 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [rateLimitMessage, setRateLimitMessage] = useState<string | null>(null);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
   const [analysis, setAnalysis] = useState<PlaylistAnalysis | null>(null);
 
   // Speed matrix active speed
@@ -52,6 +59,15 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
   // Share link toast
   const [shareToast, setShareToast] = useState(false);
+
+  // Decrement cooldown countdown
+  useEffect(() => {
+    if (cooldownSeconds <= 0) return;
+    const interval = setInterval(() => {
+      setCooldownSeconds((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [cooldownSeconds]);
 
   // Initialize from LocalStorage & URL query params on mount
   useEffect(() => {
@@ -107,7 +123,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             setEndIndex(Math.max(1, Math.min(prefs.end, analysis.videos.length)));
             return;
           }
-        } catch {}
+        } catch { }
       }
 
       // Default range: all videos
@@ -205,17 +221,43 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
       if (cached) {
         setAnalysis(cached);
         setErrorMessage(null);
+        setRateLimitMessage(null);
         updateBrowserUrl(playlistId);
         return;
       }
     }
 
+    // Check rate limit & cooldown for uncached API calls
+    const isCustom = Boolean(
+      (apiKeyOverride && apiKeyOverride.trim()) ||
+      (customApiKey && customApiKey.trim()) ||
+      (typeof window !== 'undefined' &&
+        (localStorage.getItem('user_yt_api_key') || localStorage.getItem('yt_custom_api_key')))
+    );
+
+    const limitCheck = checkRateLimit(isCustom);
+    if (!limitCheck.allowed) {
+      if (limitCheck.reason === 'COOLDOWN') {
+        const wait = limitCheck.waitSeconds || 3;
+        setCooldownSeconds(wait);
+        setErrorMessage(`Please wait ${wait}s before making another request.`);
+      } else if (limitCheck.reason === 'QUOTA_EXCEEDED') {
+        setRateLimitMessage(
+          `To protect free service availability, requests on the shared key are limited to 10 playlists per 15 minutes. Please wait ~${limitCheck.resetMinutes || 15} min, or connect your own free YouTube API key in Settings for unlimited analyses.`
+        );
+      }
+      return;
+    }
+
     setIsLoading(true);
     setErrorMessage(null);
+    setRateLimitMessage(null);
 
     try {
       const activeKey = apiKeyOverride || customApiKey || defaultApiKey || getActiveApiKey();
       const result = await fetchPlaylistFromYouTube(playlistId, activeKey, bypassCache);
+      recordApiRequest(isCustom);
+      setCooldownSeconds(isCustom ? 2 : 4);
       setAnalysis(result);
       updateBrowserUrl(playlistId);
     } catch (err: any) {
@@ -344,7 +386,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || cooldownSeconds > 0}
                   className="w-full sm:w-auto px-6 py-2.5 sm:py-2.5 rounded-xl sm:rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs sm:text-sm font-semibold tracking-wide transition-all shadow-md shadow-red-950/20 dark:shadow-red-950/40 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 touch-manipulation min-h-[44px] sm:min-h-0 cursor-pointer"
                 >
                   {isLoading ? (
@@ -352,6 +394,8 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                       <Loader2 className="w-4 h-4 animate-spin" />
                       <span>Analyzing...</span>
                     </>
+                  ) : cooldownSeconds > 0 ? (
+                    <span>Wait {cooldownSeconds}s</span>
                   ) : (
                     <span>Calculate Length</span>
                   )}
@@ -432,6 +476,27 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           </nav>
         </div>
       </section>
+
+      {/* Rate limit notification with action to configure own key */}
+      {rateLimitMessage && (
+        <div className="max-w-2xl mx-auto p-3.5 sm:p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-900 dark:text-amber-200 text-xs sm:text-sm animate-in fade-in flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
+            <div>
+              <p className="font-semibold text-xs sm:text-sm">Rate Limit Reached</p>
+              <p className="text-amber-700 dark:text-amber-300 text-xs mt-0.5 leading-relaxed">{rateLimitMessage}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsSettingsOpen(true)}
+            className="w-full sm:w-auto px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs flex items-center justify-center gap-1.5 shrink-0 transition-colors cursor-pointer shadow-xs"
+          >
+            <Key className="w-3.5 h-3.5" />
+            <span>Use Personal Key</span>
+          </button>
+        </div>
+      )}
 
       {/* Subtle inline error feedback */}
       {errorMessage && (
