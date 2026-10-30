@@ -24,6 +24,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
 
   const handleSave = () => {
     const trimmed = apiKey.trim();
+    const defaultKey = (import.meta.env.PUBLIC_YOUTUBE_API_KEY || '').trim();
+
+    // Prevent bypassing rate limit by pasting the site's own default key
+    if (defaultKey && trimmed === defaultKey) {
+      setTestStatus('error');
+      setTestMessage('This is the site’s default shared key. Please enter your own personal API key to unlock unlimited requests.');
+      return;
+    }
+
     if (typeof window !== 'undefined') {
       if (trimmed) {
         localStorage.setItem('user_yt_api_key', trimmed);
@@ -54,6 +63,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
     if (!keyToTest) {
       setTestStatus('error');
       setTestMessage('Please enter an API key to test.');
+      return;
+    }
+
+    const defaultKey = (import.meta.env.PUBLIC_YOUTUBE_API_KEY || '').trim();
+    if (defaultKey && keyToTest === defaultKey) {
+      setTestStatus('error');
+      setTestMessage('This is the site’s default shared key. Please enter your own personal API key to unlock unlimited requests.');
       return;
     }
 

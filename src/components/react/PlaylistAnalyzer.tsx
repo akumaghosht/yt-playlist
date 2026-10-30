@@ -45,6 +45,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rateLimitMessage, setRateLimitMessage] = useState<string | null>(null);
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const [showCooldownNotice, setShowCooldownNotice] = useState(false);
   const [analysis, setAnalysis] = useState<PlaylistAnalysis | null>(null);
 
   // Speed matrix active speed
@@ -62,9 +63,18 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
   // Decrement cooldown countdown
   useEffect(() => {
-    if (cooldownSeconds <= 0) return;
+    if (cooldownSeconds <= 0) {
+      setShowCooldownNotice(false);
+      return;
+    }
     const interval = setInterval(() => {
-      setCooldownSeconds((prev) => (prev > 0 ? prev - 1 : 0));
+      setCooldownSeconds((prev) => {
+        if (prev <= 1) {
+          setShowCooldownNotice(false);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(interval);
   }, [cooldownSeconds]);
@@ -228,19 +238,25 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
     }
 
     // Check rate limit & cooldown for uncached API calls
-    const isCustom = Boolean(
+    const defaultKey = (defaultApiKey || import.meta.env.PUBLIC_YOUTUBE_API_KEY || '').trim();
+    const candidateKey = (
       (apiKeyOverride && apiKeyOverride.trim()) ||
       (customApiKey && customApiKey.trim()) ||
-      (typeof window !== 'undefined' &&
-        (localStorage.getItem('user_yt_api_key') || localStorage.getItem('yt_custom_api_key')))
+      (typeof window !== 'undefined'
+        ? (localStorage.getItem('user_yt_api_key') || localStorage.getItem('yt_custom_api_key') || '').trim()
+        : '')
     );
+
+    // Only qualify as a custom key if provided AND not identical to the site's default shared key
+    const isCustom = Boolean(candidateKey && (!defaultKey || candidateKey !== defaultKey));
 
     const limitCheck = checkRateLimit(isCustom);
     if (!limitCheck.allowed) {
       if (limitCheck.reason === 'COOLDOWN') {
         const wait = limitCheck.waitSeconds || 3;
         setCooldownSeconds(wait);
-        setErrorMessage(`Please wait ${wait}s before making another request.`);
+        setShowCooldownNotice(true);
+        setErrorMessage(null);
       } else if (limitCheck.reason === 'QUOTA_EXCEEDED') {
         setRateLimitMessage(
           `To protect free service availability, requests on the shared key are limited to 10 playlists per 15 minutes. Please wait ~${limitCheck.resetMinutes || 15} min, or connect your own free YouTube API key in Settings for unlimited analyses.`
@@ -252,12 +268,14 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
     setIsLoading(true);
     setErrorMessage(null);
     setRateLimitMessage(null);
+    setShowCooldownNotice(false);
 
     try {
       const activeKey = apiKeyOverride || customApiKey || defaultApiKey || getActiveApiKey();
       const result = await fetchPlaylistFromYouTube(playlistId, activeKey, bypassCache);
       recordApiRequest(isCustom);
       setCooldownSeconds(isCustom ? 2 : 4);
+      setShowCooldownNotice(false);
       setAnalysis(result);
       updateBrowserUrl(playlistId);
     } catch (err: any) {
@@ -284,6 +302,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (cooldownSeconds > 0) {
+      setShowCooldownNotice(true);
+      return;
+    }
     fetchAnalysis(inputUrl);
   };
 
@@ -294,6 +316,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
     if (playlistId) {
       e.preventDefault();
       setInputUrl(playlistId);
+      if (cooldownSeconds > 0) {
+        setShowCooldownNotice(true);
+        return;
+      }
       fetchAnalysis(playlistId);
     }
   };
@@ -386,8 +412,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
 
                 <button
                   type="submit"
-                  disabled={isLoading || cooldownSeconds > 0}
-                  className="w-full sm:w-auto px-6 py-2.5 sm:py-2.5 rounded-xl sm:rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs sm:text-sm font-semibold tracking-wide transition-all shadow-md shadow-red-950/20 dark:shadow-red-950/40 flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 touch-manipulation min-h-[44px] sm:min-h-0 cursor-pointer"
+                  disabled={isLoading}
+                  className={`w-full sm:w-auto px-6 py-2.5 sm:py-2.5 rounded-xl sm:rounded-full bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs sm:text-sm font-semibold tracking-wide transition-all shadow-md shadow-red-950/20 dark:shadow-red-950/40 flex items-center justify-center gap-2 shrink-0 touch-manipulation min-h-[44px] sm:min-h-0 cursor-pointer ${
+                    isLoading ? 'opacity-50 cursor-not-allowed' : cooldownSeconds > 0 ? 'opacity-80' : ''
+                  }`}
                 >
                   {isLoading ? (
                     <>
@@ -410,6 +438,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             <button
               type="button"
               onClick={() => {
+                if (cooldownSeconds > 0) {
+                  setShowCooldownNotice(true);
+                  return;
+                }
                 const demoId = 'PL4cUxeGkcC9gUdyb82gveDC5tQ7m55h6C';
                 setInputUrl(demoId);
                 fetchAnalysis(demoId);
@@ -421,6 +453,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
             <button
               type="button"
               onClick={() => {
+                if (cooldownSeconds > 0) {
+                  setShowCooldownNotice(true);
+                  return;
+                }
                 const demoId = 'PLr6-GrH6237g8CFrqR7G3_5sQvWk6P2-B';
                 setInputUrl(demoId);
                 fetchAnalysis(demoId);
@@ -498,13 +534,18 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
         </div>
       )}
 
-      {/* Subtle inline error feedback */}
-      {errorMessage && (
+      {/* Dynamic Cooldown Feedback in Sync with Button Timer */}
+      {showCooldownNotice && cooldownSeconds > 0 ? (
+        <div className="pt-2 text-xs text-red-600 dark:text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in text-center px-4">
+          <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
+          <span>Please wait {cooldownSeconds}s before making another request.</span>
+        </div>
+      ) : errorMessage ? (
         <div className="pt-2 text-xs text-red-600 dark:text-red-400 flex items-center justify-center gap-1.5 font-mono animate-in fade-in text-center px-4">
           <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
           <span>{errorMessage}</span>
         </div>
-      )}
+      ) : null}
 
       {/* Loading Skeleton */}
       {isLoading && (
