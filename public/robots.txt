@@ -1,8 +1,14 @@
+# Robots.txt for YouTube Playlist Length Checker
+# https://youtubeplaylistlengthcheck.com
+
 User-agent: *
 Allow: /
+
+# Disallow error pages and utility endpoints
+Disallow: /403
 Disallow: /404
 Disallow: /500
-Disallow: /403
 Disallow: /error
 
+# Sitemap location
 Sitemap: https://youtubeplaylistlengthcheck.com/sitemap.xml

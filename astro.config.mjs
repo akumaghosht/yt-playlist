@@ -15,6 +15,7 @@ const ytApiKey =
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://youtubeplaylistlengthcheck.com',
   output: 'static',
   integrations: [react()],
   vite: {
