@@ -13,11 +13,11 @@ interface Props {
 
 const {
   title = "YouTube Playlist Length Checker - Check & Calculate Duration Online",
-  description = "Check and calculate YouTube playlist length instantly with our free online tool. Check duration at 1.25x, 1.5x, 2x speed, track watched videos & plan your schedule.",
+  description = "Check and calculate YouTube & YT playlist length instantly with our free online tool. Check duration at 1.25x, 1.5x, 2x speed, track watched videos & plan your schedule.",
   canonical,
   ogType = "website",
   ogImage = "https://youtubeplaylistlengthcheck.com/og-image.png",
-  keywords = "youtube playlist length, youtube playlist length checker, check youtube playlist length, youtube playlist length calculator, calculate youtube playlist length, find youtube playlist length, youtube playlist length calc, how to see youtube playlist length, how to see the length of a playlist on youtube, how long can a youtube playlist be, why can i only see 200 videos in my youtube playlist, what is the ideal length of a playlist, does youtube limit the number of playlists, do youtube playlists count as views, why wont youtube show my full playlist, youtube playlist length finder, youtube playlist length analyzer tool, youtube playlist length calculator online tool, see youtube playlist length, youtube playlist length calculator online, get youtube playlist length",
+  keywords = "yt playlist length, yt playlist length calculator, yt playlist length finder, yt playlist length tool, check yt playlist length, calculate yt playlist length, yt playlist length checker, yt playlist length calc, youtube playlist length, youtube playlist length checker, check youtube playlist length, youtube playlist length calculator, calculate youtube playlist length, find youtube playlist length, youtube playlist length calc, how to see youtube playlist length, how to see the length of a playlist on youtube, how long can a youtube playlist be, why can i only see 200 videos in my youtube playlist, what is the ideal length of a playlist, does youtube limit the number of playlists, do youtube playlists count as views, why wont youtube show my full playlist, youtube playlist length finder, youtube playlist length analyzer tool, youtube playlist length calculator online tool, see youtube playlist length, youtube playlist length calculator online, get youtube playlist length",
   robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
 } = Astro.props;
 
@@ -33,7 +33,13 @@ const webAppSchema = {
     "YouTube Playlist Length Calculator",
     "YouTube Playlist Length Calc",
     "YouTube Playlist Length Finder",
-    "YouTube Playlist Length Analyzer Tool"
+    "YouTube Playlist Length Analyzer Tool",
+    "YT Playlist Length",
+    "YT Playlist Length Calculator",
+    "YT Playlist Length Finder",
+    "YT Playlist Length Tool",
+    "YT Playlist Length Checker",
+    "YT Playlist Length Calc"
   ],
   "url": siteUrl,
   "description": description,
@@ -46,8 +52,8 @@ const webAppSchema = {
     "priceCurrency": "USD"
   },
   "featureList": [
-    "Check YouTube playlist duration and total video count",
-    "Calculate YouTube playlist length at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x playback speed",
+    "Check YouTube & YT playlist length and total video count",
+    "Calculate YouTube & YT playlist length at 1.0x, 1.25x, 1.5x, 1.75x, and 2.0x playback speed",
     "Custom video range selector (e.g., video 5 to 25)",
     "Interactive daily study schedule planner with completion date forecasts",
     "Watched video progress tracking with persistent browser memory",
@@ -137,7 +143,7 @@ const webSiteSchema = {
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="YouTube Playlist Length Checker and Duration Tool" />
+    <meta property="og:image:alt" content="YouTube & YT Playlist Length Checker and Duration Tool" />
 
     {/* Twitter Cards */}
     <meta name="twitter:card" content="summary_large_image" />
@@ -145,7 +151,7 @@ const webSiteSchema = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={fullOgImageUrl} />
-    <meta name="twitter:image:alt" content="YouTube Playlist Length Checker and Duration Tool" />
+    <meta name="twitter:image:alt" content="YouTube & YT Playlist Length Checker and Duration Tool" />
 
     {/* Fonts */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />

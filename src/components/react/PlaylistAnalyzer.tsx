@@ -351,7 +351,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           </h1>
 
           <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-[#AAAAAA] max-w-2xl mx-auto leading-relaxed">
-            Free online YouTube playlist length checker and duration calculator. Calculate exact runtime at 1.0x to 2.0x speeds, select custom video ranges, track watch progress, and schedule study sessions.
+            Free online YouTube &amp; YT playlist length checker, duration calculator, and finder tool. Calculate exact runtime at 1.0x to 2.0x speeds, select custom video ranges, track watch progress, and schedule study sessions.
           </p>
 
           {/* Search Box Form */}
