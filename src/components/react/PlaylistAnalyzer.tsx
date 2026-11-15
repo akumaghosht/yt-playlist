@@ -12,6 +12,7 @@ import {
   RotateCw,
   Zap,
   Loader2,
+  History,
 } from 'lucide-react';
 import type { PlaylistAnalysis } from '../../types/playlist';
 import {
@@ -23,6 +24,14 @@ import {
 } from '../../utils/youtube';
 import { getCachedPlaylist } from '../../utils/cache';
 import {
+  getPlaylistHistory,
+  saveToHistory,
+  loadFromHistory,
+  removeFromHistory,
+  clearPlaylistHistory,
+  type HistoryEntry,
+} from '../../utils/history';
+import {
   checkRateLimit,
   recordApiRequest,
   getCooldownRemainingSeconds,
@@ -32,6 +41,7 @@ import { ProgressTracker } from './ProgressTracker';
 import { SchedulePlanner } from './SchedulePlanner';
 import { VideoTable } from './VideoTable';
 import { SettingsModal } from './SettingsModal';
+import { PlaylistHistory, PlaylistHistoryDropdown } from './PlaylistHistory';
 
 interface PlaylistAnalyzerProps {
   defaultApiKey?: string;
@@ -61,6 +71,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
   // Share link toast
   const [shareToast, setShareToast] = useState(false);
 
+  // Previously analyzed playlists (persisted in localStorage)
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
   // Decrement cooldown countdown
   useEffect(() => {
     if (cooldownSeconds <= 0) {
@@ -89,6 +103,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
       localStorage.getItem('yt_custom_api_key') ||
       '';
     setCustomApiKey(savedKey);
+    setHistory(getPlaylistHistory());
 
     // Check URL search params
     const params = new URLSearchParams(window.location.search);
@@ -103,6 +118,10 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
   // Update Range indices and preferences when analysis data changes
   useEffect(() => {
     if (analysis?.videos) {
+      // 0. Record this playlist in history (moves it to the top)
+      saveToHistory(analysis);
+      setHistory(getPlaylistHistory());
+
       // 1. Load saved watched IDs (permanent)
       const watchedKey = `yt_watched_${analysis.playlist.id}`;
       const savedWatched = localStorage.getItem(watchedKey);
@@ -324,6 +343,22 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
     }
   };
 
+  // Load a previously saved playlist from history without using API quota
+  const handleSelectHistory = (playlistId: string) => {
+    setInputUrl(playlistId);
+    const saved = loadFromHistory(playlistId);
+    if (saved) {
+      setAnalysis(saved);
+      setErrorMessage(null);
+      setRateLimitMessage(null);
+      updateBrowserUrl(playlistId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    // Snapshot missing (e.g. storage was cleared) — fall back to a normal fetch
+    fetchAnalysis(playlistId);
+  };
+
   const handleCopyShareLink = () => {
     if (typeof window !== 'undefined') {
       navigator.clipboard.writeText(window.location.href);
@@ -355,7 +390,7 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           </p>
 
           {/* Search Box Form */}
-          <form onSubmit={handleSubmit} className="pt-2 max-w-2xl mx-auto">
+          <form onSubmit={handleSubmit} className="relative pt-2 max-w-2xl mx-auto">
             <div className="flex flex-col sm:flex-row items-stretch gap-2 p-1.5 sm:p-2 bg-white dark:bg-[#181818] border border-slate-200 dark:border-[#272727] rounded-2xl sm:rounded-full shadow-lg dark:shadow-2xl focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500 transition-all">
               <div className="flex items-center pl-3.5 pr-1.5 flex-1 min-w-0">
                 <Search className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 dark:text-[#717171] shrink-0" />
@@ -380,6 +415,23 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                   </button>
                 )}
 
+                {/* Mobile Recent Playlists button inside search input */}
+                {history.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsHistoryOpen((o) => !o)}
+                    className={`sm:hidden p-2 rounded-lg hover:text-slate-900 dark:hover:text-white transition-colors touch-manipulation shrink-0 ${
+                      isHistoryOpen ? 'text-red-600 dark:text-red-400' : 'text-slate-600 dark:text-[#AAAAAA]'
+                    }`}
+                    title="Recent playlists"
+                    aria-label="Recent playlists"
+                    aria-expanded={isHistoryOpen}
+                    aria-controls="history-dropdown"
+                  >
+                    <History className="w-4 h-4" />
+                  </button>
+                )}
+
                 {/* Mobile Settings Icon button inside search input */}
                 <button
                   type="button"
@@ -396,6 +448,23 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
               </div>
 
               <div className="flex items-center gap-1.5">
+                {/* Desktop Recent Playlists button */}
+                {history.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsHistoryOpen((o) => !o)}
+                    className={`hidden sm:flex p-2.5 rounded-full hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#272727] transition-colors touch-manipulation shrink-0 cursor-pointer ${
+                      isHistoryOpen ? 'text-red-600 dark:text-red-400 bg-slate-100 dark:bg-[#272727]' : 'text-slate-600 dark:text-[#AAAAAA]'
+                    }`}
+                    title="Recent playlists"
+                    aria-label="Recent playlists"
+                    aria-expanded={isHistoryOpen}
+                    aria-controls="history-dropdown"
+                  >
+                    <History className="w-5 h-5" />
+                  </button>
+                )}
+
                 {/* Desktop Settings button */}
                 <button
                   type="button"
@@ -430,6 +499,20 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
                 </button>
               </div>
             </div>
+
+            <PlaylistHistoryDropdown
+              isOpen={isHistoryOpen}
+              onClose={() => setIsHistoryOpen(false)}
+              currentId={analysis?.playlist.id}
+              entries={history}
+              onSelect={handleSelectHistory}
+              onRemove={(id) => setHistory(removeFromHistory(id))}
+              onClearAll={() => {
+                clearPlaylistHistory();
+                setHistory([]);
+                setIsHistoryOpen(false);
+              }}
+            />
           </form>
 
 
@@ -524,6 +607,19 @@ export const PlaylistAnalyzer: React.FC<PlaylistAnalyzerProps> = ({ defaultApiKe
           <div className="h-56 sm:h-64 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
           <div className="h-72 sm:h-96 bg-slate-200 dark:bg-[#181818] border border-slate-300 dark:border-[#272727] rounded-xl" />
         </div>
+      )}
+
+      {/* Playlist history (home screen only) */}
+      {!isLoading && !analysis && (
+        <PlaylistHistory
+          entries={history}
+          onSelect={handleSelectHistory}
+          onRemove={(id) => setHistory(removeFromHistory(id))}
+          onClearAll={() => {
+            clearPlaylistHistory();
+            setHistory([]);
+          }}
+        />
       )}
 
       {/* 2. ANALYZED DASHBOARD CONTENT */}
